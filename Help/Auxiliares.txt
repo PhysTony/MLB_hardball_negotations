@@ -1,0 +1,7 @@
+Base de datos:
+- how to merge two data frames based on particular column in pandas python?
+https://stackoverflow.com/questions/37697195/how-to-merge-two-data-frames-based-on-particular-column-in-pandas-python
+- Use a list of values to select rows from a Pandas dataframe
+https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe
+- Get list from pandas dataframe column or row?
+https://stackoverflow.com/questions/22341271/get-list-from-pandas-dataframe-column-or-row
