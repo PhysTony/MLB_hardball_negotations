@@ -1,30 +1,30 @@
-Acronimo,Equipo
-ARI,Arizona Diamondbacks
-ATL,Atlanta Braves
-BAL,Baltimore Orioles
-BOS,Boston Red Sox
-CHC,Chicago Cubs
-CHW,Chicago White Sox
-CIN,Cincinnati Reds
-COL,Colorado Rockies
-DET,Detroit Tigers
-HOU,Houston Astros
-KC,Kansas City Royals
-LAA,Los Angeles Angels
-LAD,Los Angeles Dodgers
-MIA,Miami Marlins
-MIL,Milwaukee Brewers
-MIN,Minnesota Twins
-NYM,New York Mets
-NYY,New York Yankees
-OAK,Oakland Athletics
-PHI,Philadelphia Phillies
-PIT,Pittsburgh Pirates
-SD,San Diego Padres
-SEA,Seattle Mariners
-SF,San Francisco Giants
-STL,St. Louis Cardinals
-TB,Tampa Bay Rays
-TEX,Texas Rangers
-TOR,Toronto Blue Jays
-WSH,Washington Nationals
+Acronimo,Equipo,Victorias,Juegos totales
+ARI,Arizona Diamondbacks,78,161
+ATL,Atlanta Braves,65,160
+BAL,Baltimore Orioles,80,161
+BOS,Boston Red Sox,78,161
+CHC,Chicago Cubs,96,161
+CHW,Chicago White Sox,76,161
+CIN,Cincinnati Reds,64,161
+COL,Colorado Rockies,67,161
+DET,Detroit Tigers,73,160
+HOU,Houston Astros,86,161
+KC,Kansas City Royals,94,161
+LAA,Los Angeles Angels,85,161
+LAD,Los Angeles Dodgers,91,161
+MIA,Miami Marlins,71,161
+MIL,Milwaukee Brewers,68,161
+MIN,Minnesota Twins,83,161
+NYM,New York Mets,89,161
+NYY,New York Yankees,87,161
+OAK,Oakland Athletics,68,161
+PHI,Philadelphia Phillies,62,161
+PIT,Pittsburgh Pirates,97,161
+SD,San Diego Padres,74,161
+SEA,Seattle Mariners,75,161
+SF,San Francisco Giants,84,161
+STL,St. Louis Cardinals,100,160
+TB,Tampa Bay Rays,79,161
+TEX,Texas Rangers,87,161
+TOR,Toronto Blue Jays,93,161
+WSH,Washington Nationals,83,161

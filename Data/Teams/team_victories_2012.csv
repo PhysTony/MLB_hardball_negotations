@@ -1,30 +1,30 @@
-Acronimo,Equipo
-ARI,Arizona Diamondbacks
-ATL,Atlanta Braves
-BAL,Baltimore Orioles
-BOS,Boston Red Sox
-CHC,Chicago Cubs
-CHW,Chicago White Sox
-CIN,Cincinnati Reds
-COL,Colorado Rockies
-DET,Detroit Tigers
-HOU,Houston Astros
-KC,Kansas City Royals
-LAA,Los Angeles Angels
-LAD,Los Angeles Dodgers
-MIA,Miami Marlins
-MIL,Milwaukee Brewers
-MIN,Minnesota Twins
-NYM,New York Mets
-NYY,New York Yankees
-OAK,Oakland Athletics
-PHI,Philadelphia Phillies
-PIT,Pittsburgh Pirates
-SD,San Diego Padres
-SEA,Seattle Mariners
-SF,San Francisco Giants
-STL,St. Louis Cardinals
-TB,Tampa Bay Rays
-TEX,Texas Rangers
-TOR,Toronto Blue Jays
-WSH,Washington Nationals
+Acronimo,Equipo,Victorias,Juegos totales
+ARI,Arizona Diamondbacks,81,162
+ATL,Atlanta Braves,94,162
+BAL,Baltimore Orioles,93,162
+BOS,Boston Red Sox,69,162
+CHC,Chicago Cubs,61,162
+CHW,Chicago White Sox,85,162
+CIN,Cincinnati Reds,97,162
+COL,Colorado Rockies,64,162
+DET,Detroit Tigers,88,162
+HOU,Houston Astros,55,162
+KC,Kansas City Royals,72,162
+LAA,Los Angeles Angels,89,162
+LAD,Los Angeles Dodgers,86,162
+MIA,Miami Marlins,69,162
+MIL,Milwaukee Brewers,83,162
+MIN,Minnesota Twins,66,162
+NYM,New York Mets,74,162
+NYY,New York Yankees,95,162
+OAK,Oakland Athletics,94,162
+PHI,Philadelphia Phillies,81,162
+PIT,Pittsburgh Pirates,79,162
+SD,San Diego Padres,76,162
+SEA,Seattle Mariners,75,162
+SF,San Francisco Giants,94,162
+STL,St. Louis Cardinals,88,162
+TB,Tampa Bay Rays,90,162
+TEX,Texas Rangers,93,162
+TOR,Toronto Blue Jays,73,162
+WSH,Washington Nationals,98,162
