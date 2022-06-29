@@ -1,0 +1,385 @@
+---
+title: "Examen práctico 2"
+author: "Antonio Huerta Montellano"
+date: "4 de junio del 2022"
+output:
+  pdf_document: 
+    fig_caption: yes
+    latex_engine: xelatex
+    keep_tex: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Importando las librerías:
+```{r message=FALSE, warning=FALSE}
+library(wooldridge)
+library(tidyverse)
+library(knitr)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(coefplot)
+library(data.table)
+library(pacman)
+library(tinytex)
+library(AER)
+library(car)
+library(cragg)
+library(tidyr)
+options(scipen = 999)
+library(tidyverse)
+library(stargazer)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(haven)
+library(lmtest)
+library(sandwich)
+library(gap)
+library(quantmod)
+```
+
+Cambiemos el directorio de trabajo:
+
+```{r}
+setwd("~/Documentos/Github/Proyectos/MLB_HN")
+```
+
+Leamos los archivos
+
+
+```{r}
+data2 <- read.csv('healthcare.csv')
+data3 <- read.csv('ingresos_iv.csv')
+cornwell <- read_dta('cornwell.dta')
+```
+\section{Problema 1}
+
+
+Vemos que los nombres de las variables refieren a:
+
+prbarr = probabilidad de ser arrestado
+\\
+prbconv = probabilidad de ser convicto
+\\
+prbpris = probabilidad de sentencia a prisión
+\\
+avgsen = promedio de días de sentencia
+\\
+polpc = policía per cápita
+\\
+
+Usando los datos para los siete años y logaritmos para todas las variables, estime un modelo que relacione la tasa de crı́menes con prbarr, prbconv, prbpris, avgsen y polpc. Interprete.
+
+
+```{r}
+names(cornwell)
+```
+
+```{r}
+model_1 <- lm(lcrmrte ~ lprbarr + lprbconv + lprbpris + lavgsen + lpolpc, data = cornwell)
+summary(model_1)
+```
+
+Para la interpretación tomemos en cuenta los cambios porcentuales con respecto a cada variable para el logaritmo de la tasa de crimen:
+- Cuando el logairtmo de la probabilidad de ser arrestado aumenta en un $1\%$ vemos que el logaritmo de la tasa de cirmen ser reduce en un $-0.72$.
+- Cuando el logairtmo de la probabilidad de ser convicto aumenta en un $1\%$ vemos que el logaritmo de la tasa de cirmen ser reduce en un $-0.54$.
+- Cuando el logairtmo de la probabilidad de sentencia a prisión aumenta en un $1\%$ vemos que el logaritmo de la tasa de cirmen ser reduce en un $0.23$.
+- Cuando el logairtmo de el promedio de días de sentencia aumenta en un $1\%$ vemos que el logaritmo de la tasa de cirmen ser reduce en un $-0.06$.
+- Cuando el logairtmo de la policía per cápita aumenta en un $1\%$ vemos que el logaritmo de la tasa de cirmen ser reduce en un $0.36$.
+
+Salvo el promedio de años de sentencia, todas las demás variables son estadísticamente significativas, con un p-value menor al 0.001; además de que hacen un sentido intuitivo ya que se espera que al aumentar la probabilidad de ser convicto, o ser arrestado, reduzcan las tasa de crimen. Sin embargo, vemos que no tiene mucho sentido que no contribuya el logaritmo de del promedio de dias de sentencia puesto que uno esperaría que esto contribuya a bajar la tasa de crimen, pero no es estadísticamente significativa, aunque su coeficiente estimador tenga sentido puesto que disminuye la tasa de crimen conforme crece. Por otro lado, la interpretación de que la el logaritmo de la policía per cápita aumenta la tasa de crimen puede interpretarse que ahpora se registran más crímenes que antes no  se podían puesto que haora hay más policías y no es que los crímenes aumenten en sí, sino que aumentan las observaciones de estos. Tampoco hace sentido que entre mayor sea la probabilidad de sentencia de prisión, aumente la tasa de crimen puesto que uno espera que impacte negativamente en la tasa de crimen.
+\\
+
+c) Realice una prueba de correlación serial, asumiento que las variables explicativas son estrictamente exógenas. Si hay correlación serial, obtenga los errores estándar robustos.
+
+```{r}
+install.packages("lmtest")
+install.packages("gap")
+```
+```{r}
+bgtest(model_1)
+```
+La hipótesis nula es que no hay autocorrelación, vemos que el p-value es menor 0.001, entonces hay autocorrelación serial.
+Ahora, obtengamos los errores estandar robustos.
+
+```{r}
+stargazer(model_1,
+          coeftest(model_1, vcov = vcovHC(model_1, type = "HC0")),
+          coeftest(model_1, vcov = vcovHC(model_1, type = "HC1")),
+          coeftest(model_1, vcov = vcovHC(model_1, type = "HC2")),
+          coeftest(model_1, vcov = vcovHC(model_1, type = "HC3")),
+          type = "text")
+```
+Se aprecia que todos los errores aumentan a pesar de ser robustos.
+
+d) Agregue un retraso de un año para log(crmrte) al modelo del inciso a) y compare con las estimaciones de ese inciso.
+```{r}
+lcrmrte_lag_d <- Lag(cornwell$lcrmrte , k=1)
+
+model_2 <- lm(lcrmrte ~ lprbarr + lprbconv + lprbpris + lavgsen + lpolpc + lcrmrte_lag_d,
+              data = cornwell)
+summary(model_2)
+```
+
+Vemos ahora que el logaritmo del promedio de sentencia es estadísticamente significativo para un nivel de significancia de 0.01, pero la probabilidad de ir a prisión ya no es significativa lo cual es una ventaja en comparación con el modelo del inciso a) puesto que el coeficiente estimado no tenía sentido que aumentara la tasa de crimen conforme esta creciera.
+
+(e) 2pts. Realice una prueba para correlación serial de primer orden en los errores del modelo de la parte d). Si hay correlación serial, compute los errores estándar robustos.
+```{r}
+bgtest(model_2)
+stargazer(model_2,
+          coeftest(model_2, vcov = vcovHC(model_2, type = "HC0")),
+          coeftest(model_2, vcov = vcovHC(model_2, type = "HC1")),
+          coeftest(model_2, vcov = vcovHC(model_2, type = "HC2")),
+          coeftest(model_2, vcov = vcovHC(model_2, type = "HC3")),
+          type = "text")
+```
+Vemos que hay autocorrelación serial dado que se rechaza la hipótesis nula. Como no se pide interpretación, no comentaré nada jajaja
+
+(f) 4pts. Agregue todas las variables de salarios en su forma logarı́tmica al modelo del inciso e) ¿son estadı́sticamente significativas de manera conjunta? Realice una prueba de significancia conjunta del logaritmo de las variables de salario, permitiendo correlación serial y heterocedasticidad.
+```{r}
+model_3 <- lm(lcrmrte ~ lprbarr + lprbconv + lprbpris + lavgsen + lpolpc + lcrmrte_lag_d + lwcon + lwtuc + lwtrd + lwfir + lwser + lwmfg + lwfed + lwsta + lwloc,
+              data = cornwell)
+summary(model_3)
+```
+Como el estadístico F es 165.8 se rechaza la hiótesis nula y por lo tanto si tienen significancia conjunta. AHora corramos la prueba para los salarios, es decir, las variables que agregamos
+
+```{r}
+linearHypothesis(model_3, 
+                 c("lwcon=0", "lwtuc=0", "lwtrd=0", 
+                   "lwfir=0", "lwser=0", "lwmfg=0", 
+                   "lwfed=0", "lwsta=0","lwloc=0"))
+```
+Como el estadístico calculado, $F=4.1624$, es menor a 10, así como el pvalue es  menor para un nivel de significancia menor a 0.001, entonces se rechaza la hipótesis nula y hay significancia para las variables del salario.
+
+\section{Problema 2}
+
+2. 10pts. Use los datos de atención médica que encontrará en ésta página
+```{r}
+data_2 <- read.csv('healthcare.csv')
+```
+- HHNINC = Ingreso neto nominal mensual por familia en moneda alemana post euro. /100,000
+- HHKIDS = niños menores de 16 (1 si, sí)
+- EDUC = Años de escolaridad.
+- MARRIED = casados (1 si, sí)
+
+. Recuerde que la prueba de Chow es una prueba F para la significatividad de los coeficientes que implican distintas regresiones por grupo.
+
+```{r}
+model_e <- lm(LOGINC ~ AGE + EDUC +  MARRIED + HHKIDS,
+              data = data_2)
+summary(model_e)
+```
+Hagamos el test de Chow para hombresy mujeres (FEMALE=0: HOmbre y FEMALE=1 Mujer):
+```{r}
+y1<- data_2 %>%
+  filter(FEMALE==0) %>% 
+  select(LOGINC)
+
+y2<- data_2 %>%
+  filter(FEMALE==1) %>% 
+  select(LOGINC)
+
+x1<- data_2 %>%
+  filter(FEMALE==0) %>% 
+  select(AGE, EDUC, MARRIED, HHKIDS)
+
+x2<- data_2 %>%
+  filter(FEMALE==1) %>% 
+  select(AGE, EDUC, MARRIED, HHKIDS)
+chow.test(y1,x1,y2,x2)
+```
+Como el p-value tiende a cero y por ende se rechaza la hipótesis nula para un nivel de significancia de 0.001, entonces implica que hay un cambio estructural entre estos modelos.
+
+(b) 5pts. Ahora, agregue al menos una variable al modelo y realice la prueba de nuevo con su modelo ampliado. Reporte todos los resultados relevantes.
+Agregaremos variables que nos hagan sentido como la variable WORKING dummy que indica si trabaja o no, también el ingreso INCOME, HEALTHY que muestra si esta saludable o no ya que se puede inferir que en ciertas regiones unos son más saludables que otros. Ingreso marcaría diferencia si hhay brecha de género, así como el trabajo.
+```{r}
+model_5 <- lm(LOGINC ~ AGE + EDUC +  MARRIED + HHKIDS + WORKING + INCOME + HEALTHY,
+              data = data_2)
+summary(model_5)
+```
+Vemos que todos los coeficientes son estadísticamente significativos para un nivel de significancia de 0.001, pero HEALTHY solo para un nivel de significancia de 0.05.
+```{r}
+y1<- data_2 %>%
+  filter(FEMALE==0) %>% 
+  select(LOGINC)
+
+y2<- data_2 %>%
+  filter(FEMALE==1) %>% 
+  select(LOGINC)
+
+x1<- data_2 %>%
+  filter(FEMALE==0) %>% 
+  select(AGE, EDUC, MARRIED, HHKIDS, WORKING, INCOME, HEALTHY)
+
+x2<- data_2 %>%
+  filter(FEMALE==1) %>% 
+  select(AGE, EDUC, MARRIED, HHKIDS, WORKING, INCOME, HEALTHY)
+chow.test(y1,x1,y2,x2)
+```
+De nuevo se rechaza la hipótesis nula por lo que de nuevo hay un cambio estructural. SIn embargo, bajo el valor del e stadístico F por lo que sospechamos de la  variable HEALTHY.
+
+\section{Problema 3}
+
+Este ejercicio se basa en el modelo de demanda de gasolina de Baltagi/Griffin, que extendemos al siguiente modelo:
+a) Debido a que puede existir un problema de endogenidad (ya que podemos intruir que el hay factores de estacionalidad enel tiempo presentes en el precio de la gasolina) se  puede intuir que el estimador no necesariamente es insesgado y como no cumplen los supuesto del MCO, no es un modelo eficiente.
+
+```{r}
+data_3 <- read_xlsx('F9.2.xlsx')
+names(data_3) <- tolower(names(data_3))
+names(data_3)
+```
+
+donde G = consumo de gasolina per cápita, Y = ingreso, P = precio, C = automóviles per cápita. (Use la tabla F9.2 que encontrará en ésta página).
+
+¿Será insesgado el estimador de mı́nimos cuadrados ordinariosde β para este modelo? ¿Consistente? ¿Eficiente? Explique.
+(b) 4pts. ¿Es consistente el estimador GLS? Explique. 
+Es claro que no.
+
+(c) 2pts. Estime el modelo por MCO y reporte sus resultados.
+
+```{r}
+lgaspcar_1 <- Lag(data_3$lgaspcar, k = 1)
+model_21 <- lm(lgaspcar ~ lincomep + lrpmg + lcarpcap + lgaspcar_1, data = data_3)
+summary(model_21)
+```
+
+(d) 2pts. Estime el modelo por FGLS, ignorando su naturaleza dinámica, y reporte sus resultados. (Tenga en cuenta que se pierde un año de datos debido a la presencia de la variable dependiente rezagada). 
+
+```{r}
+weights <- c(0,1/model_21$fitted.values^2)
+fgls <- lm(lgaspcar ~ lincomep + lrpmg + lcarpcap + lgaspcar_1, data = data_3, weights = weights)
+summary(fgls)
+
+stargazer(model_21,fgls,type = 'text')
+```
+
+(e) 4pts. Los instrumentos adecuados para este modelo, utilizando dato dentro del modelo, podrı́an incluir una tendencia temporal y valores rezagados de ingresos, precios y automóviles per cápita. ¿Cuáles son los supuestos explı́citos que justificarı́an esta sugerencia?
+Como se mantienen una relación con ellas sin rezago pueden ser relevantes para el modelo, aparte el error corriente de estimación puede no tener correlación con dicchas variables rezagadas debido al origen. Por otro lado, la variable año consiste en un instrumento útil para la variable precio ya que, como se menciónó, frecuentemente tiene una tendencia estacional; y su relación con el error del modelo estructural puede ser cero.
+
+(f) 4pts. Calcule las estimaciones de la variable instrumental para este modelo. Interprete y compare sus resultados con los de MCO y FGLS.
+
+```{r}
+lincomep_1 <- Lag(data_3$lincomep, k = 1)
+lrpmg_1 <- Lag(data_3$lrpmg, k = 1)
+lcarpcap_1 <- Lag(data_3$lcarpcap, k = 1)
+
+inst <- ivreg(lgaspcar ~ lincomep + lrpmg + lcarpcap + lgaspcar_1 | 
+                lincomep + lcarpcap + lgaspcar_1 + lincomep_1 + lrpmg_1 + lcarpcap_1, data = data_3)
+
+stargazer(model_21,fgls,inst,type = 'text')
+```
+
+
+\section{Problema 4}
+Uno de los debates más activos en economı́a es el relativo a la relación entre años de educación e ingreso. La base de datos ingresos iv.dta contiene una muestra de hombres de entre 24 y 36 años de edad.
+
+```{r}
+data_4 <- read_csv("ingresos_iv.csv")
+```
+
+(a) 2pts. Estime una regresión por MCO para explicar el logaritmo del salario (lwage) en función de la educación educ y los siguientes controles: exper, expersq, black, south, smsa, reg661, reg662, reg663, reg664, reg665, reg666, reg667, reg668 y smsa66. ¿Qué problema encuentra en la estimación de esta relación? ¿El coeficiente sobre educ tiene una interpretación causal del efecto de la educación en el salario?
+
+```{r}
+formula_1 <- lwage ~ educ | exper + expersq + black + south + smsa + reg661 + reg662 + reg663 + reg664 + reg665 + reg666 + reg667 + reg668 + smsa66
+iv_model_1 <- ivreg(formula_1, data = data_4)
+summary(iv_model_1, diagnostics=TRUE)
+```
+```{r}
+model_11 <- lm(lwage ~ educ,
+               data = data_4)
+summary(model_11)
+```
+Vemos que en las pruebas con los intrumentos obtenemos que hay presencia de instrumentos débiles  para nuestra variable endógena. Esto puede deberse a problemas de endogeneidad. Por otro lado, debido a la enorme cantidad de instrumentos usados, es muy posible que haya una sobreidentificación.
+\\
+A pesar de que la variable de educación es estadísticamente significativa, vemos que su coeficiente estimado es de $0.027$, lo cual nos dice que estudiar un año más para educarse no tiene un gran impacto en el salario del individuo ya que solo es del $2\%$.
+
+(b) 2pts. Se propone usar una variable dicotómica que indica si el individuo vivı́a cerca de una universidad cuando era niño, como instrumento de los años de educación. ¿Qué condiciones debe cumplir la variable propuesta para funcionar como instrumento válido?
+Las condiciones que tiene que cumplir son las siguientes:
+- $Cov(z,u)=0$
+- $Cov(x,u)!=0$
+De aquí se implicaría que esta variable es exógena con los residuales del modelo en caso de que  esta propuesta funcione, además de estar correlacionada con la variable endógena, es decir, que el vivir cerca de una universidad implicaría que contribuye a los años de educación.
+
+(c) 2pts. ¿Cómo juzga la propuesta de usar la variable antes descrita como instrumento?
+Intuitivamente, el vivir cerca de una universidad no debería de afectar significativamente al salario puesto que ese factor no implica siquiera que se entrará a la universidad y por ende que tenga más años de educación por lo que se piensa que no es una variable con un impacto fuerte. Por otro lado, el que se este cerca de una universidad, por lo general es en cuidades donde hay cierto nivel de ingresos que no corresponden a familias pobres por lo que sospechamos que hay variables que expliquen mejor esta como un subcaso. POr estas y razones derivdas, se piensa que esta proppuesta no es la más adecuada.
+
+(d) 4pts. Estime la relación entre el logaritmo del salario y la educación usando la variable dicotómica de acceso a una universidad, nearc4, como instrumento. Emplee las mismas variables de control que en el modelo de MCO.
+```{r}
+formula_iv_3 <- lwage ~ educ | nearc4 + exper + expersq + black + south + smsa + reg661 + reg662 + reg663 + reg664 + reg665 + reg666 + reg667 + reg668 + smsa66
+iv_model_3 <- ivreg(formula_iv_3, data = data_4)
+summary(iv_model_3, diagnostics=TRUE)
+```
+Vemos que similar al inciso a), tenemos los mismo problemas, hay presencia de instrumentos débdiles y problemas de endogeneidad. Así como efectos similares por el impacto de incrementos unitarios en la educcación tiene casi el mismo porcentage de cambio en el salario.
+
+```{r}
+formula_iv_4 <- lwage ~ educ | nearc4
+iv_model_4 <- ivreg(formula_iv_4, data = data_4)
+summary(iv_model_4, diagnostics = TRUE)
+```
+Incluso usando solo esta variable dicotómica como instrumentos, vemos que este instrumento es débil de acuerdo a la prueba. También vemos que el coeficiente estimado para la educación no cambia mucho. El problema es que estamos forzando a que la educación explique toda la lwage, pero el problema de endogeneidad es muy posible que se deba a la enorme omisión de variables que estamos haciendo. Deberíamos de regresar con estas variables y no tanto usarlas como instrumentos.
+
+(e) 2pts. Interprete la primera etapa en términos del coeficiente sobre el instrumento y la magnitud y significancia del estadı́sco.
+```{r}
+#OLS
+model_12 <- lm(lwage ~ educ, 
+               data = data_4)
+summary(model_12)
+
+model_13 <- lm(educ ~ exper + expersq + black
+                + south + smsa + reg661
+                + reg662 + reg663 + reg664 
+                + reg665 + reg666 + reg667 
+                + reg668 + smsa66 + nearc4,
+                data = data_4)
+summary(model_13)
+
+formula_iv_4 <- (lwage ~ educ | exper + expersq + black
+                 + south + smsa + reg661 + reg662
+                 + reg663 + reg664 + reg665 + reg666
+                 + reg667 + reg668 + smsa66 + nearc4)
+iv_model_5 <- ivreg(formula_iv_4, data = data_4)
+summary(iv_model_5, diagnostics = TRUE)
+
+models <- list(model_12, iv_model_5, iv_model_3)
+stargazer::stargazer(models, type = 'text', 
+                     column.labels=c('Modelo base', 'Controles a)', 'Controles c+ nearc4'),
+                     model.numbers=FALSE)
+
+```
+Lo que nos interesa es la forma reducida:
+```{r}
+summary(model_13)
+```
+
+Se aprecia que no hay grandes cambios, obtenemos prácticamente los mismo coeficientes estimados. Por otro  lado, vemos que el instrumento usado de nearc4 es significativa para el modelo; sin embargo, no quita el problema de que es un iinstrumento débil.
+
+(f) 2pts. Interprete el coeficiente sobre la variable de educación en la segunda etapa. Compare la magnitud del efecto estimado con el resultado de MCO.
+```{r}
+summary(iv_model_4, diagnostics = TRUE)
+```
+Vemos que el coeficiente estimado para la educación no cambia mucho y que presenta de nuevo los mismo problemas. Por razones análogas vemos que estarán presentes estos problemas hasta que metamos más variables al modelo y no tanto como instrumentos.
+
+(g) 4pts. Realice ahora el siguiente procedimiento. Primero, estime la primera etapa usando una regresión por MCO. Obtenga los valores ajustados de educación y llámelos educ hat. Luego, estime la segunda etapa empleando educ hat como variable independiente, además del resto de variables de control. ¿Cómo cambian sus resultados en comparación con la parte d.?
+
+```{r}
+# Primera estapa
+model_15 <- lm(educ ~ exper + expersq + black + south  + smsa + reg661 + reg662 + reg663 + reg664 + reg665
+           + reg666 + reg667 + reg668 + smsa66 + nearc4, data = data_4)
+summary(model_15)
+
+# Segunda etapa:
+
+educ_aux <- fitted(model_15)
+
+model_16 <- lm(lwage ~ exper + expersq + black + south + smsa + reg661 + reg662 + reg663 + reg664 + reg665
+           + reg666 + reg667 + reg668 + smsa66 + nearc4 + educ_aux, data = data_4)
+summary(model_16)
+```
+
+Vemos que el coeficiente asociado a la educación auxiliar es seis veces la  de la educación general. Como aumenta la magnitud del coeficiente estimado y tiene sentido la dirección del aumento, la estrategia parece buena.
+
+(h) 2pts. ¿A qué se deben las discrepancias que encuentra? ¿Cuál de las dos estrategias prefiere para estimar el modelo de variables instrumentales?
+Una estrategia es metiendo más variables al modelo, pero no como instrumentos, aunque no todas, debido a que el problema de endogeneidad va a presistir debido a la omisión de variables en el modelo y seguir metiendo instrumentos, no lo va a arreglar como vimos. La segunda estrategia resulto mucho mejor y se debe a que  era por la omisión de variables que había endogeneidad.
