@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
 Walker Buehler,SP,34,33,207.7,149,61,57,52,212,16,4,0,0.97,2.47,LAD,3750000,No
 Adam Wainwright,SP,34,32,206.3,168,72,70,50,174,17,7,0,1.06,3.05,STL,8000000,Si
 Sandy Alcantara,SP,33,33,205.7,171,85,73,50,201,8,15,0,1.08,3.19,MIA,630000,No

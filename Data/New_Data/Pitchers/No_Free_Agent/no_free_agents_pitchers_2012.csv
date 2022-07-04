@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 R.A. Dickey,SP,34,33,233.7,192,78,71,54,230,20,6,0,1.05,2.74,NYM,4750000
 Felix Hernandez,SP,33,33,232.0,209,84,79,56,223,13,9,0,1.14,3.07,SEA,19750000
 James Shields,SP,33,33,227.7,209,103,89,58,223,15,10,0,1.17,3.52,TB,7500000

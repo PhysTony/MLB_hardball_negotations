@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
 Ervin Santana,SP,33,33,211.3,177,85,77,61,167,16,8,0,1.13,3.28,MIN,13500000,No
 Jeff Samardzija,SP,35,32,207.7,204,107,102,32,205,9,15,0,1.14,4.42,SF,19800000,No
 Justin Verlander,SP,33,33,206.0,170,80,77,72,219,15,8,0,1.17,3.36,HOU,28000000,No

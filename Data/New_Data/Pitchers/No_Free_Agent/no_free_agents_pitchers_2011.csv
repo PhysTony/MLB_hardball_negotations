@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Justin Verlander,SP,34,34,251.0,174,73,67,57,250,24,5,0,0.92,2.4,DET,13416666
 James Shields,SP,33,33,249.3,195,83,78,65,225,16,12,0,1.04,2.82,TB,4250000
 Dan Haren,SP,35,34,238.3,211,91,84,33,192,16,10,0,1.02,3.17,LAA,12750000

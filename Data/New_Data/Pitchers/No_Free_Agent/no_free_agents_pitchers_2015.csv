@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Clayton Kershaw,SP,34,33,232.7,163,62,55,42,301,16,7,0,0.88,2.13,LAD,32571428
 Dallas Keuchel,SP,33,33,232.0,185,68,64,51,216,20,8,0,1.02,2.48,HOU,524500
 Jake Arrieta,SP,33,33,229.0,150,52,45,48,236,22,6,0,0.87,1.77,CHC,3630000

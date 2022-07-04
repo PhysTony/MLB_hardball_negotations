@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Max Scherzer,210000000,30000000,SP,34,33,228.7,176,74,71,34,276,14,12,0,0.92,2.79,WSH,17317857
 Jon Lester,155000000,25833333,SP,32,32,205.0,183,83,76,47,207,11,12,0,1.12,3.34,CHC,20000000
 James Shields,75000000,18750000,SP,36,33,202.3,189,93,88,81,216,13,7,0,1.33,3.91,SD,10000000

@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Johnny Cueto,SP,34,34,243.7,169,69,61,65,242,20,9,0,0.96,2.25,CIN,10025000
 Felix Hernandez,SP,34,34,236.0,170,68,56,46,248,15,6,0,0.92,2.14,SEA,23607142
 Adam Wainwright,SP,32,32,227.0,184,64,60,50,179,20,9,0,1.03,2.38,STL,19550000

@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Patrick Corbin,140000000,23333333,SP,33,33,202.0,169,81,73,70,238,14,7,0,1.18,3.25,WSH,12916666
 Nathan Eovaldi,68000000,17000000,SP,23,12,67.7,72,46,45,35,70,2,1,0,1.58,5.99,BOS,17000000
 Craig Kimbrel,43000000,14333333,RP,23,0,20.7,21,15,15,12,30,0,4,13,1.6,6.53,CHC,10000000

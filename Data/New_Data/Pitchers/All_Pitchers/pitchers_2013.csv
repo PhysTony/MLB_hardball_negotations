@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
 Miguel Gonzalez,SP,60,56,342.7,314,162,144,106,240,22,16,0,2.45,7.56,BAL,502000,No
 Miguel Gonzalez,SP,60,56,342.7,314,162,144,106,240,22,16,0,2.45,7.56,CHW,490000,No
 Adam Wainwright,SP,35,34,241.7,223,83,79,35,219,19,9,0,1.07,2.94,STL,12150000,No

@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 David Price,217000000,31000000,SP,35,35,230.0,227,106,102,50,228,17,9,0,1.2,3.99,BOS,30000000
 Zack Greinke,206500000,34416667,SP,27,26,158.7,161,80,77,41,134,13,7,0,1.27,4.37,ARI,34000000
 Johnny Cueto,130000000,21666667,SP,32,32,219.7,195,71,68,45,198,18,5,0,1.09,2.79,SF,17500000

@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Aroldis Chapman,86000000,17200000,RP/CL,52,0,50.3,37,20,18,20,69,4,3,22,1.13,3.22,NYY,17200000
 Kenley Jansen,80000000,16000000,RP/CL,65,0,68.3,44,11,10,7,109,5,0,41,0.75,1.32,LAD,11333333
 Mark Melancon,62000000,15500000,RP/CL,32,0,30.0,37,16,15,6,29,1,2,11,1.43,4.5,SF,14000000

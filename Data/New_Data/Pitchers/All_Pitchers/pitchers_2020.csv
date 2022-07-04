@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo,Agente libre
 Lance Lynn,SP,13,13,84.0,64,34,31,25,89,6,3,0,1.06,3.32,TEX,11333333,No
 German Marquez,SP,13,13,81.7,78,41,34,25,73,4,6,0,1.26,3.75,COL,4800000,No
 Kyle Hendricks,SP,12,12,81.3,73,26,26,8,64,6,5,0,1.0,2.88,CHC,12000000,No

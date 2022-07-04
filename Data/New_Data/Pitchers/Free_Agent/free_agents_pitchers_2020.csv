@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Gerrit Cole,324000000,36000000,SP,12,11,73.0,53,27,23,17,94,7,3,0,0.96,2.84,NYY,36000000
 Stephen Strasburg,245000000,35000000,SP,2,2,5.0,8,6,6,1,2,0,1,0,1.8,10.8,WSH,35000000
 Zack Wheeler,118000000,23600000,SP,11,11,71.0,67,26,23,16,53,4,2,0,1.17,2.92,PHI,21500000

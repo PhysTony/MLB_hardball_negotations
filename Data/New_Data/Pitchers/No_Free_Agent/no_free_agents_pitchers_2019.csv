@@ -1,4 +1,4 @@
-Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Justin Verlander,SP,34,34,223.0,137,66,64,42,300,21,6,0,0.8,2.58,HOU,28075000
 Trevor Bauer,SP,34,34,213.0,184,118,106,82,253,11,13,0,1.25,4.48,CIN,13000000
 Gerrit Cole,SP,34,33,212.3,142,66,59,48,326,20,5,0,0.89,2.5,HOU,13500000

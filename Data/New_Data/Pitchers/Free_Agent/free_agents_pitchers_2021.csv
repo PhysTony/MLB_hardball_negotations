@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Trevor Bauer,102000000,34000000,SP,17,17,107.7,71,36,31,37,137,8,5,0,1.0,2.59,LAD,31333333
 Liam Hendriks,54000000,18000000,RP/CL,69,0,71.0,45,23,20,7,113,8,3,38,0.73,2.54,CHW,11333333
 Justin Turner,34000000,17000000,3B,151,139,1.0,2,0,0,0,0,0,0,0,2.0,0.0,LAD,12000000

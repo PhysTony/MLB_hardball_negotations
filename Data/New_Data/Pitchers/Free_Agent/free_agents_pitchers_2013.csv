@@ -1,4 +1,4 @@
-Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
+Jugador,Valor_contrato,Valor_promedio_contrato,Posicion,Juegos,Juegos_iniciados,Inning_pitched,Bateos_pitcher,Carreras,Carreras_ganadas,Walks,Strike-outs,Wins,Losses,Saves,WHIP,ERA,Equipo,Sueldo
 Zack Greinke,147000000,24500000,SP,29,28,177.7,152,54,52,46,148,15,4,0,1.11,2.63,LAD,19000000
 Anibal Sanchez,80000000,16000000,RP,29,29,182.0,156,56,52,54,202,14,8,0,1.15,2.57,DET,8800000
 Edwin Jackson,52000000,13000000,SP,31,31,175.3,197,110,97,59,135,8,18,0,1.46,4.98,CHC,13000000
