@@ -1,30 +1,30 @@
-Acronimo,Equipo,Victorias,Juegos totales
-ARI,Arizona Diamondbacks,25,60
-ATL,Atlanta Braves,35,60
-BAL,Baltimore Orioles,27,62
-BOS,Boston Red Sox,24,60
-CHC,Chicago Cubs,32,58
-CHW,Chicago White Sox,35,60
-CIN,Cincinnati Reds,31,59
-COL,Colorado Rockies,26,60
-DET,Detroit Tigers,23,57
-HOU,Houston Astros,29,60
-KC,Kansas City Royals,25,59
-LAA,Los Angeles Angels,26,60
-LAD,Los Angeles Dodgers,42,59
-MIA,Miami Marlins,31,60
-MIL,Milwaukee Brewers,29,60
-MIN,Minnesota Twins,36,60
-NYM,New York Mets,26,60
-NYY,New York Yankees,33,60
-OAK,Oakland Athletics,36,60
-PHI,Philadelphia Phillies,28,60
-PIT,Pittsburgh Pirates,19,59
-SD,San Diego Padres,38,61
-SEA,Seattle Mariners,27,61
-SF,San Francisco Giants,29,60
-STL,St. Louis Cardinals,30,58
-TB,Tampa Bay Rays,41,61
-TEX,Texas Rangers,22,59
-TOR,Toronto Blue Jays,32,61
-WSH,Washington Nationals,26,62
+Acronimo,Equipo,Victorias,Juegos totales,Apariciones WS,WS ganadas,Playoffs
+ARI,Arizona Diamondbacks,25,60,1,1,6
+ATL,Atlanta Braves,35,60,,,
+BAL,Baltimore Orioles,27,62,,,
+BOS,Boston Red Sox,24,60,,,
+CHC,Chicago Cubs,32,58,,,
+CHW,Chicago White Sox,35,60,,,
+CIN,Cincinnati Reds,31,59,,,
+COL,Colorado Rockies,26,60,,,
+DET,Detroit Tigers,23,57,,,
+HOU,Houston Astros,29,60,,,
+KC,Kansas City Royals,25,59,,,
+LAA,Los Angeles Angels,26,60,,,
+LAD,Los Angeles Dodgers,42,59,,,
+MIA,Miami Marlins,31,60,,,
+MIL,Milwaukee Brewers,29,60,,,
+MIN,Minnesota Twins,36,60,,,
+NYM,New York Mets,26,60,,,
+NYY,New York Yankees,33,60,,,
+OAK,Oakland Athletics,36,60,,,
+PHI,Philadelphia Phillies,28,60,,,
+PIT,Pittsburgh Pirates,19,59,,,
+SD,San Diego Padres,38,61,,,
+SEA,Seattle Mariners,27,61,,,
+SF,San Francisco Giants,29,60,,,
+STL,St. Louis Cardinals,30,58,,,
+TB,Tampa Bay Rays,41,61,,,
+TEX,Texas Rangers,22,59,,,
+TOR,Toronto Blue Jays,32,61,,,
+WSH,Washington Nationals,26,62,,,

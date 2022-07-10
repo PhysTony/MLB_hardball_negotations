@@ -1,30 +1,30 @@
-Acronimo,Equipo,Victorias,Juegos totales
-ARI,Arizona Diamondbacks,82,162
-ATL,Atlanta Braves,90,162
-BAL,Baltimore Orioles,47,162
-BOS,Boston Red Sox,108,162
-CHC,Chicago Cubs,95,163
-CHW,Chicago White Sox,62,162
-CIN,Cincinnati Reds,67,162
-COL,Colorado Rockies,91,163
-DET,Detroit Tigers,64,162
-HOU,Houston Astros,103,162
-KC,Kansas City Royals,80,162
-LAA,Los Angeles Angels,80,162
-LAD,Los Angeles Dodgers,92,163
-MIA,Miami Marlins,63,161
-MIL,Milwaukee Brewers,96,163
-MIN,Minnesota Twins,78,162
-NYM,New York Mets,77,162
-NYY,New York Yankees,100,162
-OAK,Oakland Athletics,97,162
-PHI,Philadelphia Phillies,80,162
-PIT,Pittsburgh Pirates,82,161
-SD,San Diego Padres,66,162
-SEA,Seattle Mariners,89,162
-SF,San Francisco Giants,73,162
-STL,St. Louis Cardinals,88,162
-TB,Tampa Bay Rays,90,162
-TEX,Texas Rangers,67,162
-TOR,Toronto Blue Jays,73,162
-WSH,Washington Nationals,82,162
+Acronimo,Equipo,Victorias,Juegos totales,Apariciones WS,WS ganadas,Playoffs
+ARI,Arizona Diamondbacks,82,162,1,1,6
+ATL,Atlanta Braves,90,162,,,
+BAL,Baltimore Orioles,47,162,,,
+BOS,Boston Red Sox,108,162,,,
+CHC,Chicago Cubs,95,163,,,
+CHW,Chicago White Sox,62,162,,,
+CIN,Cincinnati Reds,67,162,,,
+COL,Colorado Rockies,91,163,,,
+DET,Detroit Tigers,64,162,,,
+HOU,Houston Astros,103,162,,,
+KC,Kansas City Royals,80,162,,,
+LAA,Los Angeles Angels,80,162,,,
+LAD,Los Angeles Dodgers,92,163,,,
+MIA,Miami Marlins,63,161,,,
+MIL,Milwaukee Brewers,96,163,,,
+MIN,Minnesota Twins,78,162,,,
+NYM,New York Mets,77,162,,,
+NYY,New York Yankees,100,162,,,
+OAK,Oakland Athletics,97,162,,,
+PHI,Philadelphia Phillies,80,162,,,
+PIT,Pittsburgh Pirates,82,161,,,
+SD,San Diego Padres,66,162,,,
+SEA,Seattle Mariners,89,162,,,
+SF,San Francisco Giants,73,162,,,
+STL,St. Louis Cardinals,88,162,,,
+TB,Tampa Bay Rays,90,162,,,
+TEX,Texas Rangers,67,162,,,
+TOR,Toronto Blue Jays,73,162,,,
+WSH,Washington Nationals,82,162,,,
