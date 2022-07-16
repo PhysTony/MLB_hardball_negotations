@@ -1,30 +1,30 @@
-Acronimo,Equipo,Victorias,Juegos totales,Apariciones WS,WS ganadas,Playoffs
-ARI,Arizona Diamondbacks,53,163,1,1,6
-ATL,Atlanta Braves,88,161,,,
-BAL,Baltimore Orioles,52,162,,,
-BOS,Boston Red Sox,92,162,,,
-CHC,Chicago Cubs,71,162,,,
-CHW,Chicago White Sox,93,162,,,
-CIN,Cincinnati Reds,83,163,,,
-COL,Colorado Rockies,74,161,,,
-DET,Detroit Tigers,77,162,,,
-HOU,Houston Astros,95,162,,,
-KC,Kansas City Royals,75,163,,,
-LAA,Los Angeles Angels,77,162,,,
-LAD,Los Angeles Dodgers,106,162,,,
-MIA,Miami Marlins,67,162,,,
-MIL,Milwaukee Brewers,95,162,,,
-MIN,Minnesota Twins,73,163,,,
-NYM,New York Mets,77,162,,,
-NYY,New York Yankees,92,162,,,
-OAK,Oakland Athletics,86,162,,,
-PHI,Philadelphia Phillies,82,162,,,
-PIT,Pittsburgh Pirates,60,161,,,
-SD,San Diego Padres,79,162,,,
-SEA,Seattle Mariners,90,162,,,
-SF,San Francisco Giants,108,163,,,
-STL,St. Louis Cardinals,89,161,,,
-TB,Tampa Bay Rays,100,162,,,
-TEX,Texas Rangers,60,162,,,
-TOR,Toronto Blue Jays,92,163,,,
-WSH,Washington Nationals,65,162,,,
+Acronimo,Equipo,Victorias,Juegos totales,Playoffs,Pennants,WS ganadas
+ARI,Arizona Diamondbacks,53,163,6,1,1
+ATL,Atlanta Braves,88,161,27,18,4
+BAL,Baltimore Orioles,52,162,14,7,3
+BOS,Boston Red Sox,92,162,25,14,9
+CHC,Chicago Cubs,71,162,21,17,3
+CHW,Chicago White Sox,93,162,11,6,3
+CIN,Cincinnati Reds,83,163,16,10,5
+COL,Colorado Rockies,74,161,5,1,0
+DET,Detroit Tigers,77,162,16,11,4
+HOU,Houston Astros,95,162,15,4,1
+KC,Kansas City Royals,75,163,9,4,2
+LAA,Los Angeles Angels,77,162,10,1,1
+LAD,Los Angeles Dodgers,106,162,35,25,7
+MIA,Miami Marlins,67,162,3,2,2
+MIL,Milwaukee Brewers,95,162,8,1,0
+MIN,Minnesota Twins,73,163,17,6,3
+NYM,New York Mets,77,162,9,5,2
+NYY,New York Yankees,92,162,57,40,27
+OAK,Oakland Athletics,86,162,29,15,9
+PHI,Philadelphia Phillies,82,162,14,7,2
+PIT,Pittsburgh Pirates,60,161,17,9,5
+SD,San Diego Padres,79,162,6,2,0
+SEA,Seattle Mariners,90,162,4,0,0
+SF,San Francisco Giants,108,163,27,23,8
+STL,St. Louis Cardinals,89,161,31,23,11
+TB,Tampa Bay Rays,100,162,7,2,0
+TEX,Texas Rangers,60,162,8,2,0
+TOR,Toronto Blue Jays,92,163,8,2,2
+WSH,Washington Nationals,65,162,6,1,1

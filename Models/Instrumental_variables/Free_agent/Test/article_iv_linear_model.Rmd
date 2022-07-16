@@ -1,0 +1,173 @@
+---
+title: "Cambio estructural"
+author: "Antonio Huerta Montellano"
+date: "15 de junio del 2022"
+output:
+  pdf_document: 
+    fig_caption: yes
+    latex_engine: xelatex
+    keep_tex: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Importando las librerías:
+```{r message=FALSE, warning=FALSE}
+library(wooldridge)
+library(tidyverse)
+library(knitr)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(coefplot)
+library(data.table)
+library(pacman)
+library(tinytex)
+library(AER)
+library(car)
+library(cragg)
+library(tidyr)
+options(scipen = 999)
+library(tidyverse)
+library(stargazer)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(haven)
+library(lmtest)
+library(sandwich)
+library(gap)
+library(quantmod)
+```
+
+Veamos cuál es el directorio de trabajo
+```{r setwd}
+getwd()
+```
+
+Cambiemos el directorio de trabajo y carguemos las bases de datos para el modelo lineal en el mismo chunk:
+
+```{r base_datos}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+free_agents <- read.csv('Data/New_Data/Models/Article/article_linear_regression_fa.csv')
+no_free_agents <- read.csv('Data/New_Data/Models/Article/article_linear_regression_nfa.csv')
+```
+Observemos el contenido de las bases de datos de los agentes libres:
+```{r fa_base_datos_head}
+head(free_agents)
+```
+
+Ahora de losno agentes libres:
+```{r fa_base_datos_head}
+head(no_free_agents)
+```
+
+\section{Problema 1}
+
+Construyamos los modelos lineales correspondientes:
+
+```{r fa_model}
+fa_model <- lm(Y ~ X, data = free_agents)
+summary(fa_model)
+```
+
+```{r fa_model}
+no_fa_model <- lm(Y ~ X, data = no_free_agents)
+summary(no_fa_model)
+```
+
+Por último, determinemos si hay cambio estructural:
+```{r}
+Y_1 <- free_agents %>% select(Y)
+X_1 <- free_agents %>% select(X)
+
+Y_2 <- no_free_agents %>% select(Y)
+X_2 <- no_free_agents %>% select(X)
+
+chow.test(Y_1, X_1, Y_2, X_2)
+```
+Como el p-value tiende a cero y por ende se rechaza la hipótesis nula para un nivel de significancia de 0.001, entonces implica que hay un cambio estructural entre estos modelos.
+
+
+
+
+
+
+```{r}
+formula_iv_3 <- lwage ~ educ | nearc4 + exper + expersq + black + south + smsa + reg661 + reg662 + reg663 + reg664 + reg665 + reg666 + reg667 + reg668 + smsa66
+iv_model_3 <- ivreg(formula_iv_3, data = data_4)
+summary(iv_model_3, diagnostics=TRUE)
+```
+Vemos que similar al inciso a), tenemos los mismo problemas, hay presencia de instrumentos débdiles y problemas de endogeneidad. Así como efectos similares por el impacto de incrementos unitarios en la educcación tiene casi el mismo porcentage de cambio en el salario.
+
+```{r}
+formula_iv_4 <- lwage ~ educ | nearc4
+iv_model_4 <- ivreg(formula_iv_4, data = data_4)
+summary(iv_model_4, diagnostics = TRUE)
+```
+Incluso usando solo esta variable dicotómica como instrumentos, vemos que este instrumento es débil de acuerdo a la prueba. También vemos que el coeficiente estimado para la educación no cambia mucho. El problema es que estamos forzando a que la educación explique toda la lwage, pero el problema de endogeneidad es muy posible que se deba a la enorme omisión de variables que estamos haciendo. Deberíamos de regresar con estas variables y no tanto usarlas como instrumentos.
+
+(e) 2pts. Interprete la primera etapa en términos del coeficiente sobre el instrumento y la magnitud y significancia del estadı́sco.
+```{r}
+#OLS
+model_12 <- lm(lwage ~ educ, 
+               data = data_4)
+summary(model_12)
+
+model_13 <- lm(educ ~ exper + expersq + black
+                + south + smsa + reg661
+                + reg662 + reg663 + reg664 
+                + reg665 + reg666 + reg667 
+                + reg668 + smsa66 + nearc4,
+                data = data_4)
+summary(model_13)
+
+formula_iv_4 <- (lwage ~ educ | exper + expersq + black
+                 + south + smsa + reg661 + reg662
+                 + reg663 + reg664 + reg665 + reg666
+                 + reg667 + reg668 + smsa66 + nearc4)
+iv_model_5 <- ivreg(formula_iv_4, data = data_4)
+summary(iv_model_5, diagnostics = TRUE)
+
+models <- list(model_12, iv_model_5, iv_model_3)
+stargazer::stargazer(models, type = 'text', 
+                     column.labels=c('Modelo base', 'Controles a)', 'Controles c+ nearc4'),
+                     model.numbers=FALSE)
+
+```
+Lo que nos interesa es la forma reducida:
+```{r}
+summary(model_13)
+```
+
+Se aprecia que no hay grandes cambios, obtenemos prácticamente los mismo coeficientes estimados. Por otro  lado, vemos que el instrumento usado de nearc4 es significativa para el modelo; sin embargo, no quita el problema de que es un iinstrumento débil.
+
+(f) 2pts. Interprete el coeficiente sobre la variable de educación en la segunda etapa. Compare la magnitud del efecto estimado con el resultado de MCO.
+```{r}
+summary(iv_model_4, diagnostics = TRUE)
+```
+Vemos que el coeficiente estimado para la educación no cambia mucho y que presenta de nuevo los mismo problemas. Por razones análogas vemos que estarán presentes estos problemas hasta que metamos más variables al modelo y no tanto como instrumentos.
+
+(g) 4pts. Realice ahora el siguiente procedimiento. Primero, estime la primera etapa usando una regresión por MCO. Obtenga los valores ajustados de educación y llámelos educ hat. Luego, estime la segunda etapa empleando educ hat como variable independiente, además del resto de variables de control. ¿Cómo cambian sus resultados en comparación con la parte d.?
+
+```{r}
+# Primera estapa
+model_15 <- lm(educ ~ exper + expersq + black + south  + smsa + reg661 + reg662 + reg663 + reg664 + reg665
+           + reg666 + reg667 + reg668 + smsa66 + nearc4, data = data_4)
+summary(model_15)
+
+# Segunda etapa:
+
+educ_aux <- fitted(model_15)
+
+model_16 <- lm(lwage ~ exper + expersq + black + south + smsa + reg661 + reg662 + reg663 + reg664 + reg665
+           + reg666 + reg667 + reg668 + smsa66 + nearc4 + educ_aux, data = data_4)
+summary(model_16)
+```
+
+Vemos que el coeficiente asociado a la educación auxiliar es seis veces la  de la educación general. Como aumenta la magnitud del coeficiente estimado y tiene sentido la dirección del aumento, la estrategia parece buena.
+
+(h) 2pts. ¿A qué se deben las discrepancias que encuentra? ¿Cuál de las dos estrategias prefiere para estimar el modelo de variables instrumentales?
+Una estrategia es metiendo más variables al modelo, pero no como instrumentos, aunque no todas, debido a que el problema de endogeneidad va a presistir debido a la omisión de variables en el modelo y seguir metiendo instrumentos, no lo va a arreglar como vimos. La segunda estrategia resulto mucho mejor y se debe a que  era por la omisión de variables que había endogeneidad.

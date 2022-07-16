@@ -1,0 +1,291 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Cambio estructural},
+  pdfauthor={Antonio Huerta Montellano},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Cambio estructural}
+\author{Antonio Huerta Montellano}
+\date{15 de junio del 2022}
+
+\begin{document}
+\maketitle
+
+Importando las librerías:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(wooldridge)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(coefplot)}
+\FunctionTok{library}\NormalTok{(data.table)}
+\FunctionTok{library}\NormalTok{(pacman)}
+\FunctionTok{library}\NormalTok{(tinytex)}
+\FunctionTok{library}\NormalTok{(AER)}
+\FunctionTok{library}\NormalTok{(car)}
+\FunctionTok{library}\NormalTok{(cragg)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{options}\NormalTok{(}\AttributeTok{scipen =} \DecValTok{999}\NormalTok{)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\FunctionTok{library}\NormalTok{(stargazer)}
+\FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(haven)}
+\FunctionTok{library}\NormalTok{(lmtest)}
+\FunctionTok{library}\NormalTok{(sandwich)}
+\FunctionTok{library}\NormalTok{(gap)}
+\FunctionTok{library}\NormalTok{(quantmod)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Bases de datos}
+
+Veamos cuál es el directorio de trabajo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "/home/usuario/Documentos/Github/Proyectos/MLB_HN/Models/Linear_models/Free_agent/Test"
+\end{verbatim}
+
+Cambiemos el directorio de trabajo y carguemos las bases de datos para
+el modelo lineal en el mismo chunk:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"\textasciitilde{}/Documentos/Github/Proyectos/MLB\_HN/"}\NormalTok{)}
+\NormalTok{free\_agents }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_linear\_regression\_fa.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{no\_free\_agents }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_linear\_regression\_nfa.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Observemos el contenido de las bases de datos de los agentes libres:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(free\_agents)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Jugador          Y          X
+## 1    A.J. Burnett  -471.0402  0.6333714
+## 2 A.J. Pierzynski   199.1753 -0.5233840
+## 3 A.J. Pierzynski  1218.5682 -0.6992366
+## 4 A.J. Pierzynski -2515.7319  0.7312696
+## 5    Aaron Harang   509.2721 -0.6291943
+## 6    Adam LaRoche   293.4260  0.6825397
+\end{verbatim}
+
+Ahora de los que no son agentes libres:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(no\_free\_agents)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Jugador          Y          X
+## 1  A.J. Achter   5.219730 -0.5472425
+## 2  A.J. Achter  -4.778685  0.6529036
+## 3 A.J. Burnett -31.897419  0.6282596
+## 4    A.J. Cole  12.106822  0.7506655
+## 5    A.J. Cole   4.863402  0.7651183
+## 6    A.J. Cole  -4.778685  0.6628217
+\end{verbatim}
+
+\section{Test para cambio estructural}
+
+Construyamos los modelos lineales correspondientes:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fa\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ X, }\AttributeTok{data =}\NormalTok{ free\_agents)}
+\FunctionTok{summary}\NormalTok{(fa\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X, data = free_agents)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3546.5  -571.5   122.6   595.6  2818.0 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)  -134.05      57.26  -2.341   0.0198 *
+## X              21.98      83.50   0.263   0.7925  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1013 on 361 degrees of freedom
+## Multiple R-squared:  0.0001919,  Adjusted R-squared:  -0.002578 
+## F-statistic: 0.06928 on 1 and 361 DF,  p-value: 0.7925
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{no\_fa\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ X, }\AttributeTok{data =}\NormalTok{ no\_free\_agents)}
+\FunctionTok{summary}\NormalTok{(no\_fa\_model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Y ~ X, data = no_free_agents)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4113.9  -170.5  -116.2   136.1  3261.6 
+## 
+## Coefficients:
+##             Estimate Std. Error t value             Pr(>|t|)    
+## (Intercept)  146.136      6.303  23.186 < 0.0000000000000002 ***
+## X             45.871      9.668   4.744           0.00000214 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 508.8 on 6582 degrees of freedom
+## Multiple R-squared:  0.003408,   Adjusted R-squared:  0.003257 
+## F-statistic: 22.51 on 1 and 6582 DF,  p-value: 0.000002135
+\end{verbatim}
+
+Por último, determinemos si hay cambio estructural:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Y\_1 }\OtherTok{\textless{}{-}}\NormalTok{ free\_agents }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Y)}
+\NormalTok{X\_1 }\OtherTok{\textless{}{-}}\NormalTok{ free\_agents }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(X)}
+
+\NormalTok{Y\_2 }\OtherTok{\textless{}{-}}\NormalTok{ no\_free\_agents }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(Y)}
+\NormalTok{X\_2 }\OtherTok{\textless{}{-}}\NormalTok{ no\_free\_agents }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(X)}
+
+\FunctionTok{chow.test}\NormalTok{(Y\_1, X\_1, Y\_2, X\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                          F value                            d.f.1 
+##   47.036082097642676558280072641    2.000000000000000000000000000 
+##                            d.f.2                          P value 
+## 6943.000000000000000000000000000    0.000000000000000000005124364
+\end{verbatim}
+
+Como el p-value tiende a cero y por ende se rechaza la hipótesis nula
+para un nivel de significancia de 0.001, entonces implica que hay un
+cambio estructural entre estos modelos.
+
+\end{document}

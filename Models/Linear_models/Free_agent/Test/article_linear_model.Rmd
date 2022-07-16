@@ -1,0 +1,93 @@
+---
+title: "Cambio estructural"
+author: "Antonio Huerta Montellano"
+date: "15 de junio del 2022"
+output:
+  pdf_document: 
+    fig_caption: yes
+    latex_engine: xelatex
+    keep_tex: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Importando las librerías:
+```{r message=FALSE, warning=FALSE}
+library(wooldridge)
+library(tidyverse)
+library(knitr)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(coefplot)
+library(data.table)
+library(pacman)
+library(tinytex)
+library(AER)
+library(car)
+library(cragg)
+library(tidyr)
+options(scipen = 999)
+library(tidyverse)
+library(stargazer)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(haven)
+library(lmtest)
+library(sandwich)
+library(gap)
+library(quantmod)
+```
+
+\section{Bases de datos}
+
+Veamos cuál es el directorio de trabajo
+```{r setwd}
+getwd()
+```
+
+Cambiemos el directorio de trabajo y carguemos las bases de datos para el modelo lineal en el mismo chunk:
+
+```{r base_datos}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+free_agents <- read.csv('Data/New_Data/Models/Article/article_linear_regression_fa.csv')
+no_free_agents <- read.csv('Data/New_Data/Models/Article/article_linear_regression_nfa.csv')
+```
+Observemos el contenido de las bases de datos de los agentes libres:
+```{r fa_base_datos_head}
+head(free_agents)
+```
+
+Ahora de los que no son agentes libres:
+```{r no_fa_base_datos_head}
+head(no_free_agents)
+```
+
+\section{Test para cambio estructural}
+
+Construyamos los modelos lineales correspondientes:
+
+```{r fa_model}
+fa_model <- lm(Y ~ X, data = free_agents)
+summary(fa_model)
+```
+
+```{r no_fa_model}
+no_fa_model <- lm(Y ~ X, data = no_free_agents)
+summary(no_fa_model)
+```
+
+Por último, determinemos si hay cambio estructural:
+```{r}
+Y_1 <- free_agents %>% select(Y)
+X_1 <- free_agents %>% select(X)
+
+Y_2 <- no_free_agents %>% select(Y)
+X_2 <- no_free_agents %>% select(X)
+
+chow.test(Y_1, X_1, Y_2, X_2)
+```
+Como el p-value tiende a cero y por ende se rechaza la hipótesis nula para un nivel de significancia de 0.001, entonces implica que hay un cambio estructural entre estos modelos.
