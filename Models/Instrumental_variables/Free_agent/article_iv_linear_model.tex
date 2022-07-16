@@ -1,0 +1,305 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Cambio estructural},
+  pdfauthor={Antonio Huerta Montellano},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Cambio estructural}
+\author{Antonio Huerta Montellano}
+\date{15 de junio del 2022}
+
+\begin{document}
+\maketitle
+
+Importando las librerías:
+
+Veamos cuál es el directorio de trabajo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "/home/usuario/Documentos/Github/Proyectos/MLB_HN/Models/Instrumental_variables/Free_agent"
+\end{verbatim}
+
+Cambiemos el directorio de trabajo y carguemos las bases de datos para
+el modelo lineal en el mismo chunk:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"\textasciitilde{}/Documentos/Github/Proyectos/MLB\_HN/"}\NormalTok{)}
+\NormalTok{free\_agents }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_iv\_linear\_regression\_fa.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Observemos el contenido de las bases de datos de los agentes libres:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(free\_agents)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Jugador          Y          X Posicion Equipo Equipos_estado
+## 1    A.J. Burnett  -471.0402  0.6333714       SP    PHI              2
+## 2 A.J. Pierzynski   199.1753 -0.5233840        C    ATL              1
+## 3 A.J. Pierzynski  1218.5682 -0.6992366        C    STL              2
+## 4 A.J. Pierzynski -2515.7319  0.7312696        C    TEX              2
+## 5    Aaron Harang   509.2721 -0.6291943       SP    LAD              5
+## 6    Adam LaRoche   293.4260  0.6825397       DH    WSH              1
+\end{verbatim}
+
+\section{Dummificación}
+
+Creemos las variables dummy correspondientes a las variables categóricas
+de la posición del jugador y al estad
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dummy }\OtherTok{\textless{}{-}} \FunctionTok{dummy\_cols}\NormalTok{(free\_agents, }\AttributeTok{select\_columns =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}Posicion\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Equipo\textquotesingle{}}\NormalTok{),}
+                    \AttributeTok{remove\_selected\_columns =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Notemos que ahora hay muchas columnas debido a la dummificación y la
+gran cantidad de categorías tanto para la posición que puede ocupar un
+jugador como para el equipo al que pertencen (29):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(dummy)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Jugador          Y          X Equipos_estado Posicion_1B Posicion_2B
+## 1    A.J. Burnett  -471.0402  0.6333714              2           0           0
+## 2 A.J. Pierzynski   199.1753 -0.5233840              1           0           0
+## 3 A.J. Pierzynski  1218.5682 -0.6992366              2           0           0
+## 4 A.J. Pierzynski -2515.7319  0.7312696              2           0           0
+## 5    Aaron Harang   509.2721 -0.6291943              5           0           0
+## 6    Adam LaRoche   293.4260  0.6825397              1           0           0
+##   Posicion_3B Posicion_C Posicion_CF Posicion_DH Posicion_LF Posicion_RF
+## 1           0          0           0           0           0           0
+## 2           0          1           0           0           0           0
+## 3           0          1           0           0           0           0
+## 4           0          1           0           0           0           0
+## 5           0          0           0           0           0           0
+## 6           0          0           0           1           0           0
+##   Posicion_RP Posicion_RP/CL Posicion_SP Posicion_SS Equipo_ARI Equipo_ATL
+## 1           0              0           1           0          0          0
+## 2           0              0           0           0          0          1
+## 3           0              0           0           0          0          0
+## 4           0              0           0           0          0          0
+## 5           0              0           1           0          0          0
+## 6           0              0           0           0          0          0
+##   Equipo_BAL Equipo_BOS Equipo_CHC Equipo_CHW Equipo_CIN Equipo_COL Equipo_DET
+## 1          0          0          0          0          0          0          0
+## 2          0          0          0          0          0          0          0
+## 3          0          0          0          0          0          0          0
+## 4          0          0          0          0          0          0          0
+## 5          0          0          0          0          0          0          0
+## 6          0          0          0          0          0          0          0
+##   Equipo_HOU Equipo_KC Equipo_LAA Equipo_LAD Equipo_MIA Equipo_MIL Equipo_MIN
+## 1          0         0          0          0          0          0          0
+## 2          0         0          0          0          0          0          0
+## 3          0         0          0          0          0          0          0
+## 4          0         0          0          0          0          0          0
+## 5          0         0          0          1          0          0          0
+## 6          0         0          0          0          0          0          0
+##   Equipo_NYM Equipo_NYY Equipo_OAK Equipo_PHI Equipo_PIT Equipo_SD Equipo_SEA
+## 1          0          0          0          1          0         0          0
+## 2          0          0          0          0          0         0          0
+## 3          0          0          0          0          0         0          0
+## 4          0          0          0          0          0         0          0
+## 5          0          0          0          0          0         0          0
+## 6          0          0          0          0          0         0          0
+##   Equipo_SF Equipo_STL Equipo_TB Equipo_TEX Equipo_TOR Equipo_WSH
+## 1         0          0         0          0          0          0
+## 2         0          0         0          0          0          0
+## 3         0          1         0          0          0          0
+## 4         0          0         0          1          0          0
+## 5         0          0         0          0          0          0
+## 6         0          0         0          0          0          1
+\end{verbatim}
+
+\section{Creación del modelo}
+
+Para ello y evitar errores, lo haremos con los nombres explícitos,
+obtengamos los nombres de las columnas
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(dummy)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Jugador"        "Y"              "X"              "Equipos_estado"
+##  [5] "Posicion_1B"    "Posicion_2B"    "Posicion_3B"    "Posicion_C"    
+##  [9] "Posicion_CF"    "Posicion_DH"    "Posicion_LF"    "Posicion_RF"   
+## [13] "Posicion_RP"    "Posicion_RP/CL" "Posicion_SP"    "Posicion_SS"   
+## [17] "Equipo_ARI"     "Equipo_ATL"     "Equipo_BAL"     "Equipo_BOS"    
+## [21] "Equipo_CHC"     "Equipo_CHW"     "Equipo_CIN"     "Equipo_COL"    
+## [25] "Equipo_DET"     "Equipo_HOU"     "Equipo_KC"      "Equipo_LAA"    
+## [29] "Equipo_LAD"     "Equipo_MIA"     "Equipo_MIL"     "Equipo_MIN"    
+## [33] "Equipo_NYM"     "Equipo_NYY"     "Equipo_OAK"     "Equipo_PHI"    
+## [37] "Equipo_PIT"     "Equipo_SD"      "Equipo_SEA"     "Equipo_SF"     
+## [41] "Equipo_STL"     "Equipo_TB"      "Equipo_TEX"     "Equipo_TOR"    
+## [45] "Equipo_WSH"
+\end{verbatim}
+
+Cambiemos el nombre de la columna ``Posicion\_RP/CL'' por
+``Posicion\_RP\_CL'' para evitar problemas en los algoritmos:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(dummy)[}\FunctionTok{names}\NormalTok{(dummy) }\SpecialCharTok{==} \StringTok{\textquotesingle{}Posicion\_RP/CL\textquotesingle{}}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{\textquotesingle{}Posicion\_RP\_CL\textquotesingle{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{formula\_iv }\OtherTok{\textless{}{-}}\NormalTok{ Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ X }\SpecialCharTok{|}\NormalTok{ Equipos\_estado }\SpecialCharTok{+}\NormalTok{ Posicion\_1B }\SpecialCharTok{+}\NormalTok{ Posicion\_2B }\SpecialCharTok{+}\NormalTok{ Posicion\_3B }\SpecialCharTok{+}\NormalTok{ Posicion\_C }\SpecialCharTok{+}\NormalTok{ Posicion\_CF }\SpecialCharTok{+}\NormalTok{ Posicion\_DH }\SpecialCharTok{+}\NormalTok{ Posicion\_LF }\SpecialCharTok{+}\NormalTok{ Posicion\_RF }\SpecialCharTok{+}\NormalTok{ Posicion\_RP }\SpecialCharTok{+}\NormalTok{ Posicion\_RP\_CL }\SpecialCharTok{+}\NormalTok{  Posicion\_SP }\SpecialCharTok{+}\NormalTok{ Posicion\_SS }\SpecialCharTok{+}\NormalTok{ Equipo\_ARI }\SpecialCharTok{+}\NormalTok{ Equipo\_ATL }\SpecialCharTok{+}\NormalTok{ Equipo\_BAL }\SpecialCharTok{+}\NormalTok{ Equipo\_BOS }\SpecialCharTok{+}\NormalTok{ Equipo\_CHC }\SpecialCharTok{+}\NormalTok{ Equipo\_CHW }\SpecialCharTok{+}\NormalTok{ Equipo\_CIN }\SpecialCharTok{+}\NormalTok{  Equipo\_COL }\SpecialCharTok{+}\NormalTok{ Equipo\_DET }\SpecialCharTok{+}\NormalTok{ Equipo\_HOU }\SpecialCharTok{+}\NormalTok{  Equipo\_KC  }\SpecialCharTok{+}\NormalTok{  Equipo\_LAA }\SpecialCharTok{+}\NormalTok{  Equipo\_LAD }\SpecialCharTok{+}\NormalTok{  Equipo\_MIA }\SpecialCharTok{+}\NormalTok{ Equipo\_MIL }\SpecialCharTok{+}\NormalTok{ Equipo\_MIN }\SpecialCharTok{+}\NormalTok{  Equipo\_NYM }\SpecialCharTok{+}\NormalTok{  Equipo\_NYY }\SpecialCharTok{+}\NormalTok{   Equipo\_OAK }\SpecialCharTok{+}\NormalTok{ Equipo\_PHI }\SpecialCharTok{+}\NormalTok{ Equipo\_PIT }\SpecialCharTok{+}\NormalTok{   Equipo\_SD  }\SpecialCharTok{+}\NormalTok{  Equipo\_SEA }\SpecialCharTok{+}\NormalTok{  Equipo\_SF  }\SpecialCharTok{+}\NormalTok{  Equipo\_STL }\SpecialCharTok{+}\NormalTok{ Equipo\_TB  }\SpecialCharTok{+}\NormalTok{  Equipo\_TEX }\SpecialCharTok{+}\NormalTok{ Equipo\_TOR }\SpecialCharTok{+}\NormalTok{ Equipo\_WSH }
+\NormalTok{iv\_model }\OtherTok{\textless{}{-}} \FunctionTok{ivreg}\NormalTok{(formula\_iv, }\AttributeTok{data =}\NormalTok{ dummy)}
+\FunctionTok{summary}\NormalTok{(iv\_model, }\AttributeTok{diagnostics=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## ivreg(formula = formula_iv, data = dummy)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -3462.88  -562.46    89.31   593.83  2908.09 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)  -158.47      68.33  -2.319   0.0209 *
+## X             117.91     168.14   0.701   0.4836  
+## 
+## Diagnostic tests:
+##                  df1 df2 statistic     p-value    
+## Weak instruments  39 323     2.724 0.000000773 ***
+## Wu-Hausman         1 360     0.433       0.511    
+## Sargan            41  NA    44.823       0.315    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1015 on 361 degrees of freedom
+## Multiple R-Squared: -0.003463,   Adjusted R-squared: -0.006243 
+## Wald test: 0.4917 on 1 and 361 DF,  p-value: 0.4836
+\end{verbatim}
+
+En comparación con el modelo sin isntrumentos -donde se obtuvo un
+\(p-value = 0.738\)-, aquí mejoró dicho valor. Sin embargo, no es
+suficiente para que la variable \(X\) se estadísticamente significativa
+para el modelo. También dio positivo para la prueba de instrumentos
+débiles.
+
+\end{document}
