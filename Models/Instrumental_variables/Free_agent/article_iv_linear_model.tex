@@ -143,13 +143,20 @@ Observemos el contenido de las bases de datos de los agentes libres:
 \end{Shaded}
 
 \begin{verbatim}
-##           Jugador          Y          X Posicion Equipo Equipos_estado
-## 1    A.J. Burnett  -471.0402  0.6333714       SP    PHI              2
-## 2 A.J. Pierzynski   199.1753 -0.5233840        C    ATL              1
-## 3 A.J. Pierzynski  1218.5682 -0.6992366        C    STL              2
-## 4 A.J. Pierzynski -2515.7319  0.7312696        C    TEX              2
-## 5    Aaron Harang   509.2721 -0.6291943       SP    LAD              5
-## 6    Adam LaRoche   293.4260  0.6825397       DH    WSH              1
+##           Jugador          Y          X Posicion Equipo Equipos_estado Playoffs
+## 1    A.J. Burnett  -471.0402  0.6333714       SP    PHI              2       14
+## 2 A.J. Pierzynski   199.1753 -0.5233840        C    ATL              1       23
+## 3 A.J. Pierzynski  1218.5682 -0.6992366        C    STL              2       27
+## 4 A.J. Pierzynski -2515.7319  0.7312696        C    TEX              2        6
+## 5    Aaron Harang   509.2721 -0.6291943       SP    LAD              5       26
+## 6    Adam LaRoche   293.4260  0.6825397       DH    WSH              1        2
+##   Pennants WS
+## 1        7  2
+## 2       18  3
+## 3       23 11
+## 4        2  0
+## 5       25  6
+## 6        1  0
 \end{verbatim}
 
 \section{Dummificación}
@@ -175,55 +182,62 @@ jugador como para el equipo al que pertencen (29):
 \end{Shaded}
 
 \begin{verbatim}
-##           Jugador          Y          X Equipos_estado Posicion_1B Posicion_2B
-## 1    A.J. Burnett  -471.0402  0.6333714              2           0           0
-## 2 A.J. Pierzynski   199.1753 -0.5233840              1           0           0
-## 3 A.J. Pierzynski  1218.5682 -0.6992366              2           0           0
-## 4 A.J. Pierzynski -2515.7319  0.7312696              2           0           0
-## 5    Aaron Harang   509.2721 -0.6291943              5           0           0
-## 6    Adam LaRoche   293.4260  0.6825397              1           0           0
-##   Posicion_3B Posicion_C Posicion_CF Posicion_DH Posicion_LF Posicion_RF
-## 1           0          0           0           0           0           0
-## 2           0          1           0           0           0           0
-## 3           0          1           0           0           0           0
-## 4           0          1           0           0           0           0
-## 5           0          0           0           0           0           0
-## 6           0          0           0           1           0           0
-##   Posicion_RP Posicion_RP/CL Posicion_SP Posicion_SS Equipo_ARI Equipo_ATL
-## 1           0              0           1           0          0          0
-## 2           0              0           0           0          0          1
-## 3           0              0           0           0          0          0
-## 4           0              0           0           0          0          0
-## 5           0              0           1           0          0          0
-## 6           0              0           0           0          0          0
-##   Equipo_BAL Equipo_BOS Equipo_CHC Equipo_CHW Equipo_CIN Equipo_COL Equipo_DET
+##           Jugador          Y          X Equipos_estado Playoffs Pennants WS
+## 1    A.J. Burnett  -471.0402  0.6333714              2       14        7  2
+## 2 A.J. Pierzynski   199.1753 -0.5233840              1       23       18  3
+## 3 A.J. Pierzynski  1218.5682 -0.6992366              2       27       23 11
+## 4 A.J. Pierzynski -2515.7319  0.7312696              2        6        2  0
+## 5    Aaron Harang   509.2721 -0.6291943              5       26       25  6
+## 6    Adam LaRoche   293.4260  0.6825397              1        2        1  0
+##   Posicion_1B Posicion_2B Posicion_3B Posicion_C Posicion_CF Posicion_DH
+## 1           0           0           0          0           0           0
+## 2           0           0           0          1           0           0
+## 3           0           0           0          1           0           0
+## 4           0           0           0          1           0           0
+## 5           0           0           0          0           0           0
+## 6           0           0           0          0           0           1
+##   Posicion_LF Posicion_RF Posicion_RP Posicion_RP/CL Posicion_SP Posicion_SS
+## 1           0           0           0              0           1           0
+## 2           0           0           0              0           0           0
+## 3           0           0           0              0           0           0
+## 4           0           0           0              0           0           0
+## 5           0           0           0              0           1           0
+## 6           0           0           0              0           0           0
+##   Equipo_ARI Equipo_ATL Equipo_BAL Equipo_BOS Equipo_CHC Equipo_CHW Equipo_CIN
 ## 1          0          0          0          0          0          0          0
+## 2          0          1          0          0          0          0          0
+## 3          0          0          0          0          0          0          0
+## 4          0          0          0          0          0          0          0
+## 5          0          0          0          0          0          0          0
+## 6          0          0          0          0          0          0          0
+##   Equipo_COL Equipo_DET Equipo_HOU Equipo_KC Equipo_LAA Equipo_LAD Equipo_MIA
+## 1          0          0          0         0          0          0          0
+## 2          0          0          0         0          0          0          0
+## 3          0          0          0         0          0          0          0
+## 4          0          0          0         0          0          0          0
+## 5          0          0          0         0          0          1          0
+## 6          0          0          0         0          0          0          0
+##   Equipo_MIL Equipo_MIN Equipo_NYM Equipo_NYY Equipo_OAK Equipo_PHI Equipo_PIT
+## 1          0          0          0          0          0          1          0
 ## 2          0          0          0          0          0          0          0
 ## 3          0          0          0          0          0          0          0
 ## 4          0          0          0          0          0          0          0
 ## 5          0          0          0          0          0          0          0
 ## 6          0          0          0          0          0          0          0
-##   Equipo_HOU Equipo_KC Equipo_LAA Equipo_LAD Equipo_MIA Equipo_MIL Equipo_MIN
-## 1          0         0          0          0          0          0          0
-## 2          0         0          0          0          0          0          0
-## 3          0         0          0          0          0          0          0
-## 4          0         0          0          0          0          0          0
-## 5          0         0          0          1          0          0          0
-## 6          0         0          0          0          0          0          0
-##   Equipo_NYM Equipo_NYY Equipo_OAK Equipo_PHI Equipo_PIT Equipo_SD Equipo_SEA
-## 1          0          0          0          1          0         0          0
-## 2          0          0          0          0          0         0          0
-## 3          0          0          0          0          0         0          0
-## 4          0          0          0          0          0         0          0
-## 5          0          0          0          0          0         0          0
-## 6          0          0          0          0          0         0          0
-##   Equipo_SF Equipo_STL Equipo_TB Equipo_TEX Equipo_TOR Equipo_WSH
-## 1         0          0         0          0          0          0
-## 2         0          0         0          0          0          0
-## 3         0          1         0          0          0          0
-## 4         0          0         0          1          0          0
-## 5         0          0         0          0          0          0
-## 6         0          0         0          0          0          1
+##   Equipo_SD Equipo_SEA Equipo_SF Equipo_STL Equipo_TB Equipo_TEX Equipo_TOR
+## 1         0          0         0          0         0          0          0
+## 2         0          0         0          0         0          0          0
+## 3         0          0         0          1         0          0          0
+## 4         0          0         0          0         0          1          0
+## 5         0          0         0          0         0          0          0
+## 6         0          0         0          0         0          0          0
+##   Equipo_WSH
+## 1          0
+## 2          0
+## 3          0
+## 4          0
+## 5          0
+## 6          1
 \end{verbatim}
 
 \section{Creación del modelo}
@@ -239,17 +253,17 @@ obtengamos los nombres de las columnas
 
 \begin{verbatim}
 ##  [1] "Jugador"        "Y"              "X"              "Equipos_estado"
-##  [5] "Posicion_1B"    "Posicion_2B"    "Posicion_3B"    "Posicion_C"    
-##  [9] "Posicion_CF"    "Posicion_DH"    "Posicion_LF"    "Posicion_RF"   
-## [13] "Posicion_RP"    "Posicion_RP/CL" "Posicion_SP"    "Posicion_SS"   
-## [17] "Equipo_ARI"     "Equipo_ATL"     "Equipo_BAL"     "Equipo_BOS"    
-## [21] "Equipo_CHC"     "Equipo_CHW"     "Equipo_CIN"     "Equipo_COL"    
-## [25] "Equipo_DET"     "Equipo_HOU"     "Equipo_KC"      "Equipo_LAA"    
-## [29] "Equipo_LAD"     "Equipo_MIA"     "Equipo_MIL"     "Equipo_MIN"    
-## [33] "Equipo_NYM"     "Equipo_NYY"     "Equipo_OAK"     "Equipo_PHI"    
-## [37] "Equipo_PIT"     "Equipo_SD"      "Equipo_SEA"     "Equipo_SF"     
-## [41] "Equipo_STL"     "Equipo_TB"      "Equipo_TEX"     "Equipo_TOR"    
-## [45] "Equipo_WSH"
+##  [5] "Playoffs"       "Pennants"       "WS"             "Posicion_1B"   
+##  [9] "Posicion_2B"    "Posicion_3B"    "Posicion_C"     "Posicion_CF"   
+## [13] "Posicion_DH"    "Posicion_LF"    "Posicion_RF"    "Posicion_RP"   
+## [17] "Posicion_RP/CL" "Posicion_SP"    "Posicion_SS"    "Equipo_ARI"    
+## [21] "Equipo_ATL"     "Equipo_BAL"     "Equipo_BOS"     "Equipo_CHC"    
+## [25] "Equipo_CHW"     "Equipo_CIN"     "Equipo_COL"     "Equipo_DET"    
+## [29] "Equipo_HOU"     "Equipo_KC"      "Equipo_LAA"     "Equipo_LAD"    
+## [33] "Equipo_MIA"     "Equipo_MIL"     "Equipo_MIN"     "Equipo_NYM"    
+## [37] "Equipo_NYY"     "Equipo_OAK"     "Equipo_PHI"     "Equipo_PIT"    
+## [41] "Equipo_SD"      "Equipo_SEA"     "Equipo_SF"      "Equipo_STL"    
+## [45] "Equipo_TB"      "Equipo_TEX"     "Equipo_TOR"     "Equipo_WSH"
 \end{verbatim}
 
 Cambiemos el nombre de la columna ``Posicion\_RP/CL'' por
@@ -263,7 +277,7 @@ Cambiemos el nombre de la columna ``Posicion\_RP/CL'' por
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{formula\_iv }\OtherTok{\textless{}{-}}\NormalTok{ Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ X }\SpecialCharTok{|}\NormalTok{ Equipos\_estado }\SpecialCharTok{+}\NormalTok{ Posicion\_1B }\SpecialCharTok{+}\NormalTok{ Posicion\_2B }\SpecialCharTok{+}\NormalTok{ Posicion\_3B }\SpecialCharTok{+}\NormalTok{ Posicion\_C }\SpecialCharTok{+}\NormalTok{ Posicion\_CF }\SpecialCharTok{+}\NormalTok{ Posicion\_DH }\SpecialCharTok{+}\NormalTok{ Posicion\_LF }\SpecialCharTok{+}\NormalTok{ Posicion\_RF }\SpecialCharTok{+}\NormalTok{ Posicion\_RP }\SpecialCharTok{+}\NormalTok{ Posicion\_RP\_CL }\SpecialCharTok{+}\NormalTok{  Posicion\_SP }\SpecialCharTok{+}\NormalTok{ Posicion\_SS }\SpecialCharTok{+}\NormalTok{ Equipo\_ARI }\SpecialCharTok{+}\NormalTok{ Equipo\_ATL }\SpecialCharTok{+}\NormalTok{ Equipo\_BAL }\SpecialCharTok{+}\NormalTok{ Equipo\_BOS }\SpecialCharTok{+}\NormalTok{ Equipo\_CHC }\SpecialCharTok{+}\NormalTok{ Equipo\_CHW }\SpecialCharTok{+}\NormalTok{ Equipo\_CIN }\SpecialCharTok{+}\NormalTok{  Equipo\_COL }\SpecialCharTok{+}\NormalTok{ Equipo\_DET }\SpecialCharTok{+}\NormalTok{ Equipo\_HOU }\SpecialCharTok{+}\NormalTok{  Equipo\_KC  }\SpecialCharTok{+}\NormalTok{  Equipo\_LAA }\SpecialCharTok{+}\NormalTok{  Equipo\_LAD }\SpecialCharTok{+}\NormalTok{  Equipo\_MIA }\SpecialCharTok{+}\NormalTok{ Equipo\_MIL }\SpecialCharTok{+}\NormalTok{ Equipo\_MIN }\SpecialCharTok{+}\NormalTok{  Equipo\_NYM }\SpecialCharTok{+}\NormalTok{  Equipo\_NYY }\SpecialCharTok{+}\NormalTok{   Equipo\_OAK }\SpecialCharTok{+}\NormalTok{ Equipo\_PHI }\SpecialCharTok{+}\NormalTok{ Equipo\_PIT }\SpecialCharTok{+}\NormalTok{   Equipo\_SD  }\SpecialCharTok{+}\NormalTok{  Equipo\_SEA }\SpecialCharTok{+}\NormalTok{  Equipo\_SF  }\SpecialCharTok{+}\NormalTok{  Equipo\_STL }\SpecialCharTok{+}\NormalTok{ Equipo\_TB  }\SpecialCharTok{+}\NormalTok{  Equipo\_TEX }\SpecialCharTok{+}\NormalTok{ Equipo\_TOR }\SpecialCharTok{+}\NormalTok{ Equipo\_WSH }
+\NormalTok{formula\_iv }\OtherTok{\textless{}{-}}\NormalTok{ Y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ X }\SpecialCharTok{|}\NormalTok{ Playoffs }\SpecialCharTok{+}\NormalTok{ Pennants }\SpecialCharTok{+}\NormalTok{ WS}\SpecialCharTok{+}\NormalTok{ Equipos\_estado }\SpecialCharTok{+}\NormalTok{ Posicion\_1B }\SpecialCharTok{+}\NormalTok{ Posicion\_2B }\SpecialCharTok{+}\NormalTok{ Posicion\_3B }\SpecialCharTok{+}\NormalTok{ Posicion\_C }\SpecialCharTok{+}\NormalTok{ Posicion\_CF }\SpecialCharTok{+}\NormalTok{ Posicion\_DH }\SpecialCharTok{+}\NormalTok{ Posicion\_LF }\SpecialCharTok{+}\NormalTok{ Posicion\_RF }\SpecialCharTok{+}\NormalTok{ Posicion\_RP }\SpecialCharTok{+}\NormalTok{ Posicion\_RP\_CL }\SpecialCharTok{+}\NormalTok{  Posicion\_SP }\SpecialCharTok{+}\NormalTok{ Posicion\_SS }\SpecialCharTok{+}\NormalTok{ Equipo\_ARI }\SpecialCharTok{+}\NormalTok{ Equipo\_ATL }\SpecialCharTok{+}\NormalTok{ Equipo\_BAL }\SpecialCharTok{+}\NormalTok{ Equipo\_BOS }\SpecialCharTok{+}\NormalTok{ Equipo\_CHC }\SpecialCharTok{+}\NormalTok{ Equipo\_CHW }\SpecialCharTok{+}\NormalTok{ Equipo\_CIN }\SpecialCharTok{+}\NormalTok{  Equipo\_COL }\SpecialCharTok{+}\NormalTok{ Equipo\_DET }\SpecialCharTok{+}\NormalTok{ Equipo\_HOU }\SpecialCharTok{+}\NormalTok{  Equipo\_KC  }\SpecialCharTok{+}\NormalTok{  Equipo\_LAA }\SpecialCharTok{+}\NormalTok{  Equipo\_LAD }\SpecialCharTok{+}\NormalTok{  Equipo\_MIA }\SpecialCharTok{+}\NormalTok{ Equipo\_MIL }\SpecialCharTok{+}\NormalTok{ Equipo\_MIN }\SpecialCharTok{+}\NormalTok{  Equipo\_NYM }\SpecialCharTok{+}\NormalTok{  Equipo\_NYY }\SpecialCharTok{+}\NormalTok{   Equipo\_OAK }\SpecialCharTok{+}\NormalTok{ Equipo\_PHI }\SpecialCharTok{+}\NormalTok{ Equipo\_PIT }\SpecialCharTok{+}\NormalTok{   Equipo\_SD  }\SpecialCharTok{+}\NormalTok{  Equipo\_SEA }\SpecialCharTok{+}\NormalTok{  Equipo\_SF  }\SpecialCharTok{+}\NormalTok{  Equipo\_STL }\SpecialCharTok{+}\NormalTok{ Equipo\_TB  }\SpecialCharTok{+}\NormalTok{  Equipo\_TEX }\SpecialCharTok{+}\NormalTok{ Equipo\_TOR }\SpecialCharTok{+}\NormalTok{ Equipo\_WSH }
 \NormalTok{iv\_model }\OtherTok{\textless{}{-}} \FunctionTok{ivreg}\NormalTok{(formula\_iv, }\AttributeTok{data =}\NormalTok{ dummy)}
 \FunctionTok{summary}\NormalTok{(iv\_model, }\AttributeTok{diagnostics=}\ConstantTok{TRUE}\NormalTok{)}
 \end{Highlighting}
@@ -275,25 +289,25 @@ Cambiemos el nombre de la columna ``Posicion\_RP/CL'' por
 ## ivreg(formula = formula_iv, data = dummy)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -3462.88  -562.46    89.31   593.83  2908.09 
+##     Min      1Q  Median      3Q     Max 
+## -3613.5  -582.8   139.0   594.4  2745.8 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)  
-## (Intercept)  -158.47      68.33  -2.319   0.0209 *
-## X             117.91     168.14   0.701   0.4836  
+## (Intercept)  -114.49      64.14  -1.785   0.0751 .
+## X             -54.88     140.57  -0.390   0.6965  
 ## 
 ## Diagnostic tests:
-##                  df1 df2 statistic     p-value    
-## Weak instruments  39 323     2.724 0.000000773 ***
-## Wu-Hausman         1 360     0.433       0.511    
-## Sargan            41  NA    44.823       0.315    
+##                  df1 df2 statistic            p-value    
+## Weak instruments  42 320     4.170 0.0000000000000989 ***
+## Wu-Hausman         1 360     0.463              0.497    
+## Sargan            44  NA    53.026              0.165    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 1015 on 361 degrees of freedom
-## Multiple R-Squared: -0.003463,   Adjusted R-squared: -0.006243 
-## Wald test: 0.4917 on 1 and 361 DF,  p-value: 0.4836
+## Residual standard error: 1014 on 361 degrees of freedom
+## Multiple R-Squared: -0.002154,   Adjusted R-squared: -0.00493 
+## Wald test: 0.1524 on 1 and 361 DF,  p-value: 0.6965
 \end{verbatim}
 
 En comparación con el modelo sin isntrumentos -donde se obtuvo un
