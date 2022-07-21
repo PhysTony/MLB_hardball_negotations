@@ -1,5 +1,5 @@
 ---
-title: "Cambio estructural"
+title: "Variables de control - Agentes libres"
 author: "Antonio Huerta Montellano"
 date: "15 de junio del 2022"
 output:
