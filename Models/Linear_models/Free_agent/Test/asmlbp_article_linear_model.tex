@@ -1,0 +1,1439 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Cambio estructural},
+  pdfauthor={Antonio Huerta Montellano},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Cambio estructural}
+\author{Antonio Huerta Montellano}
+\date{7 de agosto del 2022}
+
+\begin{document}
+\maketitle
+
+Importando las librerías:
+
+\section{Bases de datos}
+
+Veamos cuál es el directorio de trabajo
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{getwd}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "/home/usuario/Documentos/Github/Proyectos/MLB_HN/Models/Linear_models/Free_agent/Test"
+\end{verbatim}
+
+Cambiemos el directorio de trabajo y carguemos las bases de datos para
+el modelo lineal en el mismo chunk:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{setwd}\NormalTok{(}\StringTok{"\textasciitilde{}/Documentos/Github/Proyectos/MLB\_HN/"}\NormalTok{)}
+\NormalTok{catchers\_panel\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_catchers\_panel\_data.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{relief\_pitchers\_panel\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_relief\_pitchers\_panel\_data.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{starting\_pitchers\_panel\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_starting\_pitchers\_panel\_data.csv\textquotesingle{}}\NormalTok{)}
+\NormalTok{remain\_hitters\_panel\_data }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{\textquotesingle{}Data/New\_Data/Models/Article/article\_remain\_hitters\_panel\_data.csv\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Observemos el contenido de las bases de datos de los catchers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(catchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Jugador Anio_t Anios_contrato_t Valor_contrato_t
+## 1 A.J. Pierzynski      4                1           500000
+## 2 A.J. Pierzynski      5                1          2000000
+## 3 A.J. Pierzynski      6                1          3000000
+## 4      Alex Avila      8                2          8250000
+## 5      Alex Avila     11                1          1500000
+## 6      Alex Avila      7                1          2000000
+##   Valor_promedio_contrato_t Juegos_t Porcetnaje_juegos_t At_bats_t Bateos_t
+## 1                    500000      102               0.630       338       85
+## 2                   2000000      113               0.698       407      123
+## 3                   3000000       81               0.503       247       55
+## 4                   4125000       81               0.500       194       32
+## 5                   1500000       34               0.210        89       17
+## 6                   2000000      112               0.691       311       81
+##   Home_runs_t RBI_t Porcentaje_bateo_t OPS_t ln_Sueldo_base_t ln_Sueldo_t
+## 1           5    37              0.252 0.625         12.02897    12.02897
+## 2           9    49              0.302 0.774         14.50866    14.69098
+## 3           2    23              0.223 0.559         14.50866    14.93065
+## 4           7    20              0.165 0.603         15.20180    15.20180
+## 5           1     9              0.191 0.694         14.22098    14.22098
+## 6          14    49              0.261 0.828         14.50866    14.50866
+##   ln_Sueldo_regular_t Juegos_2_t Porcetnaje_juegos_2_t At_bats_2_t Bateos_2_t
+## 1            12.02897      10404              0.396900      114244       7225
+## 2            14.69098      12769              0.487204      165649      15129
+## 3            14.93065       6561              0.253009       61009       3025
+## 4            15.20180       6561              0.250000       37636       1024
+## 5            14.22098       1156              0.044100        7921        289
+## 6            13.44231      12544              0.477481       96721       6561
+##   Home_runs_2_t RBI_2_t Porcentaje_bateo_2_t  OPS_2_t Anio_t_1
+## 1            25    1369             0.063504 0.390625        3
+## 2            81    2401             0.091204 0.599076        4
+## 3             4     529             0.049729 0.312481        5
+## 4            49     400             0.027225 0.363609        7
+## 5             1      81             0.036481 0.481636       10
+## 6           196    2401             0.068121 0.685584        6
+##   Anios_contrato_t_1 Valor_contrato_t_1 Valor_promedio_contrato_t_1 Juegos_t_1
+## 1                  1            7500000                     7500000        134
+## 2                  1             500000                      500000        102
+## 3                  1            2000000                     2000000        113
+## 4                  1            2000000                     2000000        112
+## 5                  1            4250000                     4250000         23
+## 6                  1            2500000                     2500000         57
+##   Porcetnaje_juegos_t_1 At_bats_t_1 Bateos_t_1 Home_runs_t_1 RBI_t_1
+## 1                 0.822         503        137            17      70
+## 2                 0.630         338         85             5      37
+## 3                 0.698         407        123             9      49
+## 4                 0.691         311         81            14      49
+## 5                 0.383          49          9             1       2
+## 6                 0.352         169         36             7      11
+##   Porcentaje_bateo_t_1 OPS_t_1 Juegos_2_t_1 Porcetnaje_juegos_2_t_1
+## 1                0.272   0.722        17956                0.675684
+## 2                0.252   0.625        10404                0.396900
+## 3                0.302   0.774        12769                0.487204
+## 4                0.261   0.828        12544                0.477481
+## 5                0.184   0.641          529                0.146689
+## 6                0.213   0.732         3249                0.123904
+##   At_bats_2_t_1 Bateos_2_t_1 Home_runs_2_t_1 RBI_2_t_1 Porcentaje_bateo_2_t_1
+## 1        253009        18769             289      4900               0.073984
+## 2        114244         7225              25      1369               0.063504
+## 3        165649        15129              81      2401               0.091204
+## 4         96721         6561             196      2401               0.068121
+## 5          2401           81               1         4               0.033856
+## 6         28561         1296              49       121               0.045369
+##   OPS_2_t_1
+## 1  0.521284
+## 2  0.390625
+## 3  0.599076
+## 4  0.685584
+## 5  0.410881
+## 6  0.535824
+\end{verbatim}
+
+Ahora de los que son relief pitchers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(relief\_pitchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          Jugador Anio_t Anios_contrato_t Valor_contrato_t
+## 1  Blake Treinen     11                2         17500000
+## 2     Brad Brach     10                2          2100000
+## 3 Brandon Morrow      6                1                0
+## 4 Brian Duensing      7                1          2000000
+## 5 Brian Duensing      8                2          7000000
+## 6   Brian Wilson      4                2         19000000
+##   Valor_promedio_contrato_t Juegos_t Juegos_iniciados_t Inning_pitched_t
+## 1                   8750000       72                  0             72.3
+## 2                   1050000       14                  0             12.3
+## 3                         0       18                  0             16.0
+## 4                   2000000       68                  0             62.3
+## 5                   3500000       49                  0             37.7
+## 6                   9500000       61                  0             48.3
+##   Bateos_pitcher_t Carreras_t Carreras_ganadas_t Walks_t Strike_outs_t Wins_t
+## 1               46         20                 16      25            85      6
+## 2                8          8                  8      14            14      1
+## 3               19          4                  3       3             8      1
+## 4               58         19                 19      18            61      1
+## 5               42         33                 32      29            24      3
+## 6               49         26                 25      29            54      2
+##   Losses_t Saves_t WHIP_t ERA_t Equipo_t ln_Sueldo_base_t ln_Sueldo_t
+## 1        5       7   0.98  1.99      LAD         15.60727    15.89495
+## 2        0       0   1.78  5.84      NYM         13.65299    13.79019
+## 3        0       0   1.38  1.69       SD         13.13725    13.31711
+## 4        1       0   1.22  2.74      CHC         14.50866    14.50866
+## 5        0       1   1.88  7.65      CHC         15.06827    15.06827
+## 6        4       1   1.61  4.66      LAD         16.11810    16.11810
+##   ln_Sueldo_regular_t  Dominio_t  Control_t Comando_t Juegos_2_t
+## 1            15.89495 0.13062855 0.03842016 3.4000000       5184
+## 2            12.65974 0.12646793 0.12646793 1.0000000        196
+## 3            11.83971 0.05555556 0.02083333 2.6666667        324
+## 4            14.50866 0.10879258 0.03210273 3.3888889       4624
+## 5            15.06827 0.07073386 0.08547009 0.8275862       2401
+## 6            16.11810 0.12422360 0.06671268 1.8620690       3721
+##   Juegos_iniciados_2_t Inning_pitched_2_t Bateos_pitcher_2_t Carreras_2_t
+## 1                    0            5227.29               2116          400
+## 2                    0             151.29                 64           64
+## 3                    0             256.00                361           16
+## 4                    0            3881.29               3364          361
+## 5                    0            1421.29               1764         1089
+## 6                    0            2332.89               2401          676
+##   Carreras_ganadas_2_t Walks_2_t Strike_outs_2_t Wins_2_t Losses_2_t Saves_2_t
+## 1                  256       625            7225       36         25        49
+## 2                   64       196             196        1          0         0
+## 3                    9         9              64        1          0         0
+## 4                  361       324            3721        1          1         0
+## 5                 1024       841             576        9          0         1
+## 6                  625       841            2916        4         16         1
+##   WHIP_2_t ERA_2_t  Control_2_t Comando_2_t Anio_t_1 Anios_contrato_t_1
+## 1   0.9604  3.9601 0.0014761089  11.5600000       10                  1
+## 2   3.1684 34.1056 0.0159941377   1.0000000        9                  0
+## 3   1.9044  2.8561 0.0004340278   7.1111111        5                  1
+## 4   1.4884  7.5076 0.0010305852  11.4845679        6                  1
+## 5   3.5344 58.5225 0.0073051355   0.6848989        7                  1
+## 6   2.5921 21.7156 0.0044505811   3.4673008        3                  1
+##   Valor_contrato_t_1 Valor_promedio_contrato_t_1 Juegos_t_1
+## 1           10000000                    10000000         27
+## 2                  0                           0         59
+## 3            2500000                     2500000          5
+## 4                  0                           0         14
+## 5            2000000                     2000000         68
+## 6            1000000                     1000000         18
+##   Juegos_iniciados_t_1 Inning_pitched_t_1 Bateos_pitcher_t_1 Carreras_t_1
+## 1                    0               25.7                 23           15
+## 2                    0               54.3                 57           33
+## 3                    5               33.0                 29           10
+## 4                    0               13.3                 13            6
+## 5                    0               62.3                 58           19
+## 6                    0               13.7                  8            1
+##   Carreras_ganadas_t_1 Walks_t_1 Strike_outs_t_1 Wins_t_1 Losses_t_1 Saves_t_1
+## 1                   11         8              22        3          3         1
+## 2                   33        31              60        5          4         0
+## 3                   10         7              23        2          0         0
+## 4                    6         3              10        1          0         0
+## 5                   19        18              61        1          1         0
+## 6                    1         4              13        2          1         0
+##   WHIP_t_1 ERA_t_1 Equipo_t_1 Dominio_t_1 Control_t_1 Comando_t_1 Juegos_2_t_1
+## 1     1.21    3.86        LAD  0.09511457  0.03458712    2.750000          729
+## 2     1.62    5.47        NYM  0.12277471  0.06343360    1.935484         3481
+## 3     1.09    2.73         SD  0.07744108  0.02356902    3.285714           25
+## 4     1.20    4.05        BAL  0.08354219  0.02506266    3.333333          196
+## 5     1.22    2.74        CHC  0.10879258  0.03210273    3.388889         4624
+## 6     0.88    0.66        LAD  0.10543390  0.03244120    3.250000          324
+##   Juegos_iniciados_2_t_1 Inning_pitched_2_t_1 Bateos_pitcher_2_t_1
+## 1                      0               660.49                  529
+## 2                      0              2948.49                 3249
+## 3                     25              1089.00                  841
+## 4                      0               176.89                  169
+## 5                      0              3881.29                 3364
+## 6                      0               187.69                   64
+##   Carreras_2_t_1 Carreras_ganadas_2_t_1 Walks_2_t_1 Strike_outs_2_t_1
+## 1            225                    121          64               484
+## 2           1089                   1089         961              3600
+## 3            100                    100          49               529
+## 4             36                     36           9               100
+## 5            361                    361         324              3721
+## 6              1                      1          16               169
+##   Wins_2_t_1 Losses_2_t_1 Saves_2_t_1 WHIP_2_t_1 ERA_2_t_1 Control_2_t_1
+## 1          9            9           1     1.4641   14.8996  0.0011962686
+## 2         25           16           0     2.6244   29.9209  0.0040238215
+## 3          4            0           0     1.1881    7.4529  0.0005554989
+## 4          1            0           0     1.4400   16.4025  0.0006281368
+## 5          1            1           0     1.4884    7.5076  0.0010305852
+## 6          4            1           0     0.7744    0.4356  0.0010524315
+##   Comando_2_t_1
+## 1      7.562500
+## 2      3.746098
+## 3     10.795918
+## 4     11.111111
+## 5     11.484568
+## 6     10.562500
+\end{verbatim}
+
+Starting pitchers:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(starting\_pitchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           Jugador Anio_t Anios_contrato_t Valor_contrato_t
+## 1    A.J. Burnett      5                1          8500000
+## 2 Adam Wainwright     11                1          8000000
+## 3  Andrew Cashner      8                2         16000000
+## 4  Anibal Sanchez      9                2         19000000
+## 5   Bartolo Colon      4                2         20000000
+## 6   Bartolo Colon      7                1         12500000
+##   Valor_promedio_contrato_t Juegos_t Juegos_iniciados_t Inning_pitched_t
+## 1                   8500000       26                 26            164.0
+## 2                   8000000       34                 32            206.3
+## 3                   8000000       30                 28            153.0
+## 4                   9500000       30                 30            166.0
+## 5                  10000000       31                 31            202.3
+## 6                  12500000       28                 28            143.0
+##   Bateos_pitcher_t Carreras_t Carreras_ganadas_t Walks_t Strike_outs_t Wins_t
+## 1              174         64                 58      49           143      9
+## 2              168         72                 70      50           174     17
+## 3              177         97                 90      65            99      5
+## 4              153         77                 71      58           134     11
+## 5              218         97                 92      30           151     15
+## 6              192        112                103      35            89      7
+##   Losses_t Saves_t WHIP_t ERA_t Equipo_t ln_Sueldo_base_t ln_Sueldo_t
+## 1        7       0   1.36  3.18      PIT         15.95558    15.95558
+## 2        7       0   1.06  3.05      STL         15.89495    15.89495
+## 3       16       0   1.58  5.29      BAL         15.42495    16.06680
+## 4        8       0   1.27  3.85      WSH         15.89495    16.11810
+## 5       13       0   1.23  4.09      NYM         16.01274    16.01274
+## 6       14       0   1.59  6.48      MIN         13.19002    13.19002
+##   ln_Sueldo_regular_t  Dominio_t  Control_t Comando_t Juegos_2_t
+## 1            15.95558 0.09688347 0.03319783  2.918367        676
+## 2            15.89495 0.09371466 0.02692950  3.480000       1156
+## 3            16.06680 0.07189542 0.04720407  1.523077        900
+## 4            15.60727 0.08969210 0.03882195  2.310345        900
+## 5            16.01274 0.08293513 0.01647718  5.033333        961
+## 6            12.31110 0.06915307 0.02719503  2.542857        784
+##   Juegos_iniciados_2_t Inning_pitched_2_t Bateos_pitcher_2_t Carreras_2_t
+## 1                  676           26896.00              30276         4096
+## 2                 1024           42559.69              28224         5184
+## 3                  784           23409.00              31329         9409
+## 4                  900           27556.00              23409         5929
+## 5                  961           40925.29              47524         9409
+## 6                  784           20449.00              36864        12544
+##   Carreras_ganadas_2_t Walks_2_t Strike_outs_2_t Wins_2_t Losses_2_t Saves_2_t
+## 1                 3364      2401           20449       81         49         0
+## 2                 4900      2500           30276      289         49         0
+## 3                 8100      4225            9801       25        256         0
+## 4                 5041      3364           17956      121         64         0
+## 5                 8464       900           22801      225        169         0
+## 6                10609      1225            7921       49        196         0
+##   WHIP_2_t ERA_2_t  Control_2_t Comando_2_t Anio_t_1 Anios_contrato_t_1
+## 1   1.8496 10.1124 0.0011020960    8.516868        4                  1
+## 2   1.1236  9.3025 0.0007251979   12.110400       10                  1
+## 3   2.4964 27.9841 0.0022282239    2.319763        7                  1
+## 4   1.6129 14.8225 0.0015071442    5.337693        8                  1
+## 5   1.5129 16.7281 0.0002714974   25.334444        3                  1
+## 6   2.5281 41.9904 0.0007395695    6.466122        6                  1
+##   Valor_contrato_t_1 Valor_promedio_contrato_t_1 Juegos_t_1
+## 1           16000000                    16000000         34
+## 2            5000000                     5000000         10
+## 3           10000000                    10000000         28
+## 4            2500000                     2500000         25
+## 5            3000000                     3000000         30
+## 6            7250000                     7250000         34
+##   Juegos_iniciados_t_1 Inning_pitched_t_1 Bateos_pitcher_t_1 Carreras_t_1
+## 1                   34              213.7                205          122
+## 2                   10               65.7                 54           25
+## 3                   28              166.7                156           75
+## 4                   24              136.7                106           48
+## 5                   30              190.3                193           60
+## 6                   33              191.7                200           81
+##   Carreras_ganadas_t_1 Walks_t_1 Strike_outs_t_1 Wins_t_1 Losses_t_1 Saves_t_1
+## 1                  109        96             190        8         18         0
+## 2                   23        15              54        5          3         0
+## 3                   63        64              86       11         11         0
+## 4                   43        42             135        7          6         0
+## 5                   56        29             117       18          6         0
+## 6                   73        32             128       15          8         0
+##   WHIP_t_1 ERA_t_1 Equipo_t_1 Dominio_t_1 Control_t_1 Comando_t_1 Juegos_2_t_1
+## 1     1.41    4.59        PHI  0.09878854  0.04991421    1.979167         1156
+## 2     1.05    3.15        STL  0.09132420  0.02536783    3.600000          100
+## 3     1.32    3.40        TEX  0.05732187  0.04265814    1.343750          784
+## 4     1.08    2.83        ATL  0.10972933  0.03413802    3.214286          625
+## 5     1.17    2.65        OAK  0.06831319  0.01693233    4.034483          900
+## 6     1.21    3.43        NYM  0.07419000  0.01854750    4.000000         1156
+##   Juegos_iniciados_2_t_1 Inning_pitched_2_t_1 Bateos_pitcher_2_t_1
+## 1                   1156             45667.69                42025
+## 2                    100              4316.49                 2916
+## 3                    784             27788.89                24336
+## 4                    576             18686.89                11236
+## 5                    900             36214.09                37249
+## 6                   1089             36748.89                40000
+##   Carreras_2_t_1 Carreras_ganadas_2_t_1 Walks_2_t_1 Strike_outs_2_t_1
+## 1          14884                  11881        9216             36100
+## 2            625                    529         225              2916
+## 3           5625                   3969        4096              7396
+## 4           2304                   1849        1764             18225
+## 5           3600                   3136         841             13689
+## 6           6561                   5329        1024             16384
+##   Wins_2_t_1 Losses_2_t_1 Saves_2_t_1 WHIP_2_t_1 ERA_2_t_1 Control_2_t_1
+## 1         64          324           0     1.9881   21.0681  0.0024914284
+## 2         25            9           0     1.1025    9.9225  0.0006435270
+## 3        121          121           0     1.7424   11.5600  0.0018197165
+## 4         49           36           0     1.1664    8.0089  0.0011654041
+## 5        324           36           0     1.3689    7.0225  0.0002867038
+## 6        225           64           0     1.4641   11.7649  0.0003440097
+##   Comando_2_t_1
+## 1      3.917101
+## 2     12.960000
+## 3      1.805664
+## 4     10.331633
+## 5     16.277051
+## 6     16.000000
+\end{verbatim}
+
+Remain hitters:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(remain\_hitters\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              Jugador Anio_t Anios_contrato_t Valor_contrato_t
+## 1 Adeiny Hechavarria     10                1          1000000
+## 2   Asdrubal Cabrera     11                1          1750000
+## 3   Asdrubal Cabrera     10                1          2500000
+## 4   Asdrubal Cabrera      6                2         18500000
+## 5     Avisail Garcia     10                2         20000000
+## 6       Billy Butler      6                1            49914
+##   Valor_promedio_contrato_t Juegos_t Porcetnaje_juegos_t At_bats_t Bateos_t
+## 1                   1000000       27               0.450        59       15
+## 2                   1750000      110               0.679       309       71
+## 3                   2500000       52               0.867       190       46
+## 4                   9250000      141               0.870       521      146
+## 5                  10000000       53               0.883       181       43
+## 6                     49914       97               0.599       250       71
+##   Home_runs_t RBI_t Porcentaje_bateo_t OPS_t ln_Sueldo_base_t ln_Sueldo_t
+## 1           0     2              0.254 0.607         13.81551    13.81551
+## 2           7    42              0.230 0.681         14.37513    14.37513
+## 3           8    31              0.242 0.753         14.73180    14.80319
+## 4          24    62              0.280 0.816         15.92572    15.92572
+## 5           2    15              0.238 0.659         15.76142    15.79651
+## 6           5    35              0.284 0.752         13.13725    13.13725
+##   ln_Sueldo_regular_t Juegos_2_t Porcetnaje_juegos_2_t At_bats_2_t Bateos_2_t
+## 1            12.82226        729              0.202500        3481        225
+## 2            12.76034      12100              0.461041       95481       5041
+## 3            13.92070       2704              0.751689       36100       2116
+## 4            15.92572      19881              0.756900      271441      21316
+## 5            14.86023       2809              0.779689       32761       1849
+## 6            10.81806       9409              0.358801       62500       5041
+##   Home_runs_2_t RBI_2_t Porcentaje_bateo_2_t  OPS_2_t Anio_t_1
+## 1             0       4             0.064516 0.368449        9
+## 2            49    1764             0.052900 0.463761       10
+## 3            64     961             0.058564 0.567009        9
+## 4           576    3844             0.078400 0.665856        5
+## 5             4     225             0.056644 0.434281        9
+## 6            25    1225             0.080656 0.565504        5
+##   Anios_contrato_t_1 Valor_contrato_t_1 Valor_promedio_contrato_t_1 Juegos_t_1
+## 1                  0                  0                           0         84
+## 2                  1            2500000                     2500000         52
+## 3                  1            3500000                     3500000        132
+## 4                  1            7500000                     7500000        143
+## 5                  1            3500000                     3500000        126
+## 6                  3           30000000                    10000000        151
+##   Porcetnaje_juegos_t_1 At_bats_t_1 Bateos_t_1 Home_runs_t_1 RBI_t_1
+## 1                 0.519         203         49             9      33
+## 2                 0.867         190         46             8      31
+## 3                 0.815         447        116            18      91
+## 4                 0.883         505        134            15      58
+## 5                 0.778         489        138            20      72
+## 6                 0.932         538        135            15      65
+##   Porcentaje_bateo_t_1 OPS_t_1 Juegos_2_t_1 Porcetnaje_juegos_2_t_1
+## 1                0.241   0.742         7056                0.269361
+## 2                0.242   0.753         2704                0.751689
+## 3                0.260   0.783        17424                0.664225
+## 4                0.265   0.744        20449                0.779689
+## 5                0.282   0.796        15876                0.605284
+## 6                0.251   0.713        22801                0.868624
+##   At_bats_2_t_1 Bateos_2_t_1 Home_runs_2_t_1 RBI_2_t_1 Porcentaje_bateo_2_t_1
+## 1         41209         2401              81      1089               0.058081
+## 2         36100         2116              64       961               0.058564
+## 3        199809        13456             324      8281               0.067600
+## 4        255025        17956             225      3364               0.070225
+## 5        239121        19044             400      5184               0.079524
+## 6        289444        18225             225      4225               0.063001
+##   OPS_2_t_1
+## 1  0.550564
+## 2  0.567009
+## 3  0.613089
+## 4  0.553536
+## 5  0.633616
+## 6  0.508369
+\end{verbatim}
+
+\section{Creación del modelo}
+
+Para ello y evitar errores, lo haremos con los nombres explícitos,
+obtengamos los nombres de las columnas
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(catchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Jugador"                     "Anio_t"                     
+##  [3] "Anios_contrato_t"            "Valor_contrato_t"           
+##  [5] "Valor_promedio_contrato_t"   "Juegos_t"                   
+##  [7] "Porcetnaje_juegos_t"         "At_bats_t"                  
+##  [9] "Bateos_t"                    "Home_runs_t"                
+## [11] "RBI_t"                       "Porcentaje_bateo_t"         
+## [13] "OPS_t"                       "ln_Sueldo_base_t"           
+## [15] "ln_Sueldo_t"                 "ln_Sueldo_regular_t"        
+## [17] "Juegos_2_t"                  "Porcetnaje_juegos_2_t"      
+## [19] "At_bats_2_t"                 "Bateos_2_t"                 
+## [21] "Home_runs_2_t"               "RBI_2_t"                    
+## [23] "Porcentaje_bateo_2_t"        "OPS_2_t"                    
+## [25] "Anio_t_1"                    "Anios_contrato_t_1"         
+## [27] "Valor_contrato_t_1"          "Valor_promedio_contrato_t_1"
+## [29] "Juegos_t_1"                  "Porcetnaje_juegos_t_1"      
+## [31] "At_bats_t_1"                 "Bateos_t_1"                 
+## [33] "Home_runs_t_1"               "RBI_t_1"                    
+## [35] "Porcentaje_bateo_t_1"        "OPS_t_1"                    
+## [37] "Juegos_2_t_1"                "Porcetnaje_juegos_2_t_1"    
+## [39] "At_bats_2_t_1"               "Bateos_2_t_1"               
+## [41] "Home_runs_2_t_1"             "RBI_2_t_1"                  
+## [43] "Porcentaje_bateo_2_t_1"      "OPS_2_t_1"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(relief\_pitchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Jugador"                     "Anio_t"                     
+##  [3] "Anios_contrato_t"            "Valor_contrato_t"           
+##  [5] "Valor_promedio_contrato_t"   "Juegos_t"                   
+##  [7] "Juegos_iniciados_t"          "Inning_pitched_t"           
+##  [9] "Bateos_pitcher_t"            "Carreras_t"                 
+## [11] "Carreras_ganadas_t"          "Walks_t"                    
+## [13] "Strike_outs_t"               "Wins_t"                     
+## [15] "Losses_t"                    "Saves_t"                    
+## [17] "WHIP_t"                      "ERA_t"                      
+## [19] "Equipo_t"                    "ln_Sueldo_base_t"           
+## [21] "ln_Sueldo_t"                 "ln_Sueldo_regular_t"        
+## [23] "Dominio_t"                   "Control_t"                  
+## [25] "Comando_t"                   "Juegos_2_t"                 
+## [27] "Juegos_iniciados_2_t"        "Inning_pitched_2_t"         
+## [29] "Bateos_pitcher_2_t"          "Carreras_2_t"               
+## [31] "Carreras_ganadas_2_t"        "Walks_2_t"                  
+## [33] "Strike_outs_2_t"             "Wins_2_t"                   
+## [35] "Losses_2_t"                  "Saves_2_t"                  
+## [37] "WHIP_2_t"                    "ERA_2_t"                    
+## [39] "Control_2_t"                 "Comando_2_t"                
+## [41] "Anio_t_1"                    "Anios_contrato_t_1"         
+## [43] "Valor_contrato_t_1"          "Valor_promedio_contrato_t_1"
+## [45] "Juegos_t_1"                  "Juegos_iniciados_t_1"       
+## [47] "Inning_pitched_t_1"          "Bateos_pitcher_t_1"         
+## [49] "Carreras_t_1"                "Carreras_ganadas_t_1"       
+## [51] "Walks_t_1"                   "Strike_outs_t_1"            
+## [53] "Wins_t_1"                    "Losses_t_1"                 
+## [55] "Saves_t_1"                   "WHIP_t_1"                   
+## [57] "ERA_t_1"                     "Equipo_t_1"                 
+## [59] "Dominio_t_1"                 "Control_t_1"                
+## [61] "Comando_t_1"                 "Juegos_2_t_1"               
+## [63] "Juegos_iniciados_2_t_1"      "Inning_pitched_2_t_1"       
+## [65] "Bateos_pitcher_2_t_1"        "Carreras_2_t_1"             
+## [67] "Carreras_ganadas_2_t_1"      "Walks_2_t_1"                
+## [69] "Strike_outs_2_t_1"           "Wins_2_t_1"                 
+## [71] "Losses_2_t_1"                "Saves_2_t_1"                
+## [73] "WHIP_2_t_1"                  "ERA_2_t_1"                  
+## [75] "Control_2_t_1"               "Comando_2_t_1"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(starting\_pitchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Jugador"                     "Anio_t"                     
+##  [3] "Anios_contrato_t"            "Valor_contrato_t"           
+##  [5] "Valor_promedio_contrato_t"   "Juegos_t"                   
+##  [7] "Juegos_iniciados_t"          "Inning_pitched_t"           
+##  [9] "Bateos_pitcher_t"            "Carreras_t"                 
+## [11] "Carreras_ganadas_t"          "Walks_t"                    
+## [13] "Strike_outs_t"               "Wins_t"                     
+## [15] "Losses_t"                    "Saves_t"                    
+## [17] "WHIP_t"                      "ERA_t"                      
+## [19] "Equipo_t"                    "ln_Sueldo_base_t"           
+## [21] "ln_Sueldo_t"                 "ln_Sueldo_regular_t"        
+## [23] "Dominio_t"                   "Control_t"                  
+## [25] "Comando_t"                   "Juegos_2_t"                 
+## [27] "Juegos_iniciados_2_t"        "Inning_pitched_2_t"         
+## [29] "Bateos_pitcher_2_t"          "Carreras_2_t"               
+## [31] "Carreras_ganadas_2_t"        "Walks_2_t"                  
+## [33] "Strike_outs_2_t"             "Wins_2_t"                   
+## [35] "Losses_2_t"                  "Saves_2_t"                  
+## [37] "WHIP_2_t"                    "ERA_2_t"                    
+## [39] "Control_2_t"                 "Comando_2_t"                
+## [41] "Anio_t_1"                    "Anios_contrato_t_1"         
+## [43] "Valor_contrato_t_1"          "Valor_promedio_contrato_t_1"
+## [45] "Juegos_t_1"                  "Juegos_iniciados_t_1"       
+## [47] "Inning_pitched_t_1"          "Bateos_pitcher_t_1"         
+## [49] "Carreras_t_1"                "Carreras_ganadas_t_1"       
+## [51] "Walks_t_1"                   "Strike_outs_t_1"            
+## [53] "Wins_t_1"                    "Losses_t_1"                 
+## [55] "Saves_t_1"                   "WHIP_t_1"                   
+## [57] "ERA_t_1"                     "Equipo_t_1"                 
+## [59] "Dominio_t_1"                 "Control_t_1"                
+## [61] "Comando_t_1"                 "Juegos_2_t_1"               
+## [63] "Juegos_iniciados_2_t_1"      "Inning_pitched_2_t_1"       
+## [65] "Bateos_pitcher_2_t_1"        "Carreras_2_t_1"             
+## [67] "Carreras_ganadas_2_t_1"      "Walks_2_t_1"                
+## [69] "Strike_outs_2_t_1"           "Wins_2_t_1"                 
+## [71] "Losses_2_t_1"                "Saves_2_t_1"                
+## [73] "WHIP_2_t_1"                  "ERA_2_t_1"                  
+## [75] "Control_2_t_1"               "Comando_2_t_1"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(remain\_hitters\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "Jugador"                     "Anio_t"                     
+##  [3] "Anios_contrato_t"            "Valor_contrato_t"           
+##  [5] "Valor_promedio_contrato_t"   "Juegos_t"                   
+##  [7] "Porcetnaje_juegos_t"         "At_bats_t"                  
+##  [9] "Bateos_t"                    "Home_runs_t"                
+## [11] "RBI_t"                       "Porcentaje_bateo_t"         
+## [13] "OPS_t"                       "ln_Sueldo_base_t"           
+## [15] "ln_Sueldo_t"                 "ln_Sueldo_regular_t"        
+## [17] "Juegos_2_t"                  "Porcetnaje_juegos_2_t"      
+## [19] "At_bats_2_t"                 "Bateos_2_t"                 
+## [21] "Home_runs_2_t"               "RBI_2_t"                    
+## [23] "Porcentaje_bateo_2_t"        "OPS_2_t"                    
+## [25] "Anio_t_1"                    "Anios_contrato_t_1"         
+## [27] "Valor_contrato_t_1"          "Valor_promedio_contrato_t_1"
+## [29] "Juegos_t_1"                  "Porcetnaje_juegos_t_1"      
+## [31] "At_bats_t_1"                 "Bateos_t_1"                 
+## [33] "Home_runs_t_1"               "RBI_t_1"                    
+## [35] "Porcentaje_bateo_t_1"        "OPS_t_1"                    
+## [37] "Juegos_2_t_1"                "Porcetnaje_juegos_2_t_1"    
+## [39] "At_bats_2_t_1"               "Bateos_2_t_1"               
+## [41] "Home_runs_2_t_1"             "RBI_2_t_1"                  
+## [43] "Porcentaje_bateo_2_t_1"      "OPS_2_t_1"
+\end{verbatim}
+
+Creemos ahora las formulas para las regresiones. Serán sobre
+\(ln(Sueldo)\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pitcher\_equation }\OtherTok{\textless{}{-}} 
+
+\NormalTok{relief\_pitchers\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(ln\_Sueldo\_t }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Anio\_t }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t }\SpecialCharTok{+} 
+\NormalTok{Juegos\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_t }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_t }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_t }\SpecialCharTok{+}\NormalTok{ Carreras\_t }\SpecialCharTok{+}       
+\NormalTok{Carreras\_ganadas\_t }\SpecialCharTok{+}\NormalTok{  Walks\_t }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_t }\SpecialCharTok{+}\NormalTok{  Wins\_t }\SpecialCharTok{+}\NormalTok{ Losses\_t  }\SpecialCharTok{+}\NormalTok{ Saves\_t }\SpecialCharTok{+}\NormalTok{ WHIP\_t }\SpecialCharTok{+} 
+\NormalTok{ERA\_t }\SpecialCharTok{+}\NormalTok{ Equipo\_t }\SpecialCharTok{+}\NormalTok{ ln\_Sueldo\_base\_t }\SpecialCharTok{+}\NormalTok{ ln\_Sueldo\_t }\SpecialCharTok{+}\NormalTok{ ln\_Sueldo\_regular\_t  }\SpecialCharTok{+}\NormalTok{ Dominio\_t }\SpecialCharTok{+}\NormalTok{ Control\_t }\SpecialCharTok{+}\NormalTok{ Comando\_t }\SpecialCharTok{+}           
+\NormalTok{Juegos\_2\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_2\_t }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_2\_t }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_2\_t }\SpecialCharTok{+}\NormalTok{ Carreras\_2\_t }\SpecialCharTok{+}    
+\NormalTok{Carreras\_ganadas\_2\_t }\SpecialCharTok{+}\NormalTok{ Walks\_2\_t }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_2\_t  }\SpecialCharTok{+}\NormalTok{ Wins\_2\_t }\SpecialCharTok{+}\NormalTok{ Losses\_2\_t  }\SpecialCharTok{+}\NormalTok{ Saves\_2\_t }\SpecialCharTok{+}\NormalTok{ WHIP\_2\_t  }\SpecialCharTok{+}
+\NormalTok{ERA\_2\_t }\SpecialCharTok{+}\NormalTok{ Control\_2\_t }\SpecialCharTok{+}\NormalTok{ Comando\_2\_t }\SpecialCharTok{+}\NormalTok{ Anio\_t\_1 }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t\_1 }\SpecialCharTok{+} 
+\NormalTok{Juegos\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_t\_1  }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_t\_1 }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_t\_1 }\SpecialCharTok{+}\NormalTok{ Carreras\_t\_1 }\SpecialCharTok{+}\NormalTok{ Carreras\_ganadas\_t\_1  }\SpecialCharTok{+}   
+\NormalTok{Walks\_t\_1  }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_t\_1 }\SpecialCharTok{+}\NormalTok{ Wins\_t\_1 }\SpecialCharTok{+}\NormalTok{  Losses\_t\_1 }\SpecialCharTok{+}\NormalTok{ Saves\_t\_1 }\SpecialCharTok{+}\NormalTok{ WHIP\_t\_1 }\SpecialCharTok{+}\NormalTok{ ERA\_t\_1 }\SpecialCharTok{+}\NormalTok{  Dominio\_t\_1 }\SpecialCharTok{+}\NormalTok{ Control\_t\_1 }\SpecialCharTok{+}         
+\NormalTok{Comando\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Carreras\_2\_t\_1  }\SpecialCharTok{+} 
+\NormalTok{Carreras\_ganadas\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Walks\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Wins\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Losses\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Saves\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ WHIP\_2\_t\_1 }\SpecialCharTok{+}
+\NormalTok{ERA\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Control\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Comando\_2\_t\_1, }
+\AttributeTok{data =}\NormalTok{ relief\_pitchers\_panel\_data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in model.matrix.default(mt, mf, contrasts): the response appeared on the
+## right-hand side and was dropped
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in model.matrix.default(mt, mf, contrasts): problem with term 20 in
+## model.matrix: no columns are assigned
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(relief\_pitchers\_model, }\AttributeTok{diagnostics=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in summary.lm(relief_pitchers_model, diagnostics = TRUE): essentially
+## perfect fit: summary may be unreliable
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + 
+##     Valor_promedio_contrato_t + Juegos_t + Juegos_iniciados_t + 
+##     Inning_pitched_t + Bateos_pitcher_t + Carreras_t + Carreras_ganadas_t + 
+##     Walks_t + Strike_outs_t + Wins_t + Losses_t + Saves_t + WHIP_t + 
+##     ERA_t + Equipo_t + ln_Sueldo_base_t + ln_Sueldo_t + ln_Sueldo_regular_t + 
+##     Dominio_t + Control_t + Comando_t + Juegos_2_t + Juegos_iniciados_2_t + 
+##     Inning_pitched_2_t + Bateos_pitcher_2_t + Carreras_2_t + 
+##     Carreras_ganadas_2_t + Walks_2_t + Strike_outs_2_t + Wins_2_t + 
+##     Losses_2_t + Saves_2_t + WHIP_2_t + ERA_2_t + Control_2_t + 
+##     Comando_2_t + Anio_t_1 + Anios_contrato_t_1 + Valor_contrato_t_1 + 
+##     Valor_promedio_contrato_t_1 + Juegos_t_1 + Juegos_iniciados_t_1 + 
+##     Inning_pitched_t_1 + Bateos_pitcher_t_1 + Carreras_t_1 + 
+##     Carreras_ganadas_t_1 + Walks_t_1 + Strike_outs_t_1 + Wins_t_1 + 
+##     Losses_t_1 + Saves_t_1 + WHIP_t_1 + ERA_t_1 + Dominio_t_1 + 
+##     Control_t_1 + Comando_t_1 + Juegos_2_t_1 + Juegos_iniciados_2_t_1 + 
+##     Inning_pitched_2_t_1 + Bateos_pitcher_2_t_1 + Carreras_2_t_1 + 
+##     Carreras_ganadas_2_t_1 + Walks_2_t_1 + Strike_outs_2_t_1 + 
+##     Wins_2_t_1 + Losses_2_t_1 + Saves_2_t_1 + WHIP_2_t_1 + ERA_2_t_1 + 
+##     Control_2_t_1 + Comando_2_t_1, data = relief_pitchers_panel_data)
+## 
+## Residuals:
+##                   Min                    1Q                Median 
+## -0.000000000000009166  0.000000000000000000  0.000000000000000000 
+##                    3Q                   Max 
+##  0.000000000000000000  0.000000000000009166 
+## 
+## Coefficients: (32 not defined because of singularities)
+##                                                   Estimate
+## (Intercept)                    -2.077754121899671346795913
+## Anio_t                         -0.084372108338261933568880
+## Anios_contrato_t               -0.042497641518348068523370
+## Valor_contrato_t               -0.000000023603391315314558
+## Valor_promedio_contrato_t       0.000000047206782630629758
+## Juegos_t                       -0.057595597078913332578232
+## Juegos_iniciados_t             -0.088200897315750731442208
+## Inning_pitched_t                0.163557373434952163515632
+## Bateos_pitcher_t               -0.084817320448883182226751
+## Carreras_t                      0.071594735331925285493071
+## Carreras_ganadas_t             -0.059532429026581366870996
+## Walks_t                         0.795871582328231852443423
+## Strike_outs_t                  -0.278349519396596245535136
+## Wins_t                          0.397962783359359750789963
+## Losses_t                       -0.075830827400710967833852
+## Saves_t                         0.023123558961364767960767
+## WHIP_t                         -5.958820631519764710049003
+## ERA_t                           0.561371419874203247957212
+## Equipo_tATL                    -1.186040127440566971372959
+## Equipo_tBOS                    -1.133860675444669396938480
+## Equipo_tCHC                    -0.298861285429747380870680
+## Equipo_tCHW                    -0.637965047103415172635721
+## Equipo_tCIN                    -0.601450718311381749003885
+## Equipo_tCOL                    -0.652774410455677744913316
+## Equipo_tDET                     0.156213885773631211417722
+## Equipo_tHOU                    -1.213283987077297121359720
+## Equipo_tKC                     -1.051701696388344098309631
+## Equipo_tLAD                    -0.757445584634989010908157
+## Equipo_tMIA                     1.247248177521343093232531
+## Equipo_tMIL                    -1.126316785167201350859045
+## Equipo_tMIN                    -1.081716545507438675954859
+## Equipo_tNYM                    -0.548231992208772389574278
+## Equipo_tNYY                    -1.079976997958311368819295
+## Equipo_tOAK                    -0.117316064701737665654235
+## Equipo_tPHI                    -2.498789538240356211673543
+## Equipo_tSD                      0.629059236673559341035400
+## Equipo_tSF                     -0.845883176973289185873739
+## Equipo_tTB                     -0.955268593641202645727617
+## Equipo_tTEX                    -1.115002263585587849448189
+## Equipo_tTOR                    -0.739178597932369840783906
+## Equipo_tWSH                    -0.478199984146225720582635
+## ln_Sueldo_base_t                1.298459625548761486868443
+## ln_Sueldo_regular_t            -0.276864435738495007210958
+## Dominio_t                      18.971819211327790810628358
+## Control_t                      52.654610332484857337931317
+## Comando_t                       3.164603716613016093361921
+## Juegos_2_t                      0.000344198378498515719301
+## Juegos_iniciados_2_t            0.024182058584150498137255
+## Inning_pitched_2_t             -0.000584232992622524499420
+## Bateos_pitcher_2_t              0.000055855419720061223656
+## Carreras_2_t                   -0.001712845254330892016265
+## Carreras_ganadas_2_t            0.001604892534029763676712
+## Walks_2_t                      -0.011538567408761669919048
+## Strike_outs_2_t                 0.001201055347550689751321
+## Wins_2_t                       -0.062885759725869697089884
+## Losses_2_t                      0.022100367608710091982260
+## Saves_2_t                      -0.000874257147905718734471
+## WHIP_2_t                        3.578119866862893960757219
+## ERA_2_t                        -0.081920652416797079542476
+## Control_2_t                 -1021.273020341275127975677606
+## Comando_2_t                    -0.172235492584113636382881
+## Anio_t_1                                                NA
+## Anios_contrato_t_1             -7.201226201305847673950211
+## Valor_contrato_t_1             -0.000000003900642437975895
+## Valor_promedio_contrato_t_1                             NA
+## Juegos_t_1                      0.000637529590711937333043
+## Juegos_iniciados_t_1                                    NA
+## Inning_pitched_t_1                                      NA
+## Bateos_pitcher_t_1                                      NA
+## Carreras_t_1                                            NA
+## Carreras_ganadas_t_1                                    NA
+## Walks_t_1                                               NA
+## Strike_outs_t_1                                         NA
+## Wins_t_1                                                NA
+## Losses_t_1                                              NA
+## Saves_t_1                                               NA
+## WHIP_t_1                                                NA
+## ERA_t_1                                                 NA
+## Dominio_t_1                                             NA
+## Control_t_1                                             NA
+## Comando_t_1                                             NA
+## Juegos_2_t_1                                            NA
+## Juegos_iniciados_2_t_1                                  NA
+## Inning_pitched_2_t_1                                    NA
+## Bateos_pitcher_2_t_1                                    NA
+## Carreras_2_t_1                                          NA
+## Carreras_ganadas_2_t_1                                  NA
+## Walks_2_t_1                                             NA
+## Strike_outs_2_t_1                                       NA
+## Wins_2_t_1                                              NA
+## Losses_2_t_1                                            NA
+## Saves_2_t_1                                             NA
+## WHIP_2_t_1                                              NA
+## ERA_2_t_1                                               NA
+## Control_2_t_1                                           NA
+## Comando_2_t_1                                           NA
+##                                                 Std. Error         t value
+## (Intercept)                     0.000000000000414123039845  -5017238651293
+## Anio_t                          0.000000000000003961609383 -21297432478958
+## Anios_contrato_t                0.000000000000029645362160  -1433534233429
+## Valor_contrato_t                0.000000000000000000004500  -5245388856341
+## Valor_promedio_contrato_t       0.000000000000000000004418  10684461688226
+## Juegos_t                        0.000000000000002223274619 -25905750278952
+## Juegos_iniciados_t              0.000000000000005743154668 -15357569561893
+## Inning_pitched_t                0.000000000000006627671622  24677953699856
+## Bateos_pitcher_t                0.000000000000007721143544 -10985072348539
+## Carreras_t                      0.000000000000009509205041   7528992699177
+## Carreras_ganadas_t              0.000000000000012911765211  -4610711862808
+## Walks_t                         0.000000000000025400227763  31333245896225
+## Strike_outs_t                   0.000000000000004196952528 -66321817450893
+## Wins_t                          0.000000000000018479740406  21535085158578
+## Losses_t                        0.000000000000010704506233  -7084009831967
+## Saves_t                         0.000000000000001776969020  13012921837185
+## WHIP_t                          0.000000000000624681963779  -9538966989652
+## ERA_t                           0.000000000000052986576839  10594596846314
+## Equipo_tATL                     0.000000000000029848788845 -39734949836391
+## Equipo_tBOS                     0.000000000000019946601006 -56844806547814
+## Equipo_tCHC                     0.000000000000028605126644 -10447822488239
+## Equipo_tCHW                     0.000000000000020593242586 -30979339190416
+## Equipo_tCIN                     0.000000000000021580679390 -27869869499491
+## Equipo_tCOL                     0.000000000000021655784533 -30143189200321
+## Equipo_tDET                     0.000000000000039391747898   3965650018299
+## Equipo_tHOU                     0.000000000000038616534134 -31418769557547
+## Equipo_tKC                      0.000000000000020950538069 -50199269008170
+## Equipo_tLAD                     0.000000000000029062114422 -26062989555292
+## Equipo_tMIA                     0.000000000000080528694569  15488245329113
+## Equipo_tMIL                     0.000000000000020180912942 -55810992714584
+## Equipo_tMIN                     0.000000000000017387955554 -62210680384061
+## Equipo_tNYM                     0.000000000000039045530629 -14040838564079
+## Equipo_tNYY                     0.000000000000020175055618 -53530310815218
+## Equipo_tOAK                     0.000000000000029513809175  -3974955045892
+## Equipo_tPHI                     0.000000000000092964505417 -26878963395986
+## Equipo_tSD                      0.000000000000056172208922  11198762675477
+## Equipo_tSF                      0.000000000000053124528813 -15922648085189
+## Equipo_tTB                      0.000000000000023221691494 -41136908303981
+## Equipo_tTEX                     0.000000000000078405781097 -14220919018729
+## Equipo_tTOR                     0.000000000000097287985868  -7597840487026
+## Equipo_tWSH                     0.000000000000022853862430 -20924252327794
+## ln_Sueldo_base_t                0.000000000000014443356343  89900130876756
+## ln_Sueldo_regular_t             0.000000000000010286318377 -26915794901325
+## Dominio_t                       0.000000000001027752453342  18459522183224
+## Control_t                       0.000000000006135293527406   8582247955583
+## Comando_t                       0.000000000000066765598941  47398716806466
+## Juegos_2_t                      0.000000000000000025415857  13542662519353
+## Juegos_iniciados_2_t            0.000000000000000787660143  30701132707494
+## Inning_pitched_2_t              0.000000000000000028595419 -20430999204203
+## Bateos_pitcher_2_t              0.000000000000000058884614    948557118497
+## Carreras_2_t                    0.000000000000000179090264  -9564145002674
+## Carreras_ganadas_2_t            0.000000000000000156375211  10263087859665
+## Walks_2_t                       0.000000000000000379215660 -30427454932469
+## Strike_outs_2_t                 0.000000000000000018929301  63449535271907
+## Wins_2_t                        0.000000000000002619448601 -24007250880591
+## Losses_2_t                      0.000000000000001789815662  12347845687588
+## Saves_2_t                       0.000000000000000042024331 -20803594569914
+## WHIP_2_t                        0.000000000000188701008618  18961848127229
+## ERA_2_t                         0.000000000000004548098490 -18012066491403
+## Control_2_t                     0.000000000037732163602502 -27066378464275
+## Comando_2_t                     0.000000000000003852968004 -44702030337545
+## Anio_t_1                                                NA              NA
+## Anios_contrato_t_1              0.000000000000159997143884 -45008467192038
+## Valor_contrato_t_1              0.000000000000000000004286   -909992241646
+## Valor_promedio_contrato_t_1                             NA              NA
+## Juegos_t_1                      0.000000000000000342354613   1862190742348
+## Juegos_iniciados_t_1                                    NA              NA
+## Inning_pitched_t_1                                      NA              NA
+## Bateos_pitcher_t_1                                      NA              NA
+## Carreras_t_1                                            NA              NA
+## Carreras_ganadas_t_1                                    NA              NA
+## Walks_t_1                                               NA              NA
+## Strike_outs_t_1                                         NA              NA
+## Wins_t_1                                                NA              NA
+## Losses_t_1                                              NA              NA
+## Saves_t_1                                               NA              NA
+## WHIP_t_1                                                NA              NA
+## ERA_t_1                                                 NA              NA
+## Dominio_t_1                                             NA              NA
+## Control_t_1                                             NA              NA
+## Comando_t_1                                             NA              NA
+## Juegos_2_t_1                                            NA              NA
+## Juegos_iniciados_2_t_1                                  NA              NA
+## Inning_pitched_2_t_1                                    NA              NA
+## Bateos_pitcher_2_t_1                                    NA              NA
+## Carreras_2_t_1                                          NA              NA
+## Carreras_ganadas_2_t_1                                  NA              NA
+## Walks_2_t_1                                             NA              NA
+## Strike_outs_2_t_1                                       NA              NA
+## Wins_2_t_1                                              NA              NA
+## Losses_2_t_1                                            NA              NA
+## Saves_2_t_1                                             NA              NA
+## WHIP_2_t_1                                              NA              NA
+## ERA_2_t_1                                               NA              NA
+## Control_2_t_1                                           NA              NA
+## Comando_2_t_1                                           NA              NA
+##                                        Pr(>|t|)    
+## (Intercept)                 <0.0000000000000002 ***
+## Anio_t                      <0.0000000000000002 ***
+## Anios_contrato_t            <0.0000000000000002 ***
+## Valor_contrato_t            <0.0000000000000002 ***
+## Valor_promedio_contrato_t   <0.0000000000000002 ***
+## Juegos_t                    <0.0000000000000002 ***
+## Juegos_iniciados_t          <0.0000000000000002 ***
+## Inning_pitched_t            <0.0000000000000002 ***
+## Bateos_pitcher_t            <0.0000000000000002 ***
+## Carreras_t                  <0.0000000000000002 ***
+## Carreras_ganadas_t          <0.0000000000000002 ***
+## Walks_t                     <0.0000000000000002 ***
+## Strike_outs_t               <0.0000000000000002 ***
+## Wins_t                      <0.0000000000000002 ***
+## Losses_t                    <0.0000000000000002 ***
+## Saves_t                     <0.0000000000000002 ***
+## WHIP_t                      <0.0000000000000002 ***
+## ERA_t                       <0.0000000000000002 ***
+## Equipo_tATL                 <0.0000000000000002 ***
+## Equipo_tBOS                 <0.0000000000000002 ***
+## Equipo_tCHC                 <0.0000000000000002 ***
+## Equipo_tCHW                 <0.0000000000000002 ***
+## Equipo_tCIN                 <0.0000000000000002 ***
+## Equipo_tCOL                 <0.0000000000000002 ***
+## Equipo_tDET                 <0.0000000000000002 ***
+## Equipo_tHOU                 <0.0000000000000002 ***
+## Equipo_tKC                  <0.0000000000000002 ***
+## Equipo_tLAD                 <0.0000000000000002 ***
+## Equipo_tMIA                 <0.0000000000000002 ***
+## Equipo_tMIL                 <0.0000000000000002 ***
+## Equipo_tMIN                 <0.0000000000000002 ***
+## Equipo_tNYM                 <0.0000000000000002 ***
+## Equipo_tNYY                 <0.0000000000000002 ***
+## Equipo_tOAK                 <0.0000000000000002 ***
+## Equipo_tPHI                 <0.0000000000000002 ***
+## Equipo_tSD                  <0.0000000000000002 ***
+## Equipo_tSF                  <0.0000000000000002 ***
+## Equipo_tTB                  <0.0000000000000002 ***
+## Equipo_tTEX                 <0.0000000000000002 ***
+## Equipo_tTOR                 <0.0000000000000002 ***
+## Equipo_tWSH                 <0.0000000000000002 ***
+## ln_Sueldo_base_t            <0.0000000000000002 ***
+## ln_Sueldo_regular_t         <0.0000000000000002 ***
+## Dominio_t                   <0.0000000000000002 ***
+## Control_t                   <0.0000000000000002 ***
+## Comando_t                   <0.0000000000000002 ***
+## Juegos_2_t                  <0.0000000000000002 ***
+## Juegos_iniciados_2_t        <0.0000000000000002 ***
+## Inning_pitched_2_t          <0.0000000000000002 ***
+## Bateos_pitcher_2_t          <0.0000000000000002 ***
+## Carreras_2_t                <0.0000000000000002 ***
+## Carreras_ganadas_2_t        <0.0000000000000002 ***
+## Walks_2_t                   <0.0000000000000002 ***
+## Strike_outs_2_t             <0.0000000000000002 ***
+## Wins_2_t                    <0.0000000000000002 ***
+## Losses_2_t                  <0.0000000000000002 ***
+## Saves_2_t                   <0.0000000000000002 ***
+## WHIP_2_t                    <0.0000000000000002 ***
+## ERA_2_t                     <0.0000000000000002 ***
+## Control_2_t                 <0.0000000000000002 ***
+## Comando_2_t                 <0.0000000000000002 ***
+## Anio_t_1                                     NA    
+## Anios_contrato_t_1          <0.0000000000000002 ***
+## Valor_contrato_t_1          <0.0000000000000002 ***
+## Valor_promedio_contrato_t_1                  NA    
+## Juegos_t_1                  <0.0000000000000002 ***
+## Juegos_iniciados_t_1                         NA    
+## Inning_pitched_t_1                           NA    
+## Bateos_pitcher_t_1                           NA    
+## Carreras_t_1                                 NA    
+## Carreras_ganadas_t_1                         NA    
+## Walks_t_1                                    NA    
+## Strike_outs_t_1                              NA    
+## Wins_t_1                                     NA    
+## Losses_t_1                                   NA    
+## Saves_t_1                                    NA    
+## WHIP_t_1                                     NA    
+## ERA_t_1                                      NA    
+## Dominio_t_1                                  NA    
+## Control_t_1                                  NA    
+## Comando_t_1                                  NA    
+## Juegos_2_t_1                                 NA    
+## Juegos_iniciados_2_t_1                       NA    
+## Inning_pitched_2_t_1                         NA    
+## Bateos_pitcher_2_t_1                         NA    
+## Carreras_2_t_1                               NA    
+## Carreras_ganadas_2_t_1                       NA    
+## Walks_2_t_1                                  NA    
+## Strike_outs_2_t_1                            NA    
+## Wins_2_t_1                                   NA    
+## Losses_2_t_1                                 NA    
+## Saves_2_t_1                                  NA    
+## WHIP_2_t_1                                   NA    
+## ERA_2_t_1                                    NA    
+## Control_2_t_1                                NA    
+## Comando_2_t_1                                NA    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.000000000000005491 on 7 degrees of freedom
+## Multiple R-squared:      1,  Adjusted R-squared:      1 
+## F-statistic: 2.246e+28 on 63 and 7 DF,  p-value: < 0.00000000000000022
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{starting\_pitchers\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(ln\_Sueldo\_t }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Anio\_t }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t }\SpecialCharTok{+} 
+\NormalTok{Juegos\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_t }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_t }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_t }\SpecialCharTok{+}\NormalTok{ Carreras\_t }\SpecialCharTok{+}       
+\NormalTok{Carreras\_ganadas\_t }\SpecialCharTok{+}\NormalTok{  Walks\_t }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_t }\SpecialCharTok{+}\NormalTok{  Wins\_t }\SpecialCharTok{+}\NormalTok{ Losses\_t  }\SpecialCharTok{+}\NormalTok{ Saves\_t }\SpecialCharTok{+}\NormalTok{ WHIP\_t }\SpecialCharTok{+} 
+\NormalTok{ERA\_t }\SpecialCharTok{+}\NormalTok{ Equipo\_t }\SpecialCharTok{+}\NormalTok{ ln\_Sueldo\_base\_t }\SpecialCharTok{+}\NormalTok{ ln\_Sueldo\_t }\SpecialCharTok{+}\NormalTok{ ln\_Sueldo\_regular\_t  }\SpecialCharTok{+}\NormalTok{ Dominio\_t }\SpecialCharTok{+}\NormalTok{ Control\_t }\SpecialCharTok{+}\NormalTok{ Comando\_t }\SpecialCharTok{+}           
+\NormalTok{Juegos\_2\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_2\_t }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_2\_t }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_2\_t }\SpecialCharTok{+}\NormalTok{ Carreras\_2\_t }\SpecialCharTok{+}    
+\NormalTok{Carreras\_ganadas\_2\_t }\SpecialCharTok{+}\NormalTok{ Walks\_2\_t }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_2\_t  }\SpecialCharTok{+}\NormalTok{ Wins\_2\_t }\SpecialCharTok{+}\NormalTok{ Losses\_2\_t  }\SpecialCharTok{+}\NormalTok{ Saves\_2\_t }\SpecialCharTok{+}\NormalTok{ WHIP\_2\_t  }\SpecialCharTok{+}
+\NormalTok{ERA\_2\_t }\SpecialCharTok{+}\NormalTok{ Control\_2\_t }\SpecialCharTok{+}\NormalTok{ Comando\_2\_t }\SpecialCharTok{+}\NormalTok{ Anio\_t\_1 }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t\_1 }\SpecialCharTok{+} 
+\NormalTok{Juegos\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_t\_1  }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_t\_1 }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_t\_1 }\SpecialCharTok{+}\NormalTok{ Carreras\_t\_1 }\SpecialCharTok{+}\NormalTok{ Carreras\_ganadas\_t\_1  }\SpecialCharTok{+}   
+\NormalTok{Walks\_t\_1  }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_t\_1 }\SpecialCharTok{+}\NormalTok{ Wins\_t\_1 }\SpecialCharTok{+}\NormalTok{  Losses\_t\_1 }\SpecialCharTok{+}\NormalTok{ Saves\_t\_1 }\SpecialCharTok{+}\NormalTok{ WHIP\_t\_1 }\SpecialCharTok{+}\NormalTok{ ERA\_t\_1 }\SpecialCharTok{+}\NormalTok{  Dominio\_t\_1 }\SpecialCharTok{+}\NormalTok{ Control\_t\_1 }\SpecialCharTok{+}         
+\NormalTok{Comando\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_iniciados\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Inning\_pitched\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Bateos\_pitcher\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Carreras\_2\_t\_1  }\SpecialCharTok{+} 
+\NormalTok{Carreras\_ganadas\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Walks\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Strike\_outs\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Wins\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Losses\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Saves\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ WHIP\_2\_t\_1 }\SpecialCharTok{+}
+\NormalTok{ERA\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Control\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Comando\_2\_t\_1,}
+\AttributeTok{data =}\NormalTok{ starting\_pitchers\_panel\_data)  }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in model.matrix.default(mt, mf, contrasts): the response appeared on the
+## right-hand side and was dropped
+
+## Warning in model.matrix.default(mt, mf, contrasts): problem with term 20 in
+## model.matrix: no columns are assigned
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(starting\_pitchers\_model, }\AttributeTok{diagnostics=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + 
+##     Valor_promedio_contrato_t + Juegos_t + Juegos_iniciados_t + 
+##     Inning_pitched_t + Bateos_pitcher_t + Carreras_t + Carreras_ganadas_t + 
+##     Walks_t + Strike_outs_t + Wins_t + Losses_t + Saves_t + WHIP_t + 
+##     ERA_t + Equipo_t + ln_Sueldo_base_t + ln_Sueldo_t + ln_Sueldo_regular_t + 
+##     Dominio_t + Control_t + Comando_t + Juegos_2_t + Juegos_iniciados_2_t + 
+##     Inning_pitched_2_t + Bateos_pitcher_2_t + Carreras_2_t + 
+##     Carreras_ganadas_2_t + Walks_2_t + Strike_outs_2_t + Wins_2_t + 
+##     Losses_2_t + Saves_2_t + WHIP_2_t + ERA_2_t + Control_2_t + 
+##     Comando_2_t + Anio_t_1 + Anios_contrato_t_1 + Valor_contrato_t_1 + 
+##     Valor_promedio_contrato_t_1 + Juegos_t_1 + Juegos_iniciados_t_1 + 
+##     Inning_pitched_t_1 + Bateos_pitcher_t_1 + Carreras_t_1 + 
+##     Carreras_ganadas_t_1 + Walks_t_1 + Strike_outs_t_1 + Wins_t_1 + 
+##     Losses_t_1 + Saves_t_1 + WHIP_t_1 + ERA_t_1 + Dominio_t_1 + 
+##     Control_t_1 + Comando_t_1 + Juegos_2_t_1 + Juegos_iniciados_2_t_1 + 
+##     Inning_pitched_2_t_1 + Bateos_pitcher_2_t_1 + Carreras_2_t_1 + 
+##     Carreras_ganadas_2_t_1 + Walks_2_t_1 + Strike_outs_2_t_1 + 
+##     Wins_2_t_1 + Losses_2_t_1 + Saves_2_t_1 + WHIP_2_t_1 + ERA_2_t_1 + 
+##     Control_2_t_1 + Comando_2_t_1, data = starting_pitchers_panel_data)
+## 
+## Residuals:
+## ALL 38 residuals are 0: no residual degrees of freedom!
+## 
+## Coefficients: (54 not defined because of singularities)
+##                                    Estimate Std. Error t value Pr(>|t|)
+## (Intercept)                  328.7590668419         NA      NA       NA
+## Anio_t                         4.7527454090         NA      NA       NA
+## Anios_contrato_t               0.2681659962         NA      NA       NA
+## Valor_contrato_t              -0.0000003088         NA      NA       NA
+## Valor_promedio_contrato_t     -0.0000027399         NA      NA       NA
+## Juegos_t                      -5.6933293256         NA      NA       NA
+## Juegos_iniciados_t            -0.8696537946         NA      NA       NA
+## Inning_pitched_t              -1.4702214077         NA      NA       NA
+## Bateos_pitcher_t               2.6445000834         NA      NA       NA
+## Carreras_t                     1.2471105578         NA      NA       NA
+## Carreras_ganadas_t            -4.2759083757         NA      NA       NA
+## Walks_t                        3.4656850609         NA      NA       NA
+## Strike_outs_t                 -0.0779635032         NA      NA       NA
+## Wins_t                         5.4422789237         NA      NA       NA
+## Losses_t                      -4.8255216131         NA      NA       NA
+## Saves_t                                  NA         NA      NA       NA
+## WHIP_t                      -234.5366775173         NA      NA       NA
+## ERA_t                         46.0157219824         NA      NA       NA
+## Equipo_tBOS                   26.2848229479         NA      NA       NA
+## Equipo_tCHC                   87.6643251102         NA      NA       NA
+## Equipo_tCHW                  111.9726100491         NA      NA       NA
+## Equipo_tCIN                   62.0689312076         NA      NA       NA
+## Equipo_tHOU                   59.3225636462         NA      NA       NA
+## Equipo_tKC                     2.1329061298         NA      NA       NA
+## Equipo_tLAD                   73.6919663511         NA      NA       NA
+## Equipo_tMIL                   23.6177842130         NA      NA       NA
+## Equipo_tMIN                   68.3709035857         NA      NA       NA
+## Equipo_tNYM                   76.9322353583         NA      NA       NA
+## Equipo_tNYY                  118.7585566326         NA      NA       NA
+## Equipo_tOAK                   14.7529429538         NA      NA       NA
+## Equipo_tPIT                   -3.3475841352         NA      NA       NA
+## Equipo_tSD                   -10.9815744093         NA      NA       NA
+## Equipo_tSF                    35.8648973128         NA      NA       NA
+## Equipo_tSTL                   27.0227296962         NA      NA       NA
+## Equipo_tTEX                   18.1176824385         NA      NA       NA
+## Equipo_tTOR                  -58.5564715796         NA      NA       NA
+## Equipo_tWSH                   32.1604863512         NA      NA       NA
+## ln_Sueldo_base_t             -64.5075085736         NA      NA       NA
+## ln_Sueldo_regular_t           52.6616978241         NA      NA       NA
+## Dominio_t                                NA         NA      NA       NA
+## Control_t                                NA         NA      NA       NA
+## Comando_t                                NA         NA      NA       NA
+## Juegos_2_t                               NA         NA      NA       NA
+## Juegos_iniciados_2_t                     NA         NA      NA       NA
+## Inning_pitched_2_t                       NA         NA      NA       NA
+## Bateos_pitcher_2_t                       NA         NA      NA       NA
+## Carreras_2_t                             NA         NA      NA       NA
+## Carreras_ganadas_2_t                     NA         NA      NA       NA
+## Walks_2_t                                NA         NA      NA       NA
+## Strike_outs_2_t                          NA         NA      NA       NA
+## Wins_2_t                                 NA         NA      NA       NA
+## Losses_2_t                               NA         NA      NA       NA
+## Saves_2_t                                NA         NA      NA       NA
+## WHIP_2_t                                 NA         NA      NA       NA
+## ERA_2_t                                  NA         NA      NA       NA
+## Control_2_t                              NA         NA      NA       NA
+## Comando_2_t                              NA         NA      NA       NA
+## Anio_t_1                                 NA         NA      NA       NA
+## Anios_contrato_t_1                       NA         NA      NA       NA
+## Valor_contrato_t_1                       NA         NA      NA       NA
+## Valor_promedio_contrato_t_1              NA         NA      NA       NA
+## Juegos_t_1                               NA         NA      NA       NA
+## Juegos_iniciados_t_1                     NA         NA      NA       NA
+## Inning_pitched_t_1                       NA         NA      NA       NA
+## Bateos_pitcher_t_1                       NA         NA      NA       NA
+## Carreras_t_1                             NA         NA      NA       NA
+## Carreras_ganadas_t_1                     NA         NA      NA       NA
+## Walks_t_1                                NA         NA      NA       NA
+## Strike_outs_t_1                          NA         NA      NA       NA
+## Wins_t_1                                 NA         NA      NA       NA
+## Losses_t_1                               NA         NA      NA       NA
+## Saves_t_1                                NA         NA      NA       NA
+## WHIP_t_1                                 NA         NA      NA       NA
+## ERA_t_1                                  NA         NA      NA       NA
+## Dominio_t_1                              NA         NA      NA       NA
+## Control_t_1                              NA         NA      NA       NA
+## Comando_t_1                              NA         NA      NA       NA
+## Juegos_2_t_1                             NA         NA      NA       NA
+## Juegos_iniciados_2_t_1                   NA         NA      NA       NA
+## Inning_pitched_2_t_1                     NA         NA      NA       NA
+## Bateos_pitcher_2_t_1                     NA         NA      NA       NA
+## Carreras_2_t_1                           NA         NA      NA       NA
+## Carreras_ganadas_2_t_1                   NA         NA      NA       NA
+## Walks_2_t_1                              NA         NA      NA       NA
+## Strike_outs_2_t_1                        NA         NA      NA       NA
+## Wins_2_t_1                               NA         NA      NA       NA
+## Losses_2_t_1                             NA         NA      NA       NA
+## Saves_2_t_1                              NA         NA      NA       NA
+## WHIP_2_t_1                               NA         NA      NA       NA
+## ERA_2_t_1                                NA         NA      NA       NA
+## Control_2_t_1                            NA         NA      NA       NA
+## Comando_2_t_1                            NA         NA      NA       NA
+## 
+## Residual standard error: NaN on 0 degrees of freedom
+## Multiple R-squared:      1,  Adjusted R-squared:    NaN 
+## F-statistic:   NaN on 37 and 0 DF,  p-value: NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{catchers\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(ln\_Sueldo\_t }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Anio\_t }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_t }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_t}
+                                 \SpecialCharTok{+}\NormalTok{ Home\_runs\_t }\SpecialCharTok{+}\NormalTok{ RBI\_t }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_t }\SpecialCharTok{+}\NormalTok{ OPS\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_2\_t }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_2\_t}
+                                 \SpecialCharTok{+}\NormalTok{ At\_bats\_2\_t }\SpecialCharTok{+}\NormalTok{ Bateos\_2\_t }\SpecialCharTok{+}\NormalTok{ Home\_runs\_2\_t }\SpecialCharTok{+}\NormalTok{ RBI\_2\_t }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_2\_t }\SpecialCharTok{+}\NormalTok{ OPS\_2\_t }\SpecialCharTok{+}\NormalTok{ Anio\_t\_1 }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t\_1}
+                                 \SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_t\_1 }\SpecialCharTok{+}\NormalTok{ At\_bats\_t\_1 }\SpecialCharTok{+}\NormalTok{ Bateos\_t\_1}
+                                 \SpecialCharTok{+}\NormalTok{ Home\_runs\_t\_1 }\SpecialCharTok{+}\NormalTok{ RBI\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_t\_1 }\SpecialCharTok{+}\NormalTok{ OPS\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ At\_bats\_2\_t\_1}
+                                 \SpecialCharTok{+}\NormalTok{ Bateos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Home\_runs\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ RBI\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ OPS\_2\_t\_1, }\AttributeTok{data =}\NormalTok{ catchers\_panel\_data)}
+\FunctionTok{summary}\NormalTok{(catchers\_model, }\AttributeTok{diagnostics=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + 
+##     Valor_promedio_contrato_t + Juegos_t + Porcetnaje_juegos_t + 
+##     Home_runs_t + RBI_t + Porcentaje_bateo_t + OPS_t + Juegos_2_t + 
+##     Porcetnaje_juegos_2_t + At_bats_2_t + Bateos_2_t + Home_runs_2_t + 
+##     RBI_2_t + Porcentaje_bateo_2_t + OPS_2_t + Anio_t_1 + Anios_contrato_t_1 + 
+##     Valor_contrato_t_1 + Valor_promedio_contrato_t_1 + Juegos_t_1 + 
+##     Porcetnaje_juegos_t_1 + At_bats_t_1 + Bateos_t_1 + Home_runs_t_1 + 
+##     RBI_t_1 + Porcentaje_bateo_t_1 + OPS_t_1 + Juegos_2_t_1 + 
+##     Porcetnaje_juegos_2_t_1 + At_bats_2_t_1 + Bateos_2_t_1 + 
+##     Home_runs_2_t_1 + RBI_2_t_1 + Porcentaje_bateo_2_t_1 + OPS_2_t_1, 
+##     data = catchers_panel_data)
+## 
+## Residuals:
+## ALL 26 residuals are 0: no residual degrees of freedom!
+## 
+## Coefficients: (13 not defined because of singularities)
+##                                    Estimate Std. Error t value Pr(>|t|)
+## (Intercept)                   1.63479963189         NA      NA       NA
+## Anio_t                       -0.05684642415         NA      NA       NA
+## Anios_contrato_t             -0.99705383119         NA      NA       NA
+## Valor_contrato_t              0.00000007335         NA      NA       NA
+## Valor_promedio_contrato_t     0.00000029622         NA      NA       NA
+## Juegos_t                      0.06192824685         NA      NA       NA
+## Porcetnaje_juegos_t          21.66249267712         NA      NA       NA
+## Home_runs_t                   0.00930685418         NA      NA       NA
+## RBI_t                        -0.40352564915         NA      NA       NA
+## Porcentaje_bateo_t           13.43875216612         NA      NA       NA
+## OPS_t                         7.28947997081         NA      NA       NA
+## Juegos_2_t                   -0.00027158424         NA      NA       NA
+## Porcetnaje_juegos_2_t       -16.50675561880         NA      NA       NA
+## At_bats_2_t                   0.00001643879         NA      NA       NA
+## Bateos_2_t                   -0.00025005071         NA      NA       NA
+## Home_runs_2_t                -0.00543804979         NA      NA       NA
+## RBI_2_t                       0.00467221658         NA      NA       NA
+## Porcentaje_bateo_2_t        -42.54219487160         NA      NA       NA
+## OPS_2_t                       5.04878598012         NA      NA       NA
+## Anio_t_1                                 NA         NA      NA       NA
+## Anios_contrato_t_1            2.33980957812         NA      NA       NA
+## Valor_contrato_t_1           -0.00000020302         NA      NA       NA
+## Valor_promedio_contrato_t_1  -0.00000021037         NA      NA       NA
+## Juegos_t_1                   -0.06390250730         NA      NA       NA
+## Porcetnaje_juegos_t_1         7.92083304336         NA      NA       NA
+## At_bats_t_1                   0.01581056517         NA      NA       NA
+## Bateos_t_1                   -0.02156277334         NA      NA       NA
+## Home_runs_t_1                            NA         NA      NA       NA
+## RBI_t_1                                  NA         NA      NA       NA
+## Porcentaje_bateo_t_1                     NA         NA      NA       NA
+## OPS_t_1                                  NA         NA      NA       NA
+## Juegos_2_t_1                             NA         NA      NA       NA
+## Porcetnaje_juegos_2_t_1                  NA         NA      NA       NA
+## At_bats_2_t_1                            NA         NA      NA       NA
+## Bateos_2_t_1                             NA         NA      NA       NA
+## Home_runs_2_t_1                          NA         NA      NA       NA
+## RBI_2_t_1                                NA         NA      NA       NA
+## Porcentaje_bateo_2_t_1                   NA         NA      NA       NA
+## OPS_2_t_1                                NA         NA      NA       NA
+## 
+## Residual standard error: NaN on 0 degrees of freedom
+## Multiple R-squared:      1,  Adjusted R-squared:    NaN 
+## F-statistic:   NaN on 25 and 0 DF,  p-value: NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{remain\_hitters\_model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(ln\_Sueldo\_t }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Anio\_t }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_t }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_t}
+                                 \SpecialCharTok{+}\NormalTok{ Home\_runs\_t }\SpecialCharTok{+}\NormalTok{ RBI\_t }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_t }\SpecialCharTok{+}\NormalTok{ OPS\_t }\SpecialCharTok{+}\NormalTok{ Juegos\_2\_t }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_2\_t}
+                                 \SpecialCharTok{+}\NormalTok{ At\_bats\_2\_t }\SpecialCharTok{+}\NormalTok{ Bateos\_2\_t }\SpecialCharTok{+}\NormalTok{ Home\_runs\_2\_t }\SpecialCharTok{+}\NormalTok{ RBI\_2\_t }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_2\_t }\SpecialCharTok{+}\NormalTok{ OPS\_2\_t }\SpecialCharTok{+}\NormalTok{ Anio\_t\_1 }\SpecialCharTok{+}\NormalTok{ Anios\_contrato\_t\_1}
+                                 \SpecialCharTok{+}\NormalTok{ Valor\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Valor\_promedio\_contrato\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_t\_1 }\SpecialCharTok{+}\NormalTok{ At\_bats\_t\_1 }\SpecialCharTok{+}\NormalTok{ Bateos\_t\_1}
+                                 \SpecialCharTok{+}\NormalTok{ Home\_runs\_t\_1 }\SpecialCharTok{+}\NormalTok{ RBI\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_t\_1 }\SpecialCharTok{+}\NormalTok{ OPS\_t\_1 }\SpecialCharTok{+}\NormalTok{ Juegos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcetnaje\_juegos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ At\_bats\_2\_t\_1}
+                                 \SpecialCharTok{+}\NormalTok{ Bateos\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Home\_runs\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ RBI\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ Porcentaje\_bateo\_2\_t\_1 }\SpecialCharTok{+}\NormalTok{ OPS\_2\_t\_1, }\AttributeTok{data =}\NormalTok{ remain\_hitters\_panel\_data)}
+\FunctionTok{summary}\NormalTok{(remain\_hitters\_model, }\AttributeTok{diagnostics=}\ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + 
+##     Valor_promedio_contrato_t + Juegos_t + Porcetnaje_juegos_t + 
+##     Home_runs_t + RBI_t + Porcentaje_bateo_t + OPS_t + Juegos_2_t + 
+##     Porcetnaje_juegos_2_t + At_bats_2_t + Bateos_2_t + Home_runs_2_t + 
+##     RBI_2_t + Porcentaje_bateo_2_t + OPS_2_t + Anio_t_1 + Anios_contrato_t_1 + 
+##     Valor_contrato_t_1 + Valor_promedio_contrato_t_1 + Juegos_t_1 + 
+##     Porcetnaje_juegos_t_1 + At_bats_t_1 + Bateos_t_1 + Home_runs_t_1 + 
+##     RBI_t_1 + Porcentaje_bateo_t_1 + OPS_t_1 + Juegos_2_t_1 + 
+##     Porcetnaje_juegos_2_t_1 + At_bats_2_t_1 + Bateos_2_t_1 + 
+##     Home_runs_2_t_1 + RBI_2_t_1 + Porcentaje_bateo_2_t_1 + OPS_2_t_1, 
+##     data = remain_hitters_panel_data)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.0128 -0.1970  0.0229  0.2228  1.2354 
+## 
+## Coefficients: (1 not defined because of singularities)
+##                                    Estimate      Std. Error t value Pr(>|t|)
+## (Intercept)                   7.73561120091   4.46703108597   1.732 0.089491
+## Anio_t                        0.02312392361   0.05477414621   0.422 0.674712
+## Anios_contrato_t              0.38194305798   0.29499630621   1.295 0.201358
+## Valor_contrato_t             -0.00000002321   0.00000001994  -1.164 0.249919
+## Valor_promedio_contrato_t     0.00000018653   0.00000005063   3.684 0.000564
+## Juegos_t                     -0.06102375963   0.04803005886  -1.271 0.209775
+## Porcetnaje_juegos_t           6.89333230082   7.59907208348   0.907 0.368690
+## Home_runs_t                  -0.04918702056   0.07326853862  -0.671 0.505103
+## RBI_t                         0.00836429979   0.03120558704   0.268 0.789772
+## Porcentaje_bateo_t          -13.58359906763  35.51720801248  -0.382 0.703748
+## OPS_t                         4.18250792356  12.75476853810   0.328 0.744343
+## Juegos_2_t                    0.00032301827   0.00025588466   1.262 0.212676
+## Porcetnaje_juegos_2_t        -6.06290008137   6.49243624403  -0.934 0.354874
+## At_bats_2_t                   0.00000265315   0.00000707066   0.375 0.709074
+## Bateos_2_t                   -0.00003443253   0.00008529095  -0.404 0.688150
+## Home_runs_2_t                 0.00190713990   0.00168398866   1.133 0.262820
+## RBI_2_t                      -0.00005242389   0.00024383825  -0.215 0.830646
+## Porcentaje_bateo_2_t         -3.13040704229  71.22773573331  -0.044 0.965120
+## OPS_2_t                       0.29878468654   8.59462307473   0.035 0.972406
+## Anio_t_1                                 NA              NA      NA       NA
+## Anios_contrato_t_1            1.13682921298   1.27880789890   0.889 0.378273
+## Valor_contrato_t_1           -0.00000011425   0.00000013273  -0.861 0.393495
+## Valor_promedio_contrato_t_1   0.00000012241   0.00000013400   0.914 0.365358
+## Juegos_t_1                   -0.02313136755   0.04420743173  -0.523 0.603114
+## Porcetnaje_juegos_t_1         4.41449714715   5.14467113039   0.858 0.394948
+## At_bats_t_1                   0.01098522062   0.01748566575   0.628 0.532705
+## Bateos_t_1                   -0.02582134587   0.07045118364  -0.367 0.715528
+## Home_runs_t_1                 0.22619618980   0.09517525161   2.377 0.021341
+## RBI_t_1                      -0.05101017502   0.03759029151  -1.357 0.180875
+## Porcentaje_bateo_t_1         53.15642266109  37.96781967558   1.400 0.167676
+## OPS_t_1                      -5.74853846999   7.61339153263  -0.755 0.453757
+## Juegos_2_t_1                  0.00011052767   0.00022837028   0.484 0.630510
+## Porcetnaje_juegos_2_t_1      -3.90768140144   3.86761061955  -1.010 0.317187
+## At_bats_2_t_1                -0.00001593269   0.00001719756  -0.926 0.358662
+## Bateos_2_t_1                  0.00012523668   0.00021553800   0.581 0.563822
+## Home_runs_2_t_1              -0.00565899362   0.00223926078  -2.527 0.014707
+## RBI_2_t_1                     0.00036597684   0.00029108536   1.257 0.214492
+## Porcentaje_bateo_2_t_1      -70.25758471768  52.51337809343  -1.338 0.186983
+## OPS_2_t_1                     0.69944462348   4.49683462027   0.156 0.877021
+##                                
+## (Intercept)                 .  
+## Anio_t                         
+## Anios_contrato_t               
+## Valor_contrato_t               
+## Valor_promedio_contrato_t   ***
+## Juegos_t                       
+## Porcetnaje_juegos_t            
+## Home_runs_t                    
+## RBI_t                          
+## Porcentaje_bateo_t             
+## OPS_t                          
+## Juegos_2_t                     
+## Porcetnaje_juegos_2_t          
+## At_bats_2_t                    
+## Bateos_2_t                     
+## Home_runs_2_t                  
+## RBI_2_t                        
+## Porcentaje_bateo_2_t           
+## OPS_2_t                        
+## Anio_t_1                       
+## Anios_contrato_t_1             
+## Valor_contrato_t_1             
+## Valor_promedio_contrato_t_1    
+## Juegos_t_1                     
+## Porcetnaje_juegos_t_1          
+## At_bats_t_1                    
+## Bateos_t_1                     
+## Home_runs_t_1               *  
+## RBI_t_1                        
+## Porcentaje_bateo_t_1           
+## OPS_t_1                        
+## Juegos_2_t_1                   
+## Porcetnaje_juegos_2_t_1        
+## At_bats_2_t_1                  
+## Bateos_2_t_1                   
+## Home_runs_2_t_1             *  
+## RBI_2_t_1                      
+## Porcentaje_bateo_2_t_1         
+## OPS_2_t_1                      
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.5961 on 50 degrees of freedom
+## Multiple R-squared:  0.7993, Adjusted R-squared:  0.6508 
+## F-statistic: 5.382 on 37 and 50 DF,  p-value: 0.00000003444
+\end{verbatim}
+
+\end{document}

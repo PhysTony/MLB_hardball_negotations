@@ -1,0 +1,153 @@
+---
+title: "Cambio estructural"
+author: "Antonio Huerta Montellano"
+date: "7 de agosto del 2022"
+output:
+  pdf_document: 
+    fig_caption: yes
+    latex_engine: xelatex
+    keep_tex: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Importando las librerías:
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(wooldridge)
+library(tidyverse)
+library(knitr)
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(coefplot)
+library(data.table)
+library(pacman)
+library(tinytex)
+library(AER)
+library(car)
+library(cragg)
+library(tidyr)
+options(scipen = 999)
+library(tidyverse)
+library(stargazer)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(haven)
+library(lmtest)
+library(sandwich)
+library(gap)
+library(quantmod)
+```
+
+\section{Bases de datos}
+
+Veamos cuál es el directorio de trabajo
+```{r setwd}
+getwd()
+```
+
+Cambiemos el directorio de trabajo y carguemos las bases de datos para el modelo lineal en el mismo chunk:
+
+```{r base_datos}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+catchers_panel_data <- read.csv('Data/New_Data/Models/Article/article_catchers_panel_data.csv')
+relief_pitchers_panel_data <- read.csv('Data/New_Data/Models/Article/article_relief_pitchers_panel_data.csv')
+starting_pitchers_panel_data <- read.csv('Data/New_Data/Models/Article/article_starting_pitchers_panel_data.csv')
+remain_hitters_panel_data <- read.csv('Data/New_Data/Models/Article/article_remain_hitters_panel_data.csv')
+```
+Observemos el contenido de las bases de datos de los catchers:
+```{r catchers_datos_head}
+head(catchers_panel_data)
+```
+
+Ahora de los que son relief pitchers:
+```{r relief_pitchers_datos_head}
+head(relief_pitchers_panel_data)
+```
+
+Starting pitchers:
+```{r starting_pitchers_datos_head}
+head(starting_pitchers_panel_data)
+```
+
+Remain hitters:
+```{r remain_hitters_datos_head}
+head(remain_hitters_panel_data)
+```
+
+
+\section{Creación del modelo}
+
+Para ello y evitar errores, lo haremos con los nombres explícitos, obtengamos los nombres de las columnas
+```{r catchers_names}
+colnames(catchers_panel_data)
+```
+
+```{r relief_pitchers_names}
+colnames(relief_pitchers_panel_data)
+```
+
+```{r starting_pitchers_names}
+colnames(starting_pitchers_panel_data)
+```
+
+```{r remain_hitters_names}
+colnames(remain_hitters_panel_data)
+```
+
+Creemos ahora las formulas para las regresiones. Serán sobre $ln(Sueldo)$
+
+```{r pitchers_regression}
+pitcher_equation <- 
+
+relief_pitchers_model <- lm(ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + Valor_promedio_contrato_t + 
+Juegos_t + Juegos_iniciados_t + Inning_pitched_t + Bateos_pitcher_t + Carreras_t +       
+Carreras_ganadas_t +  Walks_t + Strike_outs_t +  Wins_t + Losses_t  + Saves_t + WHIP_t + 
+ERA_t + Equipo_t + ln_Sueldo_base_t + ln_Sueldo_t + ln_Sueldo_regular_t  + Dominio_t + Control_t + Comando_t +           
+Juegos_2_t + Juegos_iniciados_2_t + Inning_pitched_2_t + Bateos_pitcher_2_t + Carreras_2_t +    
+Carreras_ganadas_2_t + Walks_2_t + Strike_outs_2_t  + Wins_2_t + Losses_2_t  + Saves_2_t + WHIP_2_t  +
+ERA_2_t + Control_2_t + Comando_2_t + Anio_t_1 + Anios_contrato_t_1 + Valor_contrato_t_1 + Valor_promedio_contrato_t_1 + 
+Juegos_t_1 + Juegos_iniciados_t_1  + Inning_pitched_t_1 + Bateos_pitcher_t_1 + Carreras_t_1 + Carreras_ganadas_t_1  +   
+Walks_t_1  + Strike_outs_t_1 + Wins_t_1 +  Losses_t_1 + Saves_t_1 + WHIP_t_1 + ERA_t_1 +  Dominio_t_1 + Control_t_1 +         
+Comando_t_1 + Juegos_2_t_1 + Juegos_iniciados_2_t_1 + Inning_pitched_2_t_1 + Bateos_pitcher_2_t_1 + Carreras_2_t_1  + 
+Carreras_ganadas_2_t_1 + Walks_2_t_1 + Strike_outs_2_t_1 + Wins_2_t_1 + Losses_2_t_1 + Saves_2_t_1 + WHIP_2_t_1 +
+ERA_2_t_1 + Control_2_t_1 + Comando_2_t_1, 
+data = relief_pitchers_panel_data)
+summary(relief_pitchers_model, diagnostics=TRUE)
+
+starting_pitchers_model <- lm(ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + Valor_promedio_contrato_t + 
+Juegos_t + Juegos_iniciados_t + Inning_pitched_t + Bateos_pitcher_t + Carreras_t +       
+Carreras_ganadas_t +  Walks_t + Strike_outs_t +  Wins_t + Losses_t  + Saves_t + WHIP_t + 
+ERA_t + Equipo_t + ln_Sueldo_base_t + ln_Sueldo_t + ln_Sueldo_regular_t  + Dominio_t + Control_t + Comando_t +           
+Juegos_2_t + Juegos_iniciados_2_t + Inning_pitched_2_t + Bateos_pitcher_2_t + Carreras_2_t +    
+Carreras_ganadas_2_t + Walks_2_t + Strike_outs_2_t  + Wins_2_t + Losses_2_t  + Saves_2_t + WHIP_2_t  +
+ERA_2_t + Control_2_t + Comando_2_t + Anio_t_1 + Anios_contrato_t_1 + Valor_contrato_t_1 + Valor_promedio_contrato_t_1 + 
+Juegos_t_1 + Juegos_iniciados_t_1  + Inning_pitched_t_1 + Bateos_pitcher_t_1 + Carreras_t_1 + Carreras_ganadas_t_1  +   
+Walks_t_1  + Strike_outs_t_1 + Wins_t_1 +  Losses_t_1 + Saves_t_1 + WHIP_t_1 + ERA_t_1 +  Dominio_t_1 + Control_t_1 +         
+Comando_t_1 + Juegos_2_t_1 + Juegos_iniciados_2_t_1 + Inning_pitched_2_t_1 + Bateos_pitcher_2_t_1 + Carreras_2_t_1  + 
+Carreras_ganadas_2_t_1 + Walks_2_t_1 + Strike_outs_2_t_1 + Wins_2_t_1 + Losses_2_t_1 + Saves_2_t_1 + WHIP_2_t_1 +
+ERA_2_t_1 + Control_2_t_1 + Comando_2_t_1,
+data = starting_pitchers_panel_data)  
+summary(starting_pitchers_model, diagnostics=TRUE)
+```
+
+```{r hitters_equation}
+catchers_model <- lm(ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + Valor_promedio_contrato_t + Juegos_t + Porcetnaje_juegos_t
+                                 + Home_runs_t + RBI_t + Porcentaje_bateo_t + OPS_t + Juegos_2_t + Porcetnaje_juegos_2_t
+                                 + At_bats_2_t + Bateos_2_t + Home_runs_2_t + RBI_2_t + Porcentaje_bateo_2_t + OPS_2_t + Anio_t_1 + Anios_contrato_t_1
+                                 + Valor_contrato_t_1 + Valor_promedio_contrato_t_1 + Juegos_t_1 + Porcetnaje_juegos_t_1 + At_bats_t_1 + Bateos_t_1
+                                 + Home_runs_t_1 + RBI_t_1 + Porcentaje_bateo_t_1 + OPS_t_1 + Juegos_2_t_1 + Porcetnaje_juegos_2_t_1 + At_bats_2_t_1
+                                 + Bateos_2_t_1 + Home_runs_2_t_1 + RBI_2_t_1 + Porcentaje_bateo_2_t_1 + OPS_2_t_1, data = catchers_panel_data)
+summary(catchers_model, diagnostics=TRUE)
+
+remain_hitters_model <- lm(ln_Sueldo_t ~ Anio_t + Anios_contrato_t + Valor_contrato_t + Valor_promedio_contrato_t + Juegos_t + Porcetnaje_juegos_t
+                                 + Home_runs_t + RBI_t + Porcentaje_bateo_t + OPS_t + Juegos_2_t + Porcetnaje_juegos_2_t
+                                 + At_bats_2_t + Bateos_2_t + Home_runs_2_t + RBI_2_t + Porcentaje_bateo_2_t + OPS_2_t + Anio_t_1 + Anios_contrato_t_1
+                                 + Valor_contrato_t_1 + Valor_promedio_contrato_t_1 + Juegos_t_1 + Porcetnaje_juegos_t_1 + At_bats_t_1 + Bateos_t_1
+                                 + Home_runs_t_1 + RBI_t_1 + Porcentaje_bateo_t_1 + OPS_t_1 + Juegos_2_t_1 + Porcetnaje_juegos_2_t_1 + At_bats_2_t_1
+                                 + Bateos_2_t_1 + Home_runs_2_t_1 + RBI_2_t_1 + Porcentaje_bateo_2_t_1 + OPS_2_t_1, data = remain_hitters_panel_data)
+summary(remain_hitters_model, diagnostics=TRUE)
+```
