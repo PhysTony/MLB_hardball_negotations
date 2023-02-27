@@ -1,0 +1,33 @@
+---
+title: "Derivatives"
+author: "Antonio Huerta Montellano"
+date: "24/2/2023"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+
+```{r mexican}
+# Create a list of dates and values
+date = as.Date(c("2022-03-23", "2022-04-23", "2022-05-23", "2022-06-23", "2022-07-23",  "2022-08-23"))
+df_mex <- data.frame(
+          date,
+          value = c(.05429, .05392, .05364, 12, 20)
+)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
