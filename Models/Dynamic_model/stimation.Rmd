@@ -1,0 +1,52 @@
+---
+title: "Dynamic Model"
+author: "Antonio Huerta Montellano"
+date: \today
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+library(plm)
+library(tidyr)
+```
+
+
+## Exploración de los paneles
+
+Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, a los fielderos.
+
+```{r import_panel}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+hitters_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders.csv')
+```
+
+Observemos el contenido de las bases de datos de los catchers:
+```{r catchers_datos_head}
+summary(hitters_panel)
+```
+Por otro lado, se mostrarán las dimensiones de cada pánel
+```{r panel_dimentions}
+print("Bateadores: ")
+print(dim(hitters_panel))
+print("")
+print("Fildeadores: ")
+print(dim(fielders_panel))
+```
+
+## Segmentación por grupo
+
+```{r segmentación, include=FALSE}
+fielders_pos <- list("SP,'C",'2b','3B','RP','1B','RF','CF','LF','SS','RP/CL')
+hitters_pos <- list('DH','H')
+
+unique(hitters_panel$Posicion)
+```
+
