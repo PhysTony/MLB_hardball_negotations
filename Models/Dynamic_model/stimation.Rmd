@@ -27,11 +27,6 @@ setwd("~/Documentos/Github/Proyectos/MLB_HN/")
 hitters_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters.csv')
 fielders_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders.csv')
 ```
-
-Observemos el contenido de las bases de datos de los catchers:
-```{r catchers_datos_head}
-summary(hitters_panel)
-```
 Por otro lado, se mostrarán las dimensiones de cada pánel
 ```{r panel_dimentions}
 print("Bateadores: ")
@@ -43,10 +38,126 @@ print(dim(fielders_panel))
 
 ## Segmentación por grupo
 
-```{r segmentación, include=FALSE}
-fielders_pos <- list("SP,'C",'2b','3B','RP','1B','RF','CF','LF','SS','RP/CL')
-hitters_pos <- list('DH','H')
+Lo que haremos es dividir los paneles en ciertas categorías. Primero, veamos todas las posiciones en los páneles
+```{r positions}
+print("Bateadores:")
+print(unique(hitters_panel$Posicion))
+print("")
+print("Fildeadores:")
+print(unique(fielders_panel$Posicion))
+```
+Arriba se muestran las posiciones de los jugadores en nuestras bases de datos. A pesar de que en los bateadores aparezcan posiciones defensivas se debe a que estos juegan tanto como ofensivos como defensivos. Estando en la ofensiva se juega en las misma posición que todos por lo que no es necesario especificar que ocupala posición de bateador (**H**). Sin embargo, cuando se dice que es un bateador designado (**DH**) ya que este solo juega en la ofensiva para sustituir a un lanzador/pitcher.
 
-unique(hitters_panel$Posicion)
+Por otro lado, veamos cuantas observaciones hay por posición.
+
+```{r positions_count_hitter}
+hitters_panel %>% count(Posicion, sort = TRUE)
 ```
 
+```{r positions_count_fielder}
+fielders_panel %>% count(Posicion, sort = TRUE)
+```
+
+Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos el split de todas las posiciones y luego concatenaremos de acuerdo a los grupos de interés:
+
+**Ofensivos:**
+
+- **Bateador designado (DH).**
+- **No bateador designado (H).**
+
+**Defensivos:**
+
+- **Battery:** Receptor (C) y lanzador (P).
+- **Infield:** Bases 1B, 2B, 3B y campo corto (SS).
+- **Outfield:** Jardineros derechos (RF), centrales (CF) e izquierdos (LF).
+
+
+```{r position_split, include=FALSE}
+# split the data frame by category
+split_hitter <- split(hitters_panel, f = hitters_panel$Posicion)
+split_fielder <- split(fielders_panel, f = fielders_panel$Posicion)
+```
+
+Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
+```{r group_category_split, include=FALSE}
+# Offensive:
+h_category_1 <- split_hitter[["SP"]]
+h_category_2 <- split_hitter[["RP"]]
+h_category_3 <- split_hitter[["RP/CL"]]
+h_category_4 <- split_hitter[["C"]]
+h_category_5 <- split_hitter[["1B"]]
+h_category_6 <- split_hitter[["2B"]]
+h_category_7 <- split_hitter[["3B"]]
+h_category_8 <- split_hitter[["SS"]]
+h_category_9 <- split_hitter[["RF"]]
+h_category_10 <- split_hitter[["CF"]]
+h_category_11 <- split_hitter[["LF"]]
+d_hitter_data <- split_hitter[["DH"]]
+
+# Defensive:
+b_category_1 <- split_fielder[["SP"]]
+b_category_2 <- split_fielder[["RP"]]
+b_category_3 <- split_fielder[["RP/CL"]]
+b_category_4 <- split_fielder[["C"]]
+if_category_1 <- split_fielder[["1B"]]
+if_category_2 <- split_fielder[["2B"]]
+if_category_3 <- split_fielder[["3B"]]
+if_category_4 <- split_fielder[["SS"]]
+of_category_1 <- split_fielder[["RF"]]
+of_category_2 <- split_fielder[["CF"]]
+of_category_3 <- split_fielder[["LF"]]
+```
+
+Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
+
+```{r group_concat, include=FALSE}
+# Hitters:
+# Concatenate the two categories
+hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
+                     h_category_5, h_category_6, h_category_7, h_category_8,
+                     h_category_9, h_category_10, h_category_11)
+
+# Fielders:
+# Concatenate the two categories
+battery_data <- rbind(b_category_1, b_category_2, b_category_3, b_category_4)
+
+# Infield:
+# Concatenate the two categories
+infield_data <- rbind(if_category_1, if_category_2, if_category_3, if_category_4)
+
+# Outfield:
+# Concatenate the two categories
+outfield_data <- rbind(of_category_1, of_category_2, of_category_3)
+```
+
+Veamos las dimensiones de cada una de los paneles:
+```{r group_dimentions}
+print("Regular hitter: ")
+print(dim(hitter_data))
+print("")
+print("Designated hitter: ")
+print(dim(d_hitter_data))
+print("")
+print("Battery: ")
+print(dim(battery_data))
+print("")
+print("Infield: ")
+print(dim(infield_data))
+print("Regular hitter: ")
+print(dim(outfield_data))
+```
+
+## Estimaciones y regresiones
+
+Lo que resta hacer es implementar un algoritmo donde se pueda hacer el siguiente modelo para todas las estadísticas deportiva de acuerdo a si el jugador es defensivo u ofensivo:
+
+$$
+Y_{t}(\cdot) = \alpha + \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
+$$
+
+donde
+- $Controles_{t}$:
+    - Equipo.
+    - Edad.
+    - Año.
+- $\alpha$: Heterogeneidad del jugador.

@@ -180,406 +180,113 @@ pre code {
 <pre class="r"><code>setwd(&quot;~/Documentos/Github/Proyectos/MLB_HN/&quot;)
 hitters_panel &lt;- read.csv(&#39;ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters.csv&#39;)
 fielders_panel &lt;- read.csv(&#39;ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders.csv&#39;)</code></pre>
-<p>Observemos el contenido de las bases de datos de los catchers:</p>
-<pre class="r"><code>summary(hitters_panel)</code></pre>
-<pre><code>##       Anio              Jugador        Acronimo        Altura      
-##  Min.   :2011   Chris Young :  19   No     :4380   Min.   :0.0000  
-##  1st Qu.:2013   Luis Garcia :  14   CHC    :  38   1st Qu.:0.0000  
-##  Median :2016   Bobby Abreu :  13   WSH    :  37   Median :0.0000  
-##  Mean   :2016   A.J. Burnett:  12   ATL    :  36   Mean   :0.8213  
-##  3rd Qu.:2019   A.J. Ellis  :  12   NYM    :  36   3rd Qu.:0.0000  
-##  Max.   :2022   A.J. Griffin:  12   LAD    :  32   Max.   :6.8000  
-##                 (Other)     :4968   (Other): 491                   
-##  Anio_de_agente_libre Anios_de_contrato_x Anios_de_contrato_y   Antiguedad     
-##  Min.   :   0.0       Min.   : 0.0000     Min.   : 0.0000     Min.   :0.00000  
-##  1st Qu.:   0.0       1st Qu.: 0.0000     1st Qu.: 0.0000     1st Qu.:0.00000  
-##  Median :   0.0       Median : 0.0000     Median : 0.0000     Median :0.00000  
-##  Mean   : 223.8       Mean   : 0.2364     Mean   : 0.2453     Mean   :0.07624  
-##  3rd Qu.:   0.0       3rd Qu.: 0.0000     3rd Qu.: 0.0000     3rd Qu.:0.00000  
-##  Max.   :2032.0       Max.   :10.0000     Max.   :10.0000     Max.   :8.00000  
-##                                                                                
-##     At_bats        At_bats_2          Bateos           Bateos_2      
-##  Min.   :  0.0   Min.   :     0   Min.   :  0.000   Min.   :    0.0  
-##  1st Qu.:  0.0   1st Qu.:     0   1st Qu.:  0.000   1st Qu.:    0.0  
-##  Median :  0.0   Median :     0   Median :  0.000   Median :    0.0  
-##  Mean   : 27.8   Mean   : 10882   Mean   :  6.872   Mean   :  723.1  
-##  3rd Qu.:  0.0   3rd Qu.:     0   3rd Qu.:  0.000   3rd Qu.:    0.0  
-##  Max.   :657.0   Max.   :431649   Max.   :199.000   Max.   :39601.0  
-##                                                                      
-##  Bateos_promedio   Bateos_promedio_2  Bono_por_firma    Cantidad.de.equipos
-##  Min.   :0.00000   Min.   :0.000000   Min.   :      0   Min.   :0.0000     
-##  1st Qu.:0.00000   1st Qu.:0.000000   1st Qu.:      0   1st Qu.:0.0000     
-##  Median :0.00000   Median :0.000000   Median :      0   Median :0.0000     
-##  Mean   :0.02545   Mean   :0.006751   Mean   :  22194   Mean   :0.2836     
-##  3rd Qu.:0.00000   3rd Qu.:0.000000   3rd Qu.:      0   3rd Qu.:0.0000     
-##  Max.   :1.00000   Max.   :1.000000   Max.   :7142857   Max.   :5.0000     
-##                                                                            
-##  Cantidad_agentes_libres     Dobles          Dobles_2            Edad       
-##  Min.   : 0.000          Min.   : 0.000   Min.   :   0.00   Min.   : 0.000  
-##  1st Qu.: 0.000          1st Qu.: 0.000   1st Qu.:   0.00   1st Qu.: 0.000  
-##  Median : 0.000          Median : 0.000   Median :   0.00   Median : 0.000  
-##  Mean   : 0.881          Mean   : 1.389   Mean   :  31.26   Mean   : 4.246  
-##  3rd Qu.: 0.000          3rd Qu.: 0.000   3rd Qu.:   0.00   3rd Qu.: 0.000  
-##  Max.   :18.000          Max.   :50.000   Max.   :2500.00   Max.   :42.000  
-##                                                                             
-##  Edad_al_firmar                   Equipo     Equipo_anterior        Estado    
-##  Min.   : 0.00   No                  :4380   No     :4380    No        :4380  
-##  1st Qu.: 0.00   Chicago Cubs        :  38   LAD    :  41    California: 112  
-##  Median : 0.00   Washington Nationals:  37   NYY    :  36    New York  :  65  
-##  Mean   : 4.17   Atlanta Braves      :  36   ATL    :  30    Illinois  :  58  
-##  3rd Qu.: 0.00   New York Mets       :  36   OAK    :  30    Florida   :  51  
-##  Max.   :42.00   Los Angeles Dodgers :  32   NYM    :  29    Texas     :  45  
-##                  (Other)             : 491   (Other): 504    (Other)   : 339  
-##    Ganancias           Home_runs        Home_runs_2          Juegos      
-##  Min.   :        0   Min.   : 0.0000   Min.   :   0.00   Min.   :  0.00  
-##  1st Qu.:        0   1st Qu.: 0.0000   1st Qu.:   0.00   1st Qu.:  0.00  
-##  Median :        0   Median : 0.0000   Median :   0.00   Median :  0.00  
-##  Mean   :  4924072   Mean   : 0.9741   Mean   :  18.56   Mean   : 10.03  
-##  3rd Qu.:        0   3rd Qu.: 0.0000   3rd Qu.:   0.00   3rd Qu.:  0.00  
-##  Max.   :341810741   Max.   :46.0000   Max.   :2116.00   Max.   :200.00  
-##                                                                          
-##  Juegos.totales   Juegos_iniciados  Juegos_iniciados_2 Pago_efectivo     
-##  Min.   :  0.00   Min.   :  0.000   Min.   :    0      Min.   :       0  
-##  1st Qu.:  0.00   1st Qu.:  0.000   1st Qu.:    0      1st Qu.:       0  
-##  Median :  0.00   Median :  0.000   Median :    0      Median :       0  
-##  Mean   : 20.66   Mean   :  7.765   Mean   :  745      Mean   :  736700  
-##  3rd Qu.:  0.00   3rd Qu.:  0.000   3rd Qu.:    0      3rd Qu.:       0  
-##  Max.   :163.00   Max.   :161.000   Max.   :25921      Max.   :38000000  
-##                                                                          
-##   Pennants.won         Peso           Playoffs    
-##  Min.   : 0.000   Min.   :  0.00   Min.   : 0.00  
-##  1st Qu.: 0.000   1st Qu.:  0.00   1st Qu.: 0.00  
-##  Median : 0.000   Median :  0.00   Median : 0.00  
-##  Mean   : 1.283   Mean   : 28.57   Mean   : 1.99  
-##  3rd Qu.: 0.000   3rd Qu.:  0.00   3rd Qu.: 0.00  
-##  Max.   :40.000   Max.   :270.00   Max.   :58.00  
-##                                                   
-##  Porcentaje_On_base_plus_slugging Porcentaje_On_base_plus_slugging_2
-##  Min.   :0.00000                  Min.   :0.00000                   
-##  1st Qu.:0.00000                  1st Qu.:0.00000                   
-##  Median :0.00000                  Median :0.00000                   
-##  Mean   :0.07291                  Mean   :0.05437                   
-##  3rd Qu.:0.00000                  3rd Qu.:0.00000                   
-##  Max.   :3.00000                  Max.   :9.00000                   
-##                                                                     
-##  Porcentaje_juegos Porcentaje_juegos_iniciados Porcentaje_juegos_iniciados_2
-##  Min.   :0.00000   Min.   :0.00000             Min.   :0.0000               
-##  1st Qu.:0.00000   1st Qu.:0.00000             1st Qu.:0.0000               
-##  Median :0.00000   Median :0.00000             Median :0.0000               
-##  Mean   :0.06464   Mean   :0.05054             Mean   :0.0308               
-##  3rd Qu.:0.00000   3rd Qu.:0.00000             3rd Qu.:0.0000               
-##  Max.   :1.00000   Max.   :1.00000             Max.   :1.0000               
-##                                                                             
-##  Porcentaje_on_base Porcentaje_on_base_2 Porcentaje_slugging
-##  Min.   :0.0000     Min.   :0.00000      Min.   :0.00000    
-##  1st Qu.:0.0000     1st Qu.:0.00000      1st Qu.:0.00000    
-##  Median :0.0000     Median :0.00000      Median :0.00000    
-##  Mean   :0.0326     Mean   :0.01048      Mean   :0.04031    
-##  3rd Qu.:0.0000     3rd Qu.:0.00000      3rd Qu.:0.00000    
-##  Max.   :1.0000     Max.   :1.00000      Max.   :2.00000    
-##                                                             
-##  Porcentaje_slugging_2    Posicion    Promedio_victorias Runs_batted_in   
-##  Min.   :0.0000        No     :4380   Min.   :0.00000    Min.   :  0.000  
-##  1st Qu.:0.0000        SP     : 141   1st Qu.:0.00000    1st Qu.:  0.000  
-##  Median :0.0000        RP     :  88   Median :0.00000    Median :  0.000  
-##  Mean   :0.0175        C      :  81   Mean   :0.06894    Mean   :  3.556  
-##  3rd Qu.:0.0000        LF     :  67   3rd Qu.:0.00000    3rd Qu.:  0.000  
-##  Max.   :4.0000        RF     :  56   Max.   :0.68519    Max.   :130.000  
-##                        (Other): 237                                       
-##  Runs_batted_in_2  Status_agente_libre Sueldo_ajustado     Sueldo_base      
-##  Min.   :    0.0   No :4380            Min.   :       0   Min.   :       0  
-##  1st Qu.:    0.0   UFA: 670            1st Qu.:       0   1st Qu.:       0  
-##  Median :    0.0                       Median :       0   Median :       0  
-##  Mean   :  206.5                       Mean   :  720977   Mean   :  760835  
-##  3rd Qu.:    0.0                       3rd Qu.:       0   3rd Qu.:       0  
-##  Max.   :16900.0                       Max.   :35100000   Max.   :35100000  
-##                                                                             
-##  Sueldo_porcentual  Sueldo_regular          TVS             TVS_2       
-##  Min.   :0.000000   Min.   :       0   Min.   : 0.000   Min.   :   0.0  
-##  1st Qu.:0.000000   1st Qu.:       0   1st Qu.: 0.000   1st Qu.:   0.0  
-##  Median :0.000000   Median :       0   Median : 0.000   Median :   0.0  
-##  Mean   :0.005532   Mean   :  797029   Mean   : 3.444   Mean   : 195.8  
-##  3rd Qu.:0.000000   3rd Qu.:       0   3rd Qu.: 0.000   3rd Qu.:   0.0  
-##  Max.   :0.347000   Max.   :35100000   Max.   :98.060   Max.   :9615.8  
-##                                                                         
-##     Triples          Triples_2        Valor_contrato     
-##  Min.   : 0.0000   Min.   :  0.0000   Min.   :        0  
-##  1st Qu.: 0.0000   1st Qu.:  0.0000   1st Qu.:        0  
-##  Median : 0.0000   Median :  0.0000   Median :        0  
-##  Mean   : 0.1016   Mean   :  0.3341   Mean   :  2574270  
-##  3rd Qu.: 0.0000   3rd Qu.:  0.0000   3rd Qu.:        0  
-##  Max.   :12.0000   Max.   :144.0000   Max.   :325000000  
-##                                                          
-##  Valor_contrato_promedio Valor_contrato_total Valor_del_contrato 
-##  Min.   :       0        Min.   :        0    Min.   :        0  
-##  1st Qu.:       0        1st Qu.:        0    1st Qu.:        0  
-##  Median :       0        Median :        0    Median :        0  
-##  Mean   :  861299        Mean   : 10498727    Mean   :  2585044  
-##  3rd Qu.:       0        3rd Qu.:        0    3rd Qu.:        0  
-##  Max.   :35100000        Max.   :580700000    Max.   :325000000  
-##                                                                  
-##  Valor_promedio_contrato   Victorias           WAR             WAR_2        
-##  Min.   :       0        Min.   :  0.00   Min.   :0.0000   Min.   : 0.0000  
-##  1st Qu.:       0        1st Qu.:  0.00   1st Qu.:0.0000   1st Qu.: 0.0000  
-##  Median :       0        Median :  0.00   Median :0.0000   Median : 0.0000  
-##  Mean   :  854355        Mean   : 10.75   Mean   :0.2324   Mean   : 0.6127  
-##  3rd Qu.:       0        3rd Qu.:  0.00   3rd Qu.:0.0000   3rd Qu.: 0.0000  
-##  Max.   :35100000        Max.   :111.00   Max.   :7.7300   Max.   :59.7529  
-##                                                                             
-##    WS.ganadas      ln_Sueldo_ajustado ln_Sueldo_base   ln_Sueldo_regular
-##  Min.   : 0.0000   Min.   : 0.000     Min.   : 0.000   Min.   : 0.000   
-##  1st Qu.: 0.0000   1st Qu.: 0.000     1st Qu.: 0.000   1st Qu.: 0.000   
-##  Median : 0.0000   Median : 0.000     Median : 0.000   Median : 0.000   
-##  Mean   : 0.5301   Mean   : 1.956     Mean   : 1.992   Mean   : 1.998   
-##  3rd Qu.: 0.0000   3rd Qu.: 0.000     3rd Qu.: 0.000   3rd Qu.: 0.000   
-##  Max.   :27.0000   Max.   :17.374     Max.   :17.374   Max.   :17.374   
-##                                                                         
-##    At_bats_H     At_bats_L         At_bats_2_H      At_bats_2_L      
-##  Min.   :181   Min.   :  0.0000   Min.   : 32761   Min.   :    0.00  
-##  1st Qu.:569   1st Qu.:  0.0000   1st Qu.:323761   1st Qu.:    0.00  
-##  Median :600   Median :  0.0000   Median :360000   Median :    0.00  
-##  Mean   :585   Mean   :  0.2277   Mean   :344938   Mean   :    7.04  
-##  3rd Qu.:613   3rd Qu.:  0.0000   3rd Qu.:375769   3rd Qu.:    0.00  
-##  Max.   :657   Max.   :181.0000   Max.   :431649   Max.   :32761.00  
-##                                                                      
-##     Bateos_H        Bateos_L          Bateos_2_H      Bateos_2_L       
-##  Min.   : 40.0   Min.   : 0.00000   Min.   : 1600   Min.   :   0.0000  
-##  1st Qu.:160.0   1st Qu.: 0.00000   1st Qu.:25600   1st Qu.:   0.0000  
-##  Median :173.0   Median : 0.00000   Median :29929   Median :   0.0000  
-##  Mean   :171.4   Mean   : 0.01188   Mean   :29765   Mean   :   0.3208  
-##  3rd Qu.:184.0   3rd Qu.: 0.00000   3rd Qu.:33856   3rd Qu.:   0.0000  
-##  Max.   :199.0   Max.   :40.00000   Max.   :39601   Max.   :1600.0000  
-##                                                                        
-##  Bateos_promedio_H Bateos_promedio_L  Bateos_promedio_2_H Bateos_promedio_2_L
-##  Min.   :0.2210    Min.   :0.000000   Min.   :0.04884     Min.   :0.000e+00  
-##  1st Qu.:0.3160    1st Qu.:0.000000   1st Qu.:0.09986     1st Qu.:0.000e+00  
-##  Median :0.3330    Median :0.000000   Median :0.11089     Median :0.000e+00  
-##  Mean   :0.4238    Mean   :0.000123   Mean   :0.21203     Mean   :1.126e-05  
-##  3rd Qu.:0.5000    3rd Qu.:0.000000   3rd Qu.:0.25000     3rd Qu.:0.000e+00  
-##  Max.   :1.0000    Max.   :0.221000   Max.   :1.00000     Max.   :4.884e-02  
-##                                                                              
-##     Dobles_H        Dobles_L          Dobles_2_H     Dobles_2_L      
-##  Min.   :10.00   Min.   : 0.00000   Min.   : 100   Min.   :  0.0000  
-##  1st Qu.:33.00   1st Qu.: 0.00000   1st Qu.:1089   1st Qu.:  0.0000  
-##  Median :37.00   Median : 0.00000   Median :1369   Median :  0.0000  
-##  Mean   :38.27   Mean   : 0.00198   Mean   :1517   Mean   :  0.0198  
-##  3rd Qu.:47.00   3rd Qu.: 0.00000   3rd Qu.:2209   3rd Qu.:  0.0000  
-##  Max.   :50.00   Max.   :10.00000   Max.   :2500   Max.   :100.0000  
-##                                                                      
-##   Home_runs_H     Home_runs_L        Home_runs_2_H    Home_runs_2_L     
-##  Min.   : 3.00   Min.   :0.0000000   Min.   :   9.0   Min.   :0.000000  
-##  1st Qu.:24.00   1st Qu.:0.0000000   1st Qu.: 576.0   1st Qu.:0.000000  
-##  Median :30.00   Median :0.0000000   Median : 900.0   Median :0.000000  
-##  Mean   :29.68   Mean   :0.0005941   Mean   : 949.2   Mean   :0.001782  
-##  3rd Qu.:35.00   3rd Qu.:0.0000000   3rd Qu.:1225.0   3rd Qu.:0.000000  
-##  Max.   :46.00   Max.   :3.0000000   Max.   :2116.0   Max.   :9.000000  
-##                                                                         
-##  Juegos_iniciados_H Juegos_iniciados_L Juegos_iniciados_2_H
-##  Min.   : 55.0      Min.   : 0.0000    Min.   : 3025       
-##  1st Qu.:144.0      1st Qu.: 0.0000    1st Qu.:20736       
-##  Median :153.0      Median : 0.0000    Median :23409       
-##  Mean   :149.2      Mean   : 0.3556    Mean   :22421       
-##  3rd Qu.:158.0      3rd Qu.: 0.0000    3rd Qu.:24964       
-##  Max.   :161.0      Max.   :55.0000    Max.   :25921       
-##                                                            
-##  Juegos_iniciados_2_L Porcentaje_On_base_plus_slugging_H
-##  Min.   :   0.000     Min.   :0.627                     
-##  1st Qu.:   0.000     1st Qu.:0.894                     
-##  Median :   0.000     Median :1.000                     
-##  Mean   :   5.963     Mean   :1.132                     
-##  3rd Qu.:   0.000     3rd Qu.:1.250                     
-##  Max.   :3025.000     Max.   :3.000                     
-##                                                         
-##  Porcentaje_On_base_plus_slugging_L Porcentaje_On_base_plus_slugging_2_H
-##  Min.   :0.0000000                  Min.   :0.3931                      
-##  1st Qu.:0.0000000                  1st Qu.:0.7992                      
-##  Median :0.0000000                  Median :1.0000                      
-##  Mean   :0.0002786                  Mean   :1.4620                      
-##  3rd Qu.:0.0000000                  3rd Qu.:1.5625                      
-##  Max.   :0.6270000                  Max.   :9.0000                      
-##                                                                         
-##  Porcentaje_On_base_plus_slugging_2_L Porcentaje_on_base_H Porcentaje_on_base_L
-##  Min.   :0.0000000                    Min.   :0.3010       Min.   :0.0000000   
-##  1st Qu.:0.0000000                    1st Qu.:0.3720       1st Qu.:0.0000000   
-##  Median :0.0000000                    Median :0.5000       Median :0.0000000   
-##  Mean   :0.0000839                    Mean   :0.4835       Mean   :0.0001388   
-##  3rd Qu.:0.0000000                    3rd Qu.:0.5000       3rd Qu.:0.0000000   
-##  Max.   :0.3931290                    Max.   :1.0000       Max.   :0.3010000   
-##                                                                                
-##  Porcentaje_on_base_2_H Porcentaje_on_base_2_L Porcentaje_slugging_H
-##  Min.   :0.0906         Min.   :0.000e+00      Min.   :0.3260       
-##  1st Qu.:0.1384         1st Qu.:0.000e+00      1st Qu.:0.5180       
-##  Median :0.2500         Median :0.000e+00      Median :0.5550       
-##  Mean   :0.2585         Mean   :1.952e-05      Mean   :0.6727       
-##  3rd Qu.:0.2500         3rd Qu.:0.000e+00      3rd Qu.:0.7500       
-##  Max.   :1.0000         Max.   :9.060e-02      Max.   :2.0000       
-##                                                                     
-##  Porcentaje_slugging_L Porcentaje_slugging_2_H Porcentaje_slugging_2_L
-##  Min.   :0.0000000     Min.   :0.1063          Min.   :0.000e+00      
-##  1st Qu.:0.0000000     1st Qu.:0.2683          1st Qu.:0.000e+00      
-##  Median :0.0000000     Median :0.3080          Median :0.000e+00      
-##  Mean   :0.0001438     Mean   :0.5282          Mean   :2.263e-05      
-##  3rd Qu.:0.0000000     3rd Qu.:0.5625          3rd Qu.:0.000e+00      
-##  Max.   :0.3260000     Max.   :4.0000          Max.   :1.063e-01      
-##                                                                       
-##  Runs_batted_in_H Runs_batted_in_L    Runs_batted_in_2_H Runs_batted_in_2_L 
-##  Min.   : 17.00   Min.   : 0.000000   Min.   :  289      Min.   :  0.00000  
-##  1st Qu.: 86.00   1st Qu.: 0.000000   1st Qu.: 7396      1st Qu.:  0.00000  
-##  Median :100.00   Median : 0.000000   Median :10000      Median :  0.00000  
-##  Mean   : 94.47   Mean   : 0.003366   Mean   : 9163      Mean   :  0.05723  
-##  3rd Qu.:105.00   3rd Qu.: 0.000000   3rd Qu.:11025      3rd Qu.:  0.00000  
-##  Max.   :130.00   Max.   :17.000000   Max.   :16900      Max.   :289.00000  
-##                                                                             
-##    Triples_H        Triples_L  Triples_2_H      Triples_2_L     WAR_H      
-##  Min.   : 0.000   Min.   :0   Min.   :  0.00   Min.   :0    Min.   :0.600  
-##  1st Qu.: 3.000   1st Qu.:0   1st Qu.:  9.00   1st Qu.:0    1st Qu.:3.860  
-##  Median : 5.000   Median :0   Median : 25.00   Median :0    Median :5.070  
-##  Mean   : 5.138   Mean   :0   Mean   : 34.61   Mean   :0    Mean   :4.994  
-##  3rd Qu.: 5.000   3rd Qu.:0   3rd Qu.: 25.00   3rd Qu.:0    3rd Qu.:5.770  
-##  Max.   :12.000   Max.   :0   Max.   :144.00   Max.   :0    Max.   :7.730  
-##                                                                            
-##      WAR_L            WAR_2_H         WAR_2_L               id       
-##  Min.   :0.00000   Min.   : 0.36   Min.   :0.000000   Min.   :  0.0  
-##  1st Qu.:0.00000   1st Qu.:14.90   1st Qu.:0.000000   1st Qu.:104.0  
-##  Median :0.00000   Median :25.70   Median :0.000000   Median :209.0  
-##  Mean   :0.02566   Mean   :26.81   Mean   :0.009002   Mean   :209.3  
-##  3rd Qu.:0.00000   3rd Qu.:33.29   3rd Qu.:0.000000   3rd Qu.:314.0  
-##  Max.   :0.69000   Max.   :59.75   Max.   :0.476100   Max.   :419.0  
-##                                                                      
-##        Y              At_bats_I       At_bats_2_I        Bateos_I    
-##  Min.   :-4.16818   Min.   :0.0000   Min.   :0.0000   Min.   :0.000  
-##  1st Qu.: 0.00000   1st Qu.:1.0000   1st Qu.:1.0000   1st Qu.:1.000  
-##  Median : 0.00000   Median :1.0000   Median :1.0000   Median :1.000  
-##  Mean   :-0.00442   Mean   :0.9543   Mean   :0.9735   Mean   :0.965  
-##  3rd Qu.: 0.00000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.000  
-##  Max.   : 4.16818   Max.   :1.0000   Max.   :1.0000   Max.   :1.000  
-##                                                                      
-##    Bateos_2_I     Bateos_promedio_I Bateos_promedio_2_I    Dobles_I     
-##  Min.   :0.0000   Min.   :0.0000    Min.   :0.0000      Min.   :0.0000  
-##  1st Qu.:1.0000   1st Qu.:1.0000    1st Qu.:1.0000      1st Qu.:1.0000  
-##  Median :1.0000   Median :1.0000    Median :1.0000      Median :1.0000  
-##  Mean   :0.9822   Mean   :0.9269    Mean   :0.9543      Mean   :0.9677  
-##  3rd Qu.:1.0000   3rd Qu.:1.0000    3rd Qu.:1.0000      3rd Qu.:1.0000  
-##  Max.   :1.0000   Max.   :1.0000    Max.   :1.0000      Max.   :1.0000  
-##                                                                         
-##    Dobles_2_I      Home_runs_I     Home_runs_2_I    Juegos_iniciados_I
-##  Min.   :0.0000   Min.   :0.0000   Min.   :0.0000   Min.   :0.0000    
-##  1st Qu.:1.0000   1st Qu.:1.0000   1st Qu.:1.0000   1st Qu.:1.0000    
-##  Median :1.0000   Median :1.0000   Median :1.0000   Median :1.0000    
-##  Mean   :0.9836   Mean   :0.9737   Mean   :0.9855   Mean   :0.9543    
-##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.:1.0000    
-##  Max.   :1.0000   Max.   :1.0000   Max.   :1.0000   Max.   :1.0000    
-##                                                                       
-##  Juegos_iniciados_2_I Porcentaje_On_base_plus_slugging_I
-##  Min.   :0.0000       Min.   :0.000                     
-##  1st Qu.:1.0000       1st Qu.:1.000                     
-##  Median :1.0000       Median :1.000                     
-##  Mean   :0.9719       Mean   :0.921                     
-##  3rd Qu.:1.0000       3rd Qu.:1.000                     
-##  Max.   :1.0000       Max.   :1.000                     
-##                                                         
-##  Porcentaje_On_base_plus_slugging_2_I Porcentaje_on_base_I
-##  Min.   :0.0000                       Min.   :0.0000      
-##  1st Qu.:1.0000                       1st Qu.:1.0000      
-##  Median :1.0000                       Median :1.0000      
-##  Mean   :0.9527                       Mean   :0.9178      
-##  3rd Qu.:1.0000                       3rd Qu.:1.0000      
-##  Max.   :1.0000                       Max.   :1.0000      
-##                                                           
-##  Porcentaje_on_base_2_I Porcentaje_slugging_I Porcentaje_slugging_2_I
-##  Min.   :0.0000         Min.   :0.0000        Min.   :0.0000         
-##  1st Qu.:1.0000         1st Qu.:1.0000        1st Qu.:1.0000         
-##  Median :1.0000         Median :1.0000        Median :1.0000         
-##  Mean   :0.9499         Mean   :0.9273        Mean   :0.9618         
-##  3rd Qu.:1.0000         3rd Qu.:1.0000        3rd Qu.:1.0000         
-##  Max.   :1.0000         Max.   :1.0000        Max.   :1.0000         
-##                                                                      
-##  Runs_batted_in_I Runs_batted_in_2_I   Triples_I       Triples_2_I    
-##  Min.   :0.0000   Min.   :0.0000     Min.   :0.0000   Min.   :0.0000  
-##  1st Qu.:1.0000   1st Qu.:1.0000     1st Qu.:1.0000   1st Qu.:1.0000  
-##  Median :1.0000   Median :1.0000     Median :1.0000   Median :1.0000  
-##  Mean   :0.9681   Mean   :0.9836     Mean   :0.9844   Mean   :0.9899  
-##  3rd Qu.:1.0000   3rd Qu.:1.0000     3rd Qu.:1.0000   3rd Qu.:1.0000  
-##  Max.   :1.0000   Max.   :1.0000     Max.   :1.0000   Max.   :1.0000  
-##                                                                       
-##      WAR_I           WAR_2_I         X_At_bats          X_At_bats_2     
-##  Min.   :0.0000   Min.   :0.0000   Min.   :-1.000000   Min.   :-4016.2  
-##  1st Qu.:1.0000   1st Qu.:1.0000   1st Qu.: 0.000000   1st Qu.:    0.0  
-##  Median :1.0000   Median :1.0000   Median : 0.000000   Median :    0.0  
-##  Mean   :0.9745   Mean   :0.9855   Mean   :-0.001046   Mean   :  333.9  
-##  3rd Qu.:1.0000   3rd Qu.:1.0000   3rd Qu.: 0.000000   3rd Qu.:    0.0  
-##  Max.   :1.0000   Max.   :1.0000   Max.   : 1.000000   Max.   :16840.2  
-##                                                                         
-##     X_Bateos          X_Bateos_2      X_Bateos_promedio  X_Bateos_promedio_2
-##  Min.   :-1.00000   Min.   :-684.26   Min.   :-1.00000   Min.   :-0.250000  
-##  1st Qu.: 0.00000   1st Qu.:   0.00   1st Qu.: 0.00000   1st Qu.: 0.000000  
-##  Median : 0.00000   Median :   0.00   Median : 0.00000   Median : 0.000000  
-##  Mean   :-0.00938   Mean   :  32.94   Mean   : 0.00977   Mean   : 0.006939  
-##  3rd Qu.: 0.00000   3rd Qu.:   0.00   3rd Qu.: 0.00000   3rd Qu.: 0.000000  
-##  Max.   : 1.00000   Max.   :2807.24   Max.   : 1.00000   Max.   : 1.000000  
-##                                                                             
-##     X_Dobles          X_Dobles_2      X_Home_runs        X_Home_runs_2    
-##  Min.   :-1.00000   Min.   :-88.39   Min.   :-1.000000   Min.   :-72.150  
-##  1st Qu.: 0.00000   1st Qu.:  0.00   1st Qu.: 0.000000   1st Qu.:  0.000  
-##  Median : 0.00000   Median :  0.00   Median : 0.000000   Median :  0.000  
-##  Mean   :-0.00905   Mean   :  2.95   Mean   :-0.007292   Mean   :  1.863  
-##  3rd Qu.: 0.00000   3rd Qu.:  0.00   3rd Qu.: 0.000000   3rd Qu.:  0.000  
-##  Max.   : 1.00000   Max.   :353.55   Max.   : 1.000000   Max.   :311.987  
-##                                                                           
-##  X_Juegos_iniciados  X_Juegos_iniciados_2 X_Porcentaje_On_base_plus_slugging
-##  Min.   :-1.000000   Min.   :-604.07      Min.   :-1.000000                 
-##  1st Qu.: 0.000000   1st Qu.:   0.00      1st Qu.: 0.000000                 
-##  Median : 0.000000   Median :   0.00      Median : 0.000000                 
-##  Mean   :-0.002737   Mean   :  42.86      Mean   : 0.009907                 
-##  3rd Qu.: 0.000000   3rd Qu.:   0.00      3rd Qu.: 0.000000                 
-##  Max.   : 1.000000   Max.   :2042.86      Max.   : 1.000000                 
-##                                                                             
-##  X_Porcentaje_On_base_plus_slugging_2 X_Porcentaje_on_base
-##  Min.   :-1.07889                     Min.   :-1.00000    
-##  1st Qu.: 0.00000                     1st Qu.: 0.00000    
-##  Median : 0.00000                     Median : 0.00000    
-##  Mean   : 0.03875                     Mean   : 0.01314    
-##  3rd Qu.: 0.00000                     3rd Qu.: 0.00000    
-##  Max.   : 5.19615                     Max.   : 1.00000    
-##                                                           
-##  X_Porcentaje_on_base_2 X_Porcentaje_slugging X_Porcentaje_slugging_2
-##  Min.   :-0.25000       Min.   :-1.0000000    Min.   :-0.47314       
-##  1st Qu.: 0.00000       1st Qu.: 0.0000000    1st Qu.: 0.00000       
-##  Median : 0.00000       Median : 0.0000000    Median : 0.00000       
-##  Mean   : 0.01164       Mean   :-0.0001612    Mean   : 0.01534       
-##  3rd Qu.: 0.00000       3rd Qu.: 0.0000000    3rd Qu.: 0.00000       
-##  Max.   : 1.00000       Max.   : 1.0000000    Max.   : 2.82843       
-##                                                                      
-##  X_Runs_batted_in    X_Runs_batted_in_2   X_Triples          X_Triples_2       
-##  Min.   :-1.000000   Min.   :-348.10    Min.   :-0.666667   Min.   :-10.39230  
-##  1st Qu.: 0.000000   1st Qu.:   0.00    1st Qu.: 0.000000   1st Qu.:  0.00000  
-##  Median : 0.000000   Median :   0.00    Median : 0.000000   Median :  0.00000  
-##  Mean   :-0.009022   Mean   :  12.04    Mean   :-0.003293   Mean   :  0.06703  
-##  3rd Qu.: 0.000000   3rd Qu.:   0.00    3rd Qu.: 0.000000   3rd Qu.:  0.00000  
-##  Max.   : 1.000000   Max.   :1482.23    Max.   : 1.000000   Max.   : 41.56922  
-##                                         NA&#39;s   :6           NA&#39;s   :6          
-##      X_WAR             X_WAR_2        
-##  Min.   :-1.00000   Min.   :-5.87047  
-##  1st Qu.: 0.00000   1st Qu.: 0.00000  
-##  Median : 0.00000   Median : 0.00000  
-##  Mean   :-0.02264   Mean   : 0.05089  
-##  3rd Qu.: 0.00000   3rd Qu.: 0.00000  
-##  Max.   : 1.00000   Max.   :21.49162  
-## </code></pre>
 <p>Por otro lado, se mostrarán las dimensiones de cada pánel</p>
 <pre class="r"><code>print(&quot;Bateadores: &quot;)</code></pre>
 <pre><code>## [1] &quot;Bateadores: &quot;</code></pre>
 <pre class="r"><code>print(dim(hitters_panel))</code></pre>
-<pre><code>## [1] 5050  167</code></pre>
+<pre><code>## [1] 5050   95</code></pre>
 <pre class="r"><code>print(&quot;&quot;)</code></pre>
 <pre><code>## [1] &quot;&quot;</code></pre>
 <pre class="r"><code>print(&quot;Fildeadores: &quot;)</code></pre>
 <pre><code>## [1] &quot;Fildeadores: &quot;</code></pre>
 <pre class="r"><code>print(dim(fielders_panel))</code></pre>
-<pre><code>## [1] 4269  196</code></pre>
+<pre><code>## [1] 4269  106</code></pre>
 </div>
 <div id="segmentación-por-grupo" class="section level2">
 <h2>Segmentación por grupo</h2>
+<p>Lo que haremos es dividir los paneles en ciertas categorías. Primero, veamos todas las posiciones en los páneles</p>
+<pre class="r"><code>print(&quot;Bateadores:&quot;)</code></pre>
+<pre><code>## [1] &quot;Bateadores:&quot;</code></pre>
+<pre class="r"><code>print(unique(hitters_panel$Posicion))</code></pre>
+<pre><code>##  [1] SP    C     2B    RP    RF    DH    LF    1B    CF    3B    SS    RP/CL
+## [13] OF   
+## Levels: 1B 2B 3B C CF DH LF OF RF RP RP/CL SP SS</code></pre>
+<pre class="r"><code>print(&quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<pre class="r"><code>print(&quot;Fildeadores:&quot;)</code></pre>
+<pre><code>## [1] &quot;Fildeadores:&quot;</code></pre>
+<pre class="r"><code>print(unique(fielders_panel$Posicion))</code></pre>
+<pre><code>##  [1] SP    RP    RF    RP/CL 1B    C     DH    LF    2B    CF    SS    3B   
+## Levels: 1B 2B 3B C CF DH LF RF RP RP/CL SP SS</code></pre>
+<p>Arriba se muestran las posiciones de los jugadores en nuestras bases de datos. A pesar de que en los bateadores aparezcan posiciones defensivas se debe a que estos juegan tanto como ofensivos como defensivos. Estando en la ofensiva se juega en las misma posición que todos por lo que no es necesario especificar que ocupala posición de bateador (<strong>H</strong>). Sin embargo, cuando se dice que es un bateador designado (<strong>DH</strong>) ya que este solo juega en la ofensiva para sustituir a un lanzador/pitcher.</p>
+<p>Por otro lado, veamos cuantas observaciones hay por posición.</p>
+<pre class="r"><code>hitters_panel %&gt;% count(Posicion, sort = TRUE)</code></pre>
+<pre><code>##    Posicion    n
+## 1        SP 1018
+## 2        LF  665
+## 3         C  617
+## 4        RP  530
+## 5        RF  442
+## 6        2B  410
+## 7        1B  355
+## 8        3B  317
+## 9        DH  228
+## 10       SS  228
+## 11       CF  168
+## 12    RP/CL   44
+## 13       OF   28</code></pre>
+<pre class="r"><code>fielders_panel %&gt;% count(Posicion, sort = TRUE)</code></pre>
+<pre><code>##    Posicion    n
+## 1        RP 2146
+## 2        SP 1625
+## 3     RP/CL  168
+## 4        RF  125
+## 5        2B   55
+## 6         C   37
+## 7        1B   31
+## 8        SS   27
+## 9        3B   20
+## 10       CF   12
+## 11       LF   12
+## 12       DH   11</code></pre>
+<p>Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos el split de todas las posiciones y luego concatenaremos de acuerdo a los grupos de interés:</p>
+<p><strong>Ofensivos:</strong></p>
+<ul>
+<li><strong>Bateador designado (DH).</strong></li>
+<li><strong>No bateador designado (H).</strong></li>
+</ul>
+<p><strong>Defensivos:</strong></p>
+<ul>
+<li><strong>Battery:</strong> Receptor (C) y lanzador (P).</li>
+<li><strong>Infield:</strong> Bases 1B, 2B, 3B y campo corto (SS).</li>
+<li><strong>Outfield:</strong> Jardineros derechos (RF), centrales (CF) e izquierdos (LF).</li>
+</ul>
+<p>Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba</p>
+<p>Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente</p>
+<p>Veamos las dimensiones de cada una de los paneles:</p>
+<pre class="r"><code>print(&quot;Regular hitter: &quot;)</code></pre>
+<pre><code>## [1] &quot;Regular hitter: &quot;</code></pre>
+<pre class="r"><code>print(dim(hitter_data))</code></pre>
+<pre><code>## [1] 4794   95</code></pre>
+<pre class="r"><code>print(&quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<pre class="r"><code>print(&quot;Designated hitter: &quot;)</code></pre>
+<pre><code>## [1] &quot;Designated hitter: &quot;</code></pre>
+<pre class="r"><code>print(dim(d_hitter_data))</code></pre>
+<pre><code>## [1] 228  95</code></pre>
+<pre class="r"><code>print(&quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<pre class="r"><code>print(&quot;Battery: &quot;)</code></pre>
+<pre><code>## [1] &quot;Battery: &quot;</code></pre>
+<pre class="r"><code>print(dim(battery_data))</code></pre>
+<pre><code>## [1] 3976  106</code></pre>
+<pre class="r"><code>print(&quot;&quot;)</code></pre>
+<pre><code>## [1] &quot;&quot;</code></pre>
+<pre class="r"><code>print(&quot;Infield: &quot;)</code></pre>
+<pre><code>## [1] &quot;Infield: &quot;</code></pre>
+<pre class="r"><code>print(dim(infield_data))</code></pre>
+<pre><code>## [1] 133 106</code></pre>
+<pre class="r"><code>print(&quot;Regular hitter: &quot;)</code></pre>
+<pre><code>## [1] &quot;Regular hitter: &quot;</code></pre>
+<pre class="r"><code>print(dim(outfield_data))</code></pre>
+<pre><code>## [1] 149 106</code></pre>
+</div>
+<div id="estimaciones-y-regresiones" class="section level2">
+<h2>Estimaciones y regresiones</h2>
+<p>Lo que resta hacer es implementar un algoritmo donde se pueda hacer el siguiente modelo para todas las estadísticas deportiva de acuerdo a si el jugador es defensivo u ofensivo:</p>
+<p><span class="math display">\[
+Y_{t}(\cdot) = \alpha + \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
+\]</span></p>
 </div>
 
 
