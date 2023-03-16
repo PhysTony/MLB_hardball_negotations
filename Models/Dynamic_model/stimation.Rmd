@@ -161,3 +161,18 @@ donde
     - Edad.
     - Año.
 - $\alpha$: Heterogeneidad del jugador.
+
+Creemos la lista de variables sobre las cuáles se va a iterar el clico
+
+```{r cumulative_variable_list, include=FALSE}
+# extract the column names and convert to a list
+# Bateadores:
+var_hitter_list <- as.list(names(hitters_panel))
+# FIldeaddores:
+var_fielder_list <- as.list(names(fielders_panel))
+
+
+# print the list
+print(var_hitter_list)
+```
+
