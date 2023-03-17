@@ -171,8 +171,18 @@ Creemos la lista de variables sobre las cuáles se va a iterar el clico
 # select variables x and y
 # Bateadores:
 hitter_subset <- subset(hitters_panel,
-                        select = c("X_At_bats",
-                                   "X_At_bats_2"))
+                        select = c("X_At_bats", "X_At_bats_2",
+                                   "X_Bateos", "X_Bateos_2",
+                                   "X_Bateos_promedio", "X_Bateos_promedio_2", 
+                                   "X_Dobles", "X_Dobles_2",
+                                   "X_Home_runs", "X_Home_runs_2",
+                                   "X_Juegos_iniciados", "X_Juegos_iniciados_2",
+                                   "X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
+                                   "X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
+                                   "X_Porcentaje_slugging", "X_Porcentaje_slugging_2",
+                                   "X_Runs_batted_in", "X_Runs_batted_in_2",
+                                   "X_Triples", "X_Triples_2",
+                                   "X_WAR", "X_WAR_2"))
 
 # extract the column names and convert to a list
 # Bateadores:
@@ -191,7 +201,7 @@ hitter_results <- list()
 for (i in 1:length(var_hitter_list)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste("ln_Sueldo_regular ~", var_hitter_list[[i]])
+  formula <- paste("Y ~ Edad + ", var_hitter_list[[i]])
   model <- lm(formula, data = hitters_panel)
   model_robust <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
   
@@ -199,6 +209,8 @@ for (i in 1:length(var_hitter_list)){
   hitter_results[[i]] <- list(variable = names(var_hitter_list[i]),
                               model = model_robust)
   
+  # show the results
+  print(hitter_results[[i]])
 }
 ```
 
