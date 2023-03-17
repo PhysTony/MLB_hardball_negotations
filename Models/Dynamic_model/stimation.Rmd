@@ -10,8 +10,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r libraries, include=FALSE}
-library(ggplot2)
-library(dplyr)
+library(lmtest) # for robust standard errors
+library(dplyr) # for group_by function
+library(ggplot2) # for better plots
+library(dplyr) # for data managment
 library(lubridate)
 library(plm)
 library(tidyr)
@@ -156,6 +158,7 @@ Y_{t}(\cdot) = \alpha + \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
 $$
 
 donde
+
 - $Controles_{t}$:
     - Equipo.
     - Edad.
@@ -165,14 +168,37 @@ donde
 Creemos la lista de variables sobre las cuáles se va a iterar el clico
 
 ```{r cumulative_variable_list, include=FALSE}
+# select variables x and y
+# Bateadores:
+hitter_subset <- subset(hitters_panel,
+                        select = c("X_At_bats",
+                                   "X_At_bats_2"))
+
 # extract the column names and convert to a list
 # Bateadores:
-var_hitter_list <- as.list(names(hitters_panel))
+var_hitter_list <- as.list(names(hitter_subset))
 # FIldeaddores:
 var_fielder_list <- as.list(names(fielders_panel))
-
-
 # print the list
 print(var_hitter_list)
+```
+
+```{r hitter_stimation}
+# create a list to store the results
+hitter_results <- list()
+
+# loop over the variables in var_hitter_list
+for (i in 1:length(var_hitter_list)){
+  
+  # run linear regression with grouped errors by country and robust errors
+  formula <- paste("ln_Sueldo_regular ~", var_hitter_list[[i]])
+  model <- lm(formula, data = hitters_panel)
+  model_robust <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
+  
+  # store the results in the list
+  hitter_results[[i]] <- list(variable = names(var_hitter_list[i]),
+                              model = model_robust)
+  
+}
 ```
 
