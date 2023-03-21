@@ -26,8 +26,8 @@ Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, 
 
 ```{r import_panel}
 setwd("~/Documentos/Github/Proyectos/MLB_HN/")
-hitters_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters.csv')
-fielders_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders.csv')
+hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder.csv')
 ```
 Por otro lado, se mostrarán las dimensiones de cada pánel
 ```{r panel_dimentions}
@@ -43,21 +43,21 @@ print(dim(fielders_panel))
 Lo que haremos es dividir los paneles en ciertas categorías. Primero, veamos todas las posiciones en los páneles
 ```{r positions}
 print("Bateadores:")
-print(unique(hitters_panel$Posicion))
+print(unique(hitters_panel$Posicion_t))
 print("")
 print("Fildeadores:")
-print(unique(fielders_panel$Posicion))
+print(unique(fielders_panel$Posicion_t))
 ```
 Arriba se muestran las posiciones de los jugadores en nuestras bases de datos. A pesar de que en los bateadores aparezcan posiciones defensivas se debe a que estos juegan tanto como ofensivos como defensivos. Estando en la ofensiva se juega en las misma posición que todos por lo que no es necesario especificar que ocupala posición de bateador (**H**). Sin embargo, cuando se dice que es un bateador designado (**DH**) ya que este solo juega en la ofensiva para sustituir a un lanzador/pitcher.
 
 Por otro lado, veamos cuantas observaciones hay por posición.
 
 ```{r positions_count_hitter}
-hitters_panel %>% count(Posicion, sort = TRUE)
+hitters_panel %>% count(Posicion_t, sort = TRUE)
 ```
 
 ```{r positions_count_fielder}
-fielders_panel %>% count(Posicion, sort = TRUE)
+fielders_panel %>% count(Posicion_t, sort = TRUE)
 ```
 
 Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos el split de todas las posiciones y luego concatenaremos de acuerdo a los grupos de interés:
@@ -76,8 +76,8 @@ Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos 
 
 ```{r position_split, include=FALSE}
 # split the data frame by category
-split_hitter <- split(hitters_panel, f = hitters_panel$Posicion)
-split_fielder <- split(fielders_panel, f = fielders_panel$Posicion)
+split_hitter <- split(hitters_panel, f = hitters_panel$Posicion_t)
+split_fielder <- split(fielders_panel, f = fielders_panel$Posicion_t)
 ```
 
 Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
@@ -166,47 +166,56 @@ donde
 - $\alpha$: Heterogeneidad del jugador.
 
 Creemos la lista de variables sobre las cuáles se va a iterar el clico
+```{r var_list, include=FALSE}
+# LIsta de variables acumuladas y anualmente promediadas_
+cum_hitter <- list("X_At_bats_t_1", "X_At_bats_2_t_1",
+                   "X_Bateos_t_1", "X_Bateos_2_t_1",
+                   "X_Bateos_promedio_t_1", "X_Bateos_promedio_2_t_1", 
+                   "X_Dobles_t_1", "X_Dobles_2_t_1",
+                   "X_Home_runs_t_1", "X_Home_runs_2_t_1",
+                   "X_Juegos_iniciados_t_1", "X_Juegos_iniciados_2_t_1",
+                   "X_Porcentaje_On_base_plus_slugging_t_1", "X_Porcentaje_On_base_plus_slugging_2_t_1",
+                   "X_Porcentaje_on_base_t_1", "X_Porcentaje_on_base_2_t_1",
+                   "X_Porcentaje_slugging_t_1", "X_Porcentaje_slugging_2_t_1",
+                   "X_Runs_batted_in_t_1", "X_Runs_batted_in_2_t_1",
+                   "X_Triples_t_1", "X_Triples_2_t_1",
+                   "X_WAR_t_1", "X_WAR_2_t_1")
+ya_hitter <- list('X_At_bats_t_1', 'X_Bateos_2_t_1',
+                  'X_Bateos_promedio_t_1', 'X_Bateos_t_1',
+                  'X_Dobles_2_t_1', 'X_Dobles_t_1',
+                  'X_Home_runs_2_t_1', 'X_Home_runs_t_1',
+                  'X_Juegos_iniciados_2_t_1', 'X_Juegos_iniciados_t_1',
+                  'X_Porcentaje_On_base_plus_slugging_2_t_1',
+                  'X_Porcentaje_On_base_plus_slugging_t_1',
+                  'X_Porcentaje_on_base_2_t_1',
+                  'X_Porcentaje_on_base_t_1',
+                  'X_Porcentaje_slugging_2_t_1',
+                  'X_Runs_batted_in_2_t_1',
+                  'X_Triples_2_t_1', 'X_WAR_2_t_1', 'X_WAR_t_1')
 
-```{r cumulative_variable_list, include=FALSE}
-# select variables x and y
-# Bateadores:
-hitter_subset <- subset(hitters_panel,
-                        select = c("X_At_bats", "X_At_bats_2",
-                                   "X_Bateos", "X_Bateos_2",
-                                   "X_Bateos_promedio", "X_Bateos_promedio_2", 
-                                   "X_Dobles", "X_Dobles_2",
-                                   "X_Home_runs", "X_Home_runs_2",
-                                   "X_Juegos_iniciados", "X_Juegos_iniciados_2",
-                                   "X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
-                                   "X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
-                                   "X_Porcentaje_slugging", "X_Porcentaje_slugging_2",
-                                   "X_Runs_batted_in", "X_Runs_batted_in_2",
-                                   "X_Triples", "X_Triples_2",
-                                   "X_WAR", "X_WAR_2"))
+# Agreguemos ambos sufijos
+cum_hitter <- lapply(cum_hitter, function(x) paste(x, "_cum", sep = ""))
+ya_hitter <- lapply(ya_hitter, function(x) paste(x, "_ya", sep = ""))
 
-# extract the column names and convert to a list
-# Bateadores:
-var_hitter_list <- as.list(names(hitter_subset))
-# FIldeaddores:
-var_fielder_list <- as.list(names(fielders_panel))
-# print the list
-print(var_hitter_list)
+# Lista con todas las variables
+hitter_var <- c(cum_hitter, ya_hitter)
 ```
+
 
 ```{r hitter_stimation}
 # create a list to store the results
 hitter_results <- list()
 
 # loop over the variables in var_hitter_list
-for (i in 1:length(var_hitter_list)){
+for (i in 1:length(hitter_var)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste("Y ~ Edad + ", var_hitter_list[[i]])
-  model <- lm(formula, data = hitters_panel)
+  formula <- paste("Y ~ ", hitter_var[[i]])
+  model <- lm(formula, data = hitter_data)
   model_robust <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
   
   # store the results in the list
-  hitter_results[[i]] <- list(variable = names(var_hitter_list[i]),
+  hitter_results[[i]] <- list(variable = names(hitter_var[i]),
                               model = model_robust)
   
   # show the results
