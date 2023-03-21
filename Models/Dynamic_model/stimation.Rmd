@@ -14,7 +14,7 @@ library(lmtest) # for robust standard errors
 library(dplyr) # for group_by function
 library(ggplot2) # for better plots
 library(dplyr) # for data managment
-library(clubsandwich) # Grouped errors
+library(clubSandwich) # Grouped errors
 library(tidyr) # Datframes manipulation
 library(lubridate)
 library(plm)
@@ -38,6 +38,36 @@ print("")
 print("Fildeadores: ")
 print(dim(fielders_panel))
 ```
+Recordemos que el modelo dinámico supone que la compensación salarial está normalizada entre 0 y 1. Por lo que se normalizarán los logaritmos de la compensación, así como las compensacioes en nómina/regulares.
+
+```{r normalize, incluse=FALSE}
+# Define the list of column names to normalize
+col_list <- c("x", "z")
+
+# Normalize the columns in col_list and add new columns with the suffix "_norm"
+df_norm <- df %>% 
+  mutate_at(vars(col_list), funs(norm = (.-min(.))/(max(.)-min(.))))
+
+# Print the normalized data frame
+print(df_norm)
+
+```
+
+
+
+Debido a que en las estadísticas descriptivas se observó un shock en el año de la pandemia COVID-19, se obtendrán las estimaciones quitando el año 2020.
+
+```{r covid_filter, include=FALSE}
+# filter out rows with year 2020
+# Bateadores
+hitters_panel_filtered <- hitters_panel %>% 
+                          filter(Anio_t != 2020)
+# Fildeadores
+fielders_panel_filtered <- fielders_panel %>%
+                           filter(Anio_t != 2020)
+```
+
+
 
 ## Segmentación por grupo
 
