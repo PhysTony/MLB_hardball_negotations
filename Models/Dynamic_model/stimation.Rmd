@@ -14,9 +14,10 @@ library(lmtest) # for robust standard errors
 library(dplyr) # for group_by function
 library(ggplot2) # for better plots
 library(dplyr) # for data managment
+library(clubsandwich) # Grouped errors
+library(tidyr) # Datframes manipulation
 library(lubridate)
 library(plm)
-library(tidyr)
 ```
 
 
@@ -222,4 +223,50 @@ for (i in 1:length(hitter_var)){
   print(hitter_results[[i]])
 }
 ```
+```{r}
+# create some sample data
+x <- c(1, 2, 3, 4, 5)
+y <- c(3, 5, 7, 9, 11)
 
+# fit a linear model and store the output
+model <- lm(y ~ x)
+
+# extract the p-values and store them in a list
+p_values <- summary(model)$coefficients[, 4]
+
+# print the list of p-values to the console
+p_values
+
+
+# extract the coefficient for the 'x' variable
+x_coef <- coef(model)["x"]
+
+# extract the p-value for the 'x' variable
+x_pvalue <- summary(model)$coefficients["x", "Pr(>|t|)"]
+
+# print the p-value for the 'x' variable to the console
+x_pvalue
+
+```
+### Designated hitter
+
+```{r d_hitter_stimation}
+# create a list to store the results
+d_hitter_results <- list()
+
+# loop over the variables in var_hitter_list
+for (i in 1:length(hitter_var)){
+  
+  # run linear regression with grouped errors by country and robust errors
+  formula <- paste("Y ~ ", hitter_var[[i]])
+  model <- lm(formula, data = d_hitter_data)
+  model_robust <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
+  
+  # store the results in the list
+  d_hitter_results[[i]] <- list(variable = names(hitter_var[i]),
+                                model = model_robust)
+  
+  # show the results
+  print(d_hitter_results[[i]])
+}
+```
