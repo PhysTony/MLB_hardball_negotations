@@ -41,18 +41,24 @@ print(dim(fielders_panel))
 Recordemos que el modelo dinámico supone que la compensación salarial está normalizada entre 0 y 1. Por lo que se normalizarán los logaritmos de la compensación, así como las compensacioes en nómina/regulares.
 
 ```{r normalize, incluse=FALSE}
+# Bateadores
 # Define the list of column names to normalize
-col_list <- c("x", "z")
+norm_list <- c("Sueldo_regular_t", "ln_Sueldo_regular_t")
 
 # Normalize the columns in col_list and add new columns with the suffix "_norm"
-df_norm <- df %>% 
-  mutate_at(vars(col_list), funs(norm = (.-min(.))/(max(.)-min(.))))
+hitters_panel <- hitters_panel %>% 
+                 mutate_at(vars(norm_list),
+                 funs(norm = (.-min(.))/(max(.)-min(.))))
 
-# Print the normalized data frame
-print(df_norm)
+# Fildeadores:
+# Define the list of column names to normalize
+norm_list <- c("Sueldo_regular_t", "ln_Sueldo_regular_t")
 
+# Normalize the columns in col_list and add new columns with the suffix "_norm"
+fielders_panel <- fielders_panel %>% 
+                  mutate_at(vars(norm_list),
+                  funs(norm = (.-min(.))/(max(.)-min(.))))
 ```
-
 
 
 Debido a que en las estadísticas descriptivas se observó un shock en el año de la pandemia COVID-19, se obtendrán las estimaciones quitando el año 2020.
@@ -60,11 +66,11 @@ Debido a que en las estadísticas descriptivas se observó un shock en el año d
 ```{r covid_filter, include=FALSE}
 # filter out rows with year 2020
 # Bateadores
-hitters_panel_filtered <- hitters_panel %>% 
-                          filter(Anio_t != 2020)
+hitters_panel_covid <- hitters_panel %>% 
+                       filter(Anio_t != 2020)
 # Fildeadores
-fielders_panel_filtered <- fielders_panel %>%
-                           filter(Anio_t != 2020)
+fielders_panel_covid <- fielders_panel %>%
+                        filter(Anio_t != 2020)
 ```
 
 
@@ -91,6 +97,7 @@ hitters_panel %>% count(Posicion_t, sort = TRUE)
 fielders_panel %>% count(Posicion_t, sort = TRUE)
 ```
 
+
 Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos el split de todas las posiciones y luego concatenaremos de acuerdo a los grupos de interés:
 
 **Ofensivos:**
@@ -98,21 +105,32 @@ Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos 
 - **Bateador designado (DH).**
 - **No bateador designado (H).**
 
+Debido a la falta de observaciones para los _outfielders_ es que se omitirá su estimación. Por otro lado, debido a que la mayoría de los datos para los fildeadores son de los lanzadores, podemos agruparlos de la siguiente manera
+
 **Defensivos:**
 
-- **Battery:** Receptor (C) y lanzador (P).
-- **Infield:** Bases 1B, 2B, 3B y campo corto (SS).
-- **Outfield:** Jardineros derechos (RF), centrales (CF) e izquierdos (LF).
+- **Starting pitcher:** Lanzador inicial (SP).
+- **Relief pitcher:** Lanzador de relevo (RP) y lanzador de cierre (RP/CL)
+- **Campo corto (SS).**
 
 
 ```{r position_split, include=FALSE}
 # split the data frame by category
-split_hitter <- split(hitters_panel, f = hitters_panel$Posicion_t)
-split_fielder <- split(fielders_panel, f = fielders_panel$Posicion_t)
+split_hitter <- split(hitters_panel,
+                      f = hitters_panel$Posicion_t)
+split_fielder <- split(fielders_panel,
+                       f = fielders_panel$Posicion_t)
+
+# COVID panels:
+split_hitter_covid <- split(hitters_panel_covid,
+                            f = hitters_panel_covid$Posicion_t)
+split_fielder_covid <- split(fielders_panel_covid,
+                             f = fielders_panel_covid$Posicion_t)
 ```
 
 Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
 ```{r group_category_split, include=FALSE}
+# Whole panel:
 # Offensive:
 h_category_1 <- split_hitter[["SP"]]
 h_category_2 <- split_hitter[["RP"]]
@@ -128,22 +146,37 @@ h_category_11 <- split_hitter[["LF"]]
 d_hitter_data <- split_hitter[["DH"]]
 
 # Defensive:
-b_category_1 <- split_fielder[["SP"]]
+starting_data <- split_fielder[["SP"]]
 b_category_2 <- split_fielder[["RP"]]
 b_category_3 <- split_fielder[["RP/CL"]]
-b_category_4 <- split_fielder[["C"]]
-if_category_1 <- split_fielder[["1B"]]
-if_category_2 <- split_fielder[["2B"]]
-if_category_3 <- split_fielder[["3B"]]
-if_category_4 <- split_fielder[["SS"]]
-of_category_1 <- split_fielder[["RF"]]
-of_category_2 <- split_fielder[["CF"]]
-of_category_3 <- split_fielder[["LF"]]
+shorts_data <- split_fielder[["SS"]]
+
+# COVID panel:
+# Offensive:
+cov_h_category_1 <- split_hitter_covid[["SP"]]
+cov_h_category_2 <- split_hitter_covid[["RP"]]
+cov_h_category_3 <- split_hitter_covid[["RP/CL"]]
+cov_h_category_4 <- split_hitter_covid[["C"]]
+cov_h_category_5 <- split_hitter_covid[["1B"]]
+cov_h_category_6 <- split_hitter_covid[["2B"]]
+cov_h_category_7 <- split_hitter_covid[["3B"]]
+cov_h_category_8 <- split_hitter_covid[["SS"]]
+cov_h_category_9 <- split_hitter_covid[["RF"]]
+cov_h_category_10 <- split_hitter_covid[["CF"]]
+cov_h_category_11 <- split_hitter_covid[["LF"]]
+d_hitter_cov_data <- split_hitter_covid[["DH"]]
+
+# Defensive:
+starting_cov_data <- split_fielder_covid[["SP"]]
+cov_b_category_2 <- split_fielder_covid[["RP"]]
+cov_b_category_3 <- split_fielder_covid[["RP/CL"]]
+shorts_cov_data <- split_fielder_covid[["SS"]]
 ```
 
 Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
 
 ```{r group_concat, include=FALSE}
+# All panels:
 # Hitters:
 # Concatenate the two categories
 hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
@@ -152,33 +185,39 @@ hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
 
 # Fielders:
 # Concatenate the two categories
-battery_data <- rbind(b_category_1, b_category_2, b_category_3, b_category_4)
+relief_pitcher_data <- rbind(b_category_2, b_category_3)
 
-# Infield:
-# Concatenate the two categories
-infield_data <- rbind(if_category_1, if_category_2, if_category_3, if_category_4)
 
-# Outfield:
+# COVID filter:
+# Hitters:
 # Concatenate the two categories
-outfield_data <- rbind(of_category_1, of_category_2, of_category_3)
+hitter_cov_data <- rbind(cov_h_category_1, cov_h_category_2, cov_h_category_3, cov_h_category_4,
+                         cov_h_category_5, cov_h_category_6, cov_h_category_7, cov_h_category_8,
+                         cov_h_category_9, cov_h_category_10, cov_h_category_11)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_cov_data <- rbind(cov_b_category_2, cov_b_category_3)
 ```
 
-Veamos las dimensiones de cada una de los paneles:
+Veamos las dimensiones de cada una de los paneles sin el shock de la COVID-19:
 ```{r group_dimentions}
 print("Regular hitter: ")
-print(dim(hitter_data))
+print(dim(hitter_cov_data))
 print("")
 print("Designated hitter: ")
-print(dim(d_hitter_data))
+print(dim(d_hitter_cov_data))
 print("")
-print("Battery: ")
-print(dim(battery_data))
+print("Relief pitchers: ")
+print(dim(relief_pitcher_cov_data))
 print("")
-print("Infield: ")
-print(dim(infield_data))
-print("Regular hitter: ")
-print(dim(outfield_data))
+print("Starting pitchers: ")
+print(dim(starting_cov_data))
+print("")
+print("Short stops: ")
+print(dim(shorts_cov_data))
 ```
+
 
 ## Estimaciones y regresiones
 
