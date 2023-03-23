@@ -38,28 +38,6 @@ print("")
 print("Fildeadores: ")
 print(dim(fielders_panel))
 ```
-Recordemos que el modelo dinámico supone que la compensación salarial está normalizada entre 0 y 1. Por lo que se normalizarán los logaritmos de la compensación, así como las compensacioes en nómina/regulares.
-
-```{r normalize, incluse=FALSE}
-# Bateadores
-# Define the list of column names to normalize
-norm_list <- c("Sueldo_regular_t", "ln_Sueldo_regular_t")
-
-# Normalize the columns in col_list and add new columns with the suffix "_norm"
-hitters_panel <- hitters_panel %>% 
-                 mutate_at(vars(norm_list),
-                 funs(norm = (.-min(.))/(max(.)-min(.))))
-
-# Fildeadores:
-# Define the list of column names to normalize
-norm_list <- c("Sueldo_regular_t", "ln_Sueldo_regular_t")
-
-# Normalize the columns in col_list and add new columns with the suffix "_norm"
-fielders_panel <- fielders_panel %>% 
-                  mutate_at(vars(norm_list),
-                  funs(norm = (.-min(.))/(max(.)-min(.))))
-```
-
 
 Debido a que en las estadísticas descriptivas se observó un shock en el año de la pandemia COVID-19, se obtendrán las estimaciones quitando el año 2020.
 
@@ -264,32 +242,63 @@ ya_hitter <- list('X_At_bats_t_1', 'X_Bateos_2_t_1',
                   'X_Triples_2_t_1', 'X_WAR_2_t_1', 'X_WAR_t_1')
 
 # Agreguemos ambos sufijos
-cum_hitter <- lapply(cum_hitter, function(x) paste(x, "_cum", sep = ""))
-ya_hitter <- lapply(ya_hitter, function(x) paste(x, "_ya", sep = ""))
+X_cum_hitter <- lapply(cum_hitter, function(x) paste(x, "_cum", sep = ""))
+X_ya_hitter <- lapply(ya_hitter, function(x) paste(x, "_ya", sep = ""))
+
+# remove the prefix 'X_' from the strings
+ya_hitter <- sub("^X_", "", ya_hitter)
+cum_hitter <- sub("^X_", "", cum_hitter)
 
 # Lista con todas las variables
-hitter_var <- c(cum_hitter, ya_hitter)
+X_hitter_var_suf <- c(X_cum_hitter, X_ya_hitter)
+hitter_var_suf <- c(ya_hitter, cum_hitter)
+```
+
+### Estimación directa
+
+Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
+
+```{r}
+# Load the dplyr package
+library(dplyr)
+
+# Create a sample data frame
+df <- data.frame(x = c(10, 20, 30, 40, 50), y = c(100, 200, 300, 400, 500), z = c(1, 2, 3, 4, 5))
+
+# Define the list of column names to normalize
+col_list <- c("x", "z")
+
+# Normalize the columns in col_list and add new columns with the suffix "_norm"
+df_norm <- df %>% 
+  mutate_at(vars(col_list), funs(norm = (.-min(.))/(max(.)-min(.))))
+
+# Print the normalized data frame
+print(df_norm)
+
 ```
 
 
-```{r hitter_stimation}
+```{r hitter_stimation_simple}
 # create a list to store the results
-hitter_results <- list()
+hitter_results_1 <- list()
 
 # loop over the variables in var_hitter_list
-for (i in 1:length(hitter_var)){
+for (i in 1:length(X_hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste("Y ~ ", hitter_var[[i]])
-  model <- lm(formula, data = hitter_data)
-  model_robust <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
+  formula <- paste("Y ~ ", X_hitter_var_suf[[i]])
+  model <- lm(formula,
+              data = hitter_data)
+  model_robust <- coeftest(model,
+                           vcov = vcovHC(model,
+                                         type = "HC1"))
   
   # store the results in the list
-  hitter_results[[i]] <- list(variable = names(hitter_var[i]),
-                              model = model_robust)
+  hitter_results_1[[i]] <- list(variable = names(X_hitter_var_suf[i]),
+                                model = model_robust)
   
   # show the results
-  print(hitter_results[[i]])
+  print(hitter_results_1[[i]])
 }
 ```
 ```{r}
