@@ -258,25 +258,6 @@ hitter_var_suf <- c(ya_hitter, cum_hitter)
 
 Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
 
-```{r}
-# Load the dplyr package
-library(dplyr)
-
-# Create a sample data frame
-df <- data.frame(x = c(10, 20, 30, 40, 50), y = c(100, 200, 300, 400, 500), z = c(1, 2, 3, 4, 5))
-
-# Define the list of column names to normalize
-col_list <- c("x", "z")
-
-# Normalize the columns in col_list and add new columns with the suffix "_norm"
-df_norm <- df %>% 
-  mutate_at(vars(col_list), funs(norm = (.-min(.))/(max(.)-min(.))))
-
-# Print the normalized data frame
-print(df_norm)
-
-```
-
 
 ```{r hitter_stimation_simple}
 # create a list to store the results
@@ -286,7 +267,7 @@ hitter_results_1 <- list()
 for (i in 1:length(X_hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste("Y ~ ", X_hitter_var_suf[[i]])
+  formula <- paste("Y_Sueldo_regular_norm_t ~ Edad_t +", X_hitter_var_suf[[i]])
   model <- lm(formula,
               data = hitter_data)
   model_robust <- coeftest(model,
@@ -330,21 +311,21 @@ x_pvalue
 
 ```{r d_hitter_stimation}
 # create a list to store the results
-d_hitter_results <- list()
+d_hitter_results_1 <- list()
 
 # loop over the variables in var_hitter_list
-for (i in 1:length(hitter_var)){
+for (i in 1:length(hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste("Y ~ ", hitter_var[[i]])
+  formula <- paste("Y_Sueldo_regular_norm_t ~ ", hitter_var_suf[[i]])
   model <- lm(formula, data = d_hitter_data)
   model_robust <- coeftest(model, vcov = vcovHC(model, type = "HC1"))
   
   # store the results in the list
-  d_hitter_results[[i]] <- list(variable = names(hitter_var[i]),
+  d_hitter_results_1[[i]] <- list(variable = names(hitter_var_suf[i]),
                                 model = model_robust)
   
   # show the results
-  print(d_hitter_results[[i]])
+  print(d_hitter_results_1[[i]])
 }
 ```
