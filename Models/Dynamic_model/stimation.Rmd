@@ -252,6 +252,9 @@ cum_hitter <- sub("^X_", "", cum_hitter)
 # Lista con todas las variables
 X_hitter_var_suf <- c(X_cum_hitter, X_ya_hitter)
 hitter_var_suf <- c(ya_hitter, cum_hitter)
+
+# Constroles:
+controls  <- c('Edad_t','Anios_de_contrato_t',)
 ```
 
 ### Estimación directa
@@ -267,13 +270,21 @@ hitter_results_1 <- list()
 for (i in 1:length(X_hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste("Y_Sueldo_regular_norm_t ~ Edad_t +", X_hitter_var_suf[[i]])
-  model <- lm(formula,
-              data = hitter_data)
+  formula <- paste("Y_Sueldo_regular_norm_t ~  ",
+                   paste(var_names,
+                         collapse = " + ")
+  formula <- paste(formula,
+                   X_hitter_var_suf[[i]]),
+                   collapse = " + ")
+  
+  #formula <- paste(formula, '+ ')
+  #formula <- paste(formula, factor())
+  model <- glm(formula,
+               data = hitter_data)
   model_robust <- coeftest(model,
                            vcov = vcovHC(model,
                                          type = "HC1"))
-  
+  #cluster_se <- vcovCL(iv_model, cluster = Mroz$husband)
   # store the results in the list
   hitter_results_1[[i]] <- list(variable = names(X_hitter_var_suf[i]),
                                 model = model_robust)
