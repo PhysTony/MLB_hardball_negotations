@@ -218,7 +218,7 @@ donde
 - $\alpha$: Heterogeneidad del jugador.
 
 Creemos la lista de variables sobre las cuáles se va a iterar el clico
-```{r hitter_var_list, include=FALSE}
+```{r var_list, include=FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
 cum_hitter <- list("X_At_bats_t_1", "X_At_bats_2_t_1",
                    "X_Bateos_t_1", "X_Bateos_2_t_1",
@@ -255,90 +255,9 @@ cum_hitter <- sub("^X_", "", cum_hitter)
 
 # Lista con todas las variables
 X_hitter_var_suf <- c(X_cum_hitter, X_ya_hitter)
-hitter_var_suf <- c(cum_hitter, ya_hitter)
+hitter_var_suf <- c(ya_hitter, cum_hitter)
 #hitter_var_suf <- sub("X_", "", X_hitter_var_suf)
-```
 
-Variables para los fildeadores
-```{r fielder_var_list, include = FALSE}
-# LIsta de variables acumuladas y anualmente promediadas_
-cum_fielder <- list('X_Bateos_2_t_1',
-                    'X_Bateos_t_1',
-                    'X_Carreras_2_t_1',
-                    'X_Carreras_ganadas_2_t_1',
-                    'X_Carreras_ganadas_t_1',
-                    'X_Carreras_t_1',
-                    'X_Comando_2_t_1',
-                    'X_Comando_t_1',
-                    'X_Control_2_t_1',
-                    'X_Control_t_1',
-                    'X_Dominio_2_t_1',
-                    'X_Dominio_t_1',
-                    'X_ERA_2_t_1',
-                    'X_ERA_t_1',
-                    'X_Inning_pitched_2_t_1',
-                    'X_Inning_pitched_t_1',
-                    'X_Losses_2_t_1',
-                    'X_Losses_t_1',
-                    'X_Saves_2_t_1',
-                    'X_Saves_t_1',
-                    'X_Strike_outs_2_t_1',
-                    'X_Strike_outs_t_1',
-                    'X_WAR_2_t_1',
-                    'X_WAR_t_1',
-                    'X_WHIP_2_t_1',
-                    'X_WHIP_t_1',
-                    'X_Walks_2_t_1',
-                    'X_Walks_t_1',
-                    'X_Wins_2_t_1',
-                    'X_Wins_t_1')
-ya_fielder <- list('X_Bateos_2_t_1',
-                  'X_Bateos_t_1',
-                  'X_Carreras_2_t_1',
-                  'X_Carreras_ganadas_2_t_1',
-                  'X_Carreras_ganadas_t_1',
-                  'X_Carreras_t_1',
-                  'X_Comando_2_t_1',
-                  'X_Comando_t_1',
-                  'X_Control_2_t_1',
-                  'X_Control_t_1',
-                  'X_Dominio_2_t_1',
-                  'X_Dominio_t_1',
-                  'X_ERA_2_t_1',
-                  'X_ERA_t_1',
-                  'X_Inning_pitched_2_t_1',
-                  'X_Inning_pitched_t_1',
-                  'X_Losses_2_t_1',
-                  'X_Losses_t_1',
-                  'X_Saves_2_t_1',
-                  'X_Saves_t_1',
-                  'X_Strike_outs_2_t_1',
-                  'X_Strike_outs_t_1',
-                  'X_WAR_2_t_1',
-                  'X_WAR_t_1',
-                  'X_WHIP_2_t_1',
-                  'X_WHIP_t_1',
-                  'X_Walks_2_t_1',
-                  'X_Walks_t_1',
-                  'X_Wins_2_t_1',
-                  'X_Wins_t_1')
-
-# Agreguemos ambos sufijos
-X_cum_fielder <- lapply(cum_fielder, function(x) paste(x, "_cum", sep = ""))
-X_ya_fielder <- lapply(ya_fielder, function(x) paste(x, "_ya", sep = ""))
-
-# remove the prefix 'X_' from the strings
-ya_fielder <- sub("^X_", "", ya_fielder)
-cum_fielder <- sub("^X_", "", cum_fielder)
-
-# Lista con todas las variables
-X_fielder_var_suf <- c(X_cum_fielder, X_ya_fielder)
-fielder_var_suf <- c(cum_fielder, ya_fielder)
-#hitter_var_suf <- sub("X_", "", X_hitter_var_suf)
-```
-
-Las variables base para ambos tipos de jugadores son los controles
-```{r controles}
 # Constroles:
 vars  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t'
 ```
@@ -353,8 +272,8 @@ Se obtendrán las estimaciones de las variables referentes a estadísticas depor
 for (i in 1:length(X_hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, hitter_var_suf[[i]],
-                      sep = '+')
+  #base_vars  <- paste(vars, hitter_var_suf[[i]],
+  #                    sep = '+')
   formula <- paste(vars,
                    X_hitter_var_suf[[i]],
                    sep = " + ")
@@ -376,77 +295,35 @@ for (i in 1:length(X_hitter_var_suf)){
 for (i in 1:length(X_hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  base_vars_d  <- paste(vars, hitter_var_suf[[i]],
-                      sep = '+')
-  formula <- paste(vars,
+  formula <- paste(base_vars,
                    X_hitter_var_suf[[i]],
                    sep = " + ")
   
-  d_m_pooled <- lm(formula,  data = d_hitter_data)
+  h_m_pooled <- lm(formula,  data = d_hitter_data)
   
-  my_lm_cluster <- coeftest(d_m_pooled,
-                            vcov = vcovHC(d_m_pooled,
+  my_lm_cluster <- coeftest(h_m_pooled,
+                            vcov = vcovHC(h_m_pooled,
                                           cluster = "Jugador"))
   print(my_lm_cluster)
 }
 ```
 
 
-### Starting pitcher
+### Designated hitter
 
-```{r starting_stimation}
+```{r d_hitter_stimation}
 # loop over the variables in var_hitter_list
-for (i in 1:length(X_fielder_var_suf)){
+for (i in 1:length(X_hitter_var_suf)){
   
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste(vars,
-                   X_fielder_var_suf[[i]],
+  formula <- paste(base_vars,
+                   X_hitter_var_suf[[i]],
                    sep = " + ")
   
-  s_m_pooled <- lm(formula,  data = starting_data)
+  h_m_pooled <- lm(formula,  data = d_hitter_data)
   
-  my_lm_cluster <- coeftest(s_m_pooled,
-                            vcov = vcovHC(s_m_pooled,
-                                          cluster = "Jugador"))
-  print(my_lm_cluster)
-}
-```
-
-### Relief pitcher
-
-```{r starting_stimation}
-# loop over the variables in var_hitter_list
-for (i in 1:length(X_fielder_var_suf)){
-  
-  # run linear regression with grouped errors by country and robust errors
-  formula <- paste(vars,
-                   X_fielder_var_suf[[i]],
-                   sep = " + ")
-  
-  r_m_pooled <- lm(formula,  data = relief_pitcher_data)
-  
-  my_lm_cluster <- coeftest(r_m_pooled,
-                            vcov = vcovHC(r_m_pooled,
-                                          cluster = "Jugador"))
-  print(my_lm_cluster)
-}
-```
-
-### Short Stop
-
-```{r starting_stimation}
-# loop over the variables in var_hitter_list
-for (i in 1:length(X_fielder_var_suf)){
-  
-  # run linear regression with grouped errors by country and robust errors
-  formula <- paste(vars,
-                   X_fielder_var_suf[[i]],
-                   sep = " + ")
-  
-  s_m_pooled <- lm(formula,  data = shorts_data)
-  
-  my_lm_cluster <- coeftest(s_m_pooled,
-                            vcov = vcovHC(s_m_pooled,
+  my_lm_cluster <- coeftest(h_m_pooled,
+                            vcov = vcovHC(h_m_pooled,
                                           cluster = "Jugador"))
   print(my_lm_cluster)
 }
