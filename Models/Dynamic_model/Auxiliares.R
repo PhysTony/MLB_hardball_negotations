@@ -76,3 +76,22 @@ for (i in 1:length(X_hitter_var_suf)){
   #print(hitter_results_1[[i]])
   print(my_lm_cluster)
 }
+
+
+### Short Stop
+
+# loop over the variables in var_hitter_list
+for (i in 1:length(X_fielder_var_suf)){
+  
+  # run linear regression with grouped errors by country and robust errors
+  formula <- paste(vars,
+                   X_fielder_var_suf[[i]],
+                   sep = " + ")
+  
+  s_m_pooled <- lm(formula,  data = shorts_data)
+  
+  my_lm_cluster <- coeftest(s_m_pooled,
+                            vcov = vcovHC(s_m_pooled,
+                                          cluster = "Jugador"))
+  print(my_lm_cluster)
+}

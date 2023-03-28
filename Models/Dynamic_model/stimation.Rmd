@@ -369,29 +369,6 @@ for (i in 1:length(X_hitter_var_suf)){
 ```
 
 
-### Designated hitter
-
-```{r d_hitter_stimation}
-# loop over the variables in var_hitter_list
-for (i in 1:length(X_hitter_var_suf)){
-  
-  # run linear regression with grouped errors by country and robust errors
-  base_vars_d  <- paste(vars, hitter_var_suf[[i]],
-                      sep = '+')
-  formula <- paste(vars,
-                   X_hitter_var_suf[[i]],
-                   sep = " + ")
-  
-  d_m_pooled <- lm(formula,  data = d_hitter_data)
-  
-  my_lm_cluster <- coeftest(d_m_pooled,
-                            vcov = vcovHC(d_m_pooled,
-                                          cluster = "Jugador"))
-  print(my_lm_cluster)
-}
-```
-
-
 ### Starting pitcher
 
 ```{r starting_stimation}
@@ -407,26 +384,6 @@ for (i in 1:length(X_fielder_var_suf)){
   
   my_lm_cluster <- coeftest(s_m_pooled,
                             vcov = vcovHC(s_m_pooled,
-                                          cluster = "Jugador"))
-  print(my_lm_cluster)
-}
-```
-
-### Relief pitcher
-
-```{r starting_stimation}
-# loop over the variables in var_hitter_list
-for (i in 1:length(X_fielder_var_suf)){
-  
-  # run linear regression with grouped errors by country and robust errors
-  formula <- paste(vars,
-                   X_fielder_var_suf[[i]],
-                   sep = " + ")
-  
-  r_m_pooled <- lm(formula,  data = relief_pitcher_data)
-  
-  my_lm_cluster <- coeftest(r_m_pooled,
-                            vcov = vcovHC(r_m_pooled,
                                           cluster = "Jugador"))
   print(my_lm_cluster)
 }
