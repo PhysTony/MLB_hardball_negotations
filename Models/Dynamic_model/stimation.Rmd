@@ -268,8 +268,11 @@ Las variables base para ambos tipos de jugadores son los controles
 vars  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t'
 ```
 
+# Estimaciones directas
 
-### Estimación directa
+## Pooling 
+
+### Bateadores
 
 Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
 
@@ -289,7 +292,8 @@ for (i in 1:length(stat_hitter_t_1)){
   
   my_lm_cluster <- coeftest(h_m_pooled,
                             vcov = vcovHC(h_m_pooled,
-                                          type = "HC1"))
+                                          type = "HC1",
+                                          cluster = "group"))
   
   print(my_lm_cluster)
 }
@@ -300,18 +304,186 @@ for (i in 1:length(stat_hitter_t_1)){
 
 ```{r starting_stimation}
 # loop over the variables in var_hitter_list
-for (i in 1:length(cum_fielder)){
-  
+for (i in 1:length(stat_fielder_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  formula <- paste(vars,
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
                    stat_fielder_t_1[[i]],
                    sep = " + ")
   
-  s_m_pooled <- lm(formula,  data = starting_data)
+  s_m_pooled <- plm(formula, data = starting_data,
+                    model = "pooling",
+                    index = c("id", "Anio_ref"))
   
   my_lm_cluster <- coeftest(s_m_pooled,
                             vcov = vcovHC(s_m_pooled,
-                                          cluster = "Jugador"))
+                                          type = "HC1",
+                                          cluster = "group"))
+  
   print(my_lm_cluster)
 }
 ```
+
+## Efectos fijos
+
+### Bateadores
+
+Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
+
+```{r hitter_stimation_simple}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  h_m_fix_ef <- plm(formula, data = hitter_data,
+                    model = "within",
+                    index = c("id", "Anio_ref"))
+  
+  my_lm_cluster <- coeftest(h_m_fix_ef,
+                            vcov = vcovHC(h_m_fix_ef,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  s_m_fix_ef <- plm(formula, data = starting_data,
+                    model = "within",
+                    index = c("id", "Anio_ref"))
+  
+  my_lm_cluster <- coeftest(s_m_fix_ef,
+                            vcov = vcovHC(s_m_fix_ef,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
+}
+```
+
+## Efectos aleatorios
+
+### Bateadores
+
+Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
+
+```{r hitter_stimation_simple}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  h_m_random <- plm(formula, data = hitter_data,
+                    model = "random",
+                    index = c("id", "Anio_ref"))
+  
+  my_lm_cluster <- coeftest(h_m_random,
+                            vcov = vcovHC(h_m_random,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  s_m_random <- plm(formula, data = starting_data,
+                    model = "random",
+                    index = c("id", "Anio_ref"))
+  
+  my_lm_cluster <- coeftest(s_m_random,
+                            vcov = vcovHC(s_m_random,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
+}
+```
+
+## First Differences
+
+### Bateadores
+
+Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
+
+```{r hitter_stimation_simple}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  h_m_first_d <- plm(formula, data = hitter_data,
+                    model = "fd",
+                    index = c("id", "Anio_ref"))
+  
+  my_lm_cluster <- coeftest(h_m_first_d,
+                            vcov = vcovHC(h_m_first_d,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  s_m_first_d <- plm(formula, data = starting_data,
+                    model = "fd",
+                    index = c("id", "Anio_ref"))
+  
+  my_lm_cluster <- coeftest(s_m_first_d,
+                            vcov = vcovHC(s_m_first_d,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
+}
+```
+
