@@ -28,8 +28,8 @@ Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, 
 
 ```{r import_panel}
 setwd("~/Documentos/Github/Proyectos/MLB_HN/")
-hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter.csv')
-fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder.csv')
+hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
 ```
 Por otro lado, se mostrarán las dimensiones de cada pánel
 ```{r panel_dimentions}
@@ -220,121 +220,46 @@ donde
 Creemos la lista de variables sobre las cuáles se va a iterar el clico
 ```{r hitter_var_list, include=FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
-cum_hitter <- list("X_At_bats_t_1", "X_At_bats_2_t_1",
-                   "X_Bateos_t_1", "X_Bateos_2_t_1",
-                   "X_Bateos_promedio_t_1", "X_Bateos_promedio_2_t_1", 
-                   "X_Dobles_t_1", "X_Dobles_2_t_1",
-                   "X_Home_runs_t_1", "X_Home_runs_2_t_1",
-                   "X_Juegos_iniciados_t_1", "X_Juegos_iniciados_2_t_1",
-                   "X_Porcentaje_On_base_plus_slugging_t_1", "X_Porcentaje_On_base_plus_slugging_2_t_1",
-                   "X_Porcentaje_on_base_t_1", "X_Porcentaje_on_base_2_t_1",
-                   "X_Porcentaje_slugging_t_1", "X_Porcentaje_slugging_2_t_1",
-                   "X_Runs_batted_in_t_1", "X_Runs_batted_in_2_t_1",
-                   "X_Triples_t_1", "X_Triples_2_t_1",
-                   "X_WAR_t_1", "X_WAR_2_t_1")
-ya_hitter <- list('X_At_bats_t_1', 'X_Bateos_2_t_1',
-                  'X_Bateos_promedio_t_1', 'X_Bateos_t_1',
-                  'X_Dobles_2_t_1', 'X_Dobles_t_1',
-                  'X_Home_runs_2_t_1', 'X_Home_runs_t_1',
-                  'X_Juegos_iniciados_2_t_1', 'X_Juegos_iniciados_t_1',
-                  'X_Porcentaje_On_base_plus_slugging_2_t_1',
-                  'X_Porcentaje_On_base_plus_slugging_t_1',
-                  'X_Porcentaje_on_base_2_t_1',
-                  'X_Porcentaje_on_base_t_1',
-                  'X_Porcentaje_slugging_2_t_1',
-                  'X_Runs_batted_in_2_t_1',
-                  'X_Triples_2_t_1', 'X_WAR_2_t_1', 'X_WAR_t_1')
+stat_hitter <- list("X_At_bats", "X_At_bats_2",
+                    "X_Bateos", "X_Bateos_2",
+                    "X_Bateos_promedio", "X_Bateos_promedio_2", 
+                    "X_Dobles", "X_Dobles_2",
+                    "X_Home_runs", "X_Home_runs_2",
+                    "X_Juegos_iniciados", "X_Juegos_iniciados_2",
+                    "X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
+                    "X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
+                    "X_Porcentaje_slugging", "X_Porcentaje_slugging_2",
+                    "X_Runs_batted_in", "X_Runs_batted_in_2",
+                    "X_Triples", "X_Triples_2",
+                    "X_WAR", "X_WAR_2")
 
-# Agreguemos ambos sufijos
-X_cum_hitter <- lapply(cum_hitter, function(x) paste(x, "_cum", sep = ""))
-X_ya_hitter <- lapply(ya_hitter, function(x) paste(x, "_ya", sep = ""))
-
-# remove the prefix 'X_' from the strings
-ya_hitter <- sub("^X_", "", ya_hitter)
-cum_hitter <- sub("^X_", "", cum_hitter)
-
-# Lista con todas las variables
-X_hitter_var_suf <- c(X_cum_hitter, X_ya_hitter)
-hitter_var_suf <- c(cum_hitter, ya_hitter)
-#hitter_var_suf <- sub("X_", "", X_hitter_var_suf)
+# Add suffix "_t" to each name
+stat_hitter_t <- paste0(stat_hitter, "_t")
+stat_hitter_t_1 <- paste0(stat_hitter, "_t_1")
 ```
 
 Variables para los fildeadores
 ```{r fielder_var_list, include = FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
-cum_fielder <- list('X_Bateos_2_t_1',
-                    'X_Bateos_t_1',
-                    'X_Carreras_2_t_1',
-                    'X_Carreras_ganadas_2_t_1',
-                    'X_Carreras_ganadas_t_1',
-                    'X_Carreras_t_1',
-                    'X_Comando_2_t_1',
-                    'X_Comando_t_1',
-                    'X_Control_2_t_1',
-                    'X_Control_t_1',
-                    'X_Dominio_2_t_1',
-                    'X_Dominio_t_1',
-                    'X_ERA_2_t_1',
-                    'X_ERA_t_1',
-                    'X_Inning_pitched_2_t_1',
-                    'X_Inning_pitched_t_1',
-                    'X_Losses_2_t_1',
-                    'X_Losses_t_1',
-                    'X_Saves_2_t_1',
-                    'X_Saves_t_1',
-                    'X_Strike_outs_2_t_1',
-                    'X_Strike_outs_t_1',
-                    'X_WAR_2_t_1',
-                    'X_WAR_t_1',
-                    'X_WHIP_2_t_1',
-                    'X_WHIP_t_1',
-                    'X_Walks_2_t_1',
-                    'X_Walks_t_1',
-                    'X_Wins_2_t_1',
-                    'X_Wins_t_1')
-ya_fielder <- list('X_Bateos_2_t_1',
-                  'X_Bateos_t_1',
-                  'X_Carreras_2_t_1',
-                  'X_Carreras_ganadas_2_t_1',
-                  'X_Carreras_ganadas_t_1',
-                  'X_Carreras_t_1',
-                  'X_Comando_2_t_1',
-                  'X_Comando_t_1',
-                  'X_Control_2_t_1',
-                  'X_Control_t_1',
-                  'X_Dominio_2_t_1',
-                  'X_Dominio_t_1',
-                  'X_ERA_2_t_1',
-                  'X_ERA_t_1',
-                  'X_Inning_pitched_2_t_1',
-                  'X_Inning_pitched_t_1',
-                  'X_Losses_2_t_1',
-                  'X_Losses_t_1',
-                  'X_Saves_2_t_1',
-                  'X_Saves_t_1',
-                  'X_Strike_outs_2_t_1',
-                  'X_Strike_outs_t_1',
-                  'X_WAR_2_t_1',
-                  'X_WAR_t_1',
-                  'X_WHIP_2_t_1',
-                  'X_WHIP_t_1',
-                  'X_Walks_2_t_1',
-                  'X_Walks_t_1',
-                  'X_Wins_2_t_1',
-                  'X_Wins_t_1')
+stat_fielder <- list('X_Bateos_2', 'X_Bateos',
+                     'X_Carreras_2', 'X_Carreras_ganadas_2',
+                     'X_Carreras_ganadas', 'X_Carreras',
+                     'X_Comando_2', 'X_Comando',
+                     'X_Control_2', 'X_Control',
+                     'X_Dominio_2', 'X_Dominio',
+                     'X_ERA_2', 'X_ERA',
+                     'X_Inning_pitched_2', 'X_Inning_pitched',
+                     'X_Losses_2', 'X_Losses',
+                     'X_Saves_2', 'X_Saves',
+                     'X_Strike_outs_2', 'X_Strike_outs',
+                     'X_WAR_2', 'X_WAR',
+                     'X_WHIP_2', 'X_WHIP',
+                     'X_Walks_2', 'X_Walks',
+                     'X_Wins_2', 'X_Wins')
 
-# Agreguemos ambos sufijos
-X_cum_fielder <- lapply(cum_fielder, function(x) paste(x, "_cum", sep = ""))
-X_ya_fielder <- lapply(ya_fielder, function(x) paste(x, "_ya", sep = ""))
-
-# remove the prefix 'X_' from the strings
-ya_fielder <- sub("^X_", "", ya_fielder)
-cum_fielder <- sub("^X_", "", cum_fielder)
-
-# Lista con todas las variables
-X_fielder_var_suf <- c(X_cum_fielder, X_ya_fielder)
-fielder_var_suf <- c(cum_fielder, ya_fielder)
-#hitter_var_suf <- sub("X_", "", X_hitter_var_suf)
+# Add suffix "_t" to each name
+stat_fielder_t <- paste0(stat_fielder, "_t")
+stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
 ```
 
 Las variables base para ambos tipos de jugadores son los controles
@@ -350,20 +275,22 @@ Se obtendrán las estimaciones de las variables referentes a estadísticas depor
 
 ```{r hitter_stimation_simple}
 # loop over the variables in var_hitter_list
-for (i in 1:length(X_hitter_var_suf)){
-  
+for (i in 1:length(stat_hitter_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, hitter_var_suf[[i]],
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
                       sep = '+')
-  formula <- paste(vars,
-                   X_hitter_var_suf[[i]],
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
                    sep = " + ")
   
-  h_m_pooled <- lm(formula,  data = hitter_data)
+  h_m_pooled <- plm(formula, data = hitter_data,
+                    model = "pooling",
+                    index = c("id", "Anio_ref"))
   
   my_lm_cluster <- coeftest(h_m_pooled,
                             vcov = vcovHC(h_m_pooled,
-                                          cluster = "Jugador"))
+                                          type = "HC1"))
+  
   print(my_lm_cluster)
 }
 ```
@@ -373,34 +300,14 @@ for (i in 1:length(X_hitter_var_suf)){
 
 ```{r starting_stimation}
 # loop over the variables in var_hitter_list
-for (i in 1:length(X_fielder_var_suf)){
+for (i in 1:length(cum_fielder)){
   
   # run linear regression with grouped errors by country and robust errors
   formula <- paste(vars,
-                   X_fielder_var_suf[[i]],
+                   stat_fielder_t_1[[i]],
                    sep = " + ")
   
   s_m_pooled <- lm(formula,  data = starting_data)
-  
-  my_lm_cluster <- coeftest(s_m_pooled,
-                            vcov = vcovHC(s_m_pooled,
-                                          cluster = "Jugador"))
-  print(my_lm_cluster)
-}
-```
-
-### Short Stop
-
-```{r starting_stimation}
-# loop over the variables in var_hitter_list
-for (i in 1:length(X_fielder_var_suf)){
-  
-  # run linear regression with grouped errors by country and robust errors
-  formula <- paste(vars,
-                   X_fielder_var_suf[[i]],
-                   sep = " + ")
-  
-  s_m_pooled <- lm(formula,  data = shorts_data)
   
   my_lm_cluster <- coeftest(s_m_pooled,
                             vcov = vcovHC(s_m_pooled,
