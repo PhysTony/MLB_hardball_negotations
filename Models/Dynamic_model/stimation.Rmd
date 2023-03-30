@@ -1,8 +1,10 @@
 ---
 title: "Dynamic Model"
 author: "Antonio Huerta Montellano"
-date: \today
-output: html_document
+date: "\today"
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -666,3 +668,374 @@ my_lm_cluster <- coeftest(s_m_first_d_pca,
 
 print(my_lm_cluster)
 ```
+
+# Comparación entre periodos
+
+Obtendremos los estimadores para los primeros dos años de observación para luego compararlos con los estimadores para el resto de años. Primero, aseguremos que los páneles estén ordenados por nombre y año de referencia
+
+```{r order_player_anio_ref}
+# Sort dataframe by player name and year_ref
+hitter_data <- hitter_data %>% arrange(Jugador, Anio_ref)
+# Sort dataframe by player name and year_ref
+starting_data <- starting_data %>% arrange(Jugador, Anio_ref)
+```
+
+```{r split_hitter_data_periods, include=FALSE}
+# Split the data into two data frames
+hitter_data_split <- hitter_data %>% 
+                     group_split(Jugador) 
+
+# Keep only the first two years in the first data frame
+hitter_first_two <- hitter_data_split %>% 
+                    lapply(function(x) if(nrow(x) >= 2) head(x, 2) else NULL) %>% 
+                    bind_rows()
+
+# Keep the remaining years in the second data frame
+hitter_remaining <- hitter_data_split %>% 
+                    lapply(function(x) if(nrow(x) > 2) tail(x, -2) else NULL) %>% 
+                    bind_rows()
+```
+
+```{r split_fielder_data_periods, include=FALSE}
+# Split the data into two data frames
+starting_data_split <- starting_data %>% 
+                      group_split(Jugador) 
+
+# Keep only the first two years in the first data frame
+starting_first_two <- starting_data_split %>% 
+                      lapply(function(x) if(nrow(x) >= 2) head(x, 2) else NULL) %>% 
+                      bind_rows()
+
+# Keep the remaining years in the second data frame
+starting_remaining <- starting_data_split %>% 
+                      lapply(function(x) if(nrow(x) > 2) tail(x, -2) else NULL) %>% 
+                      bind_rows()
+```
+
+Haremos las estimaciones con todos los modelos para obtener un análisis robusto
+
+## Primeros dos años
+
+## Pooling 
+
+### Bateadores
+
+```{r hitter_stimation_simple_pooling_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years")
+  h_m_pooled_i <- plm(formula, data = hitter_first_two,
+                      model = "pooling",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(h_m_pooled_i,
+                              vcov = vcovHC(h_m_pooled_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years")
+  h_m_pooled_f <- plm(formula, data = hitter_remaining,
+                      model = "pooling",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(h_m_pooled_f,
+                              vcov = vcovHC(h_m_pooled_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  
+  print(my_lm_cluster_f)
+  
+  print("Test")
+  print(phtest(h_m_pooled_i,h_m_pooled_f))
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation_pooling_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years:")
+  s_m_pooled_i <- plm(formula, data = starting_first_two,
+                      model = "pooling",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(s_m_pooled_i,
+                              vcov = vcovHC(s_m_pooled_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  s_m_pooled_f <- plm(formula, data = starting_remaining,
+                      model = "pooling",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(s_m_pooled_f,
+                              vcov = vcovHC(s_m_pooled_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Wu-Haussman test:")
+  print(phtest(s_m_pooled_i,s_m_pooled_f))
+}
+```
+
+## Efectos fijos
+
+### Bateadores
+
+```{r hitter_stimation_simple_within_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  print("FIrst two years:")
+  h_m_fix_ef_i <- plm(formula, data = hitter_first_two,
+                      model = "within",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(h_m_fix_ef_i,
+                              vcov = vcovHC(h_m_fix_ef_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  h_m_fix_ef_f <- plm(formula, data = hitter_remaining,
+                      model = "within",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(h_m_fix_ef_f,
+                              vcov = vcovHC(h_m_fix_ef_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Test:")
+  print(phtest(h_m_fix_ef_i,h_m_fix_ef_f))
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation_within_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years:")
+  s_m_fix_ef_i <- plm(formula, data = starting_first_two,
+                      model = "within",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(s_m_fix_ef_i,
+                              vcov = vcovHC(s_m_fix_ef_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  s_m_fix_ef_f <- plm(formula, data = starting_remaining,
+                      model = "within",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(s_m_fix_ef_f,
+                            vcov = vcovHC(s_m_fix_ef_f,
+                                          type = "HC1",
+                                          cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Test:")
+  print(phtest(s_m_fix_ef_i,s_m_fix_ef_f))
+}
+```
+
+## Efectos aleatorios
+
+### Bateadores
+
+```{r hitter_stimation_simple_random_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years:")
+  h_m_random_i <- plm(formula, data = hitter_first_two,
+                      model = "random",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(h_m_random_i,
+                              vcov = vcovHC(h_m_random_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  h_m_random_f <- plm(formula, data = hitter_remaining,
+                      model = "random",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(h_m_random_f,
+                              vcov = vcovHC(h_m_random_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Test:")
+  print(phtest(h_m_random_i,h_m_random_f))
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation_random_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years:")
+  s_m_random_i <- plm(formula, data = starting_first_two,
+                      model = "random",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(s_m_random_i,
+                              vcov = vcovHC(s_m_random_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  s_m_random_f <- plm(formula, data = starting_remaining,
+                      model = "random",
+                      index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(s_m_random_f,
+                              vcov = vcovHC(s_m_random_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Wu-Haussman test:")
+  print(phtest(s_m_random_i,s_m_random_f))
+}
+```
+
+## First Differences
+
+### Bateadores
+
+Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
+
+```{r hitter_stimation_simple_fd_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years:")
+  h_m_first_d_i <- plm(formula, data = hitter_first_two,
+                       model = "fd",
+                       index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(h_m_first_d_i,
+                              vcov = vcovHC(h_m_first_d_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  h_m_first_d_f <- plm(formula, data = hitter_remaining,
+                       model = "fd",
+                       index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(h_m_first_d_f,
+                              vcov = vcovHC(h_m_first_d_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Test:")
+  print(phtest(h_m_first_d_i,h_m_first_d_f))
+}
+```
+
+### Starting pitcher
+
+```{r starting_stimation_fd_ini}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_fielder_t_1)){
+  # run linear regression with grouped errors by country and robust errors
+  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_s,
+                   stat_fielder_t_1[[i]],
+                   sep = " + ")
+  
+  print("First two years:")
+  s_m_first_d_i <- plm(formula, data = starting_first_two,
+                       model = "fd",
+                       index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_i <- coeftest(s_m_first_d_i,
+                              vcov = vcovHC(s_m_first_d_i,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_i)
+  
+  print("Remaining years:")
+  s_m_first_d_f <- plm(formula, data = starting_remaining,
+                       model = "fd",
+                       index = c("id", "Anio_ref"))
+  
+  my_lm_cluster_f <- coeftest(s_m_first_d_f,
+                              vcov = vcovHC(s_m_first_d_f,
+                                            type = "HC1",
+                                            cluster = "group"))
+  print(my_lm_cluster_f)
+  
+  print("Wu Haussman test:")
+  print(phtest(s_m_first_d_i,s_m_first_d_f))
+}
+```
+
