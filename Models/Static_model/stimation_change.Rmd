@@ -19,7 +19,6 @@ library(dplyr) # for data managment
 library(clubSandwich) # Grouped errors
 library(sandwich) # MOre error options
 library(tidyr) # Datframes manipulation
-library(stargazer) # For output formats
 library(lubridate)
 library(plm)
 ```
@@ -279,82 +278,27 @@ vars  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t'
 
 Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
 
-```{r hitter_stimation_simple_pooling_first}
-# Create a model to store the results
-hitter_simple_pooling <- list()
-hitter_results_simple_pooling_frt <- list()
-hitter_results_simple_pooling_sec <- list()
-hitter_results_simple_pooling_thr <- list()
-
-# Loop over the variables in var_hitter_list
-for (i in 1:12){
-  # Run linear regression with grouped errors by country and robust errors
+```{r hitter_stimation_simple_pooling}
+# loop over the variables in var_hitter_list
+for (i in 1:length(stat_hitter_t_1)){
+  # run linear regression with grouped errors by country and robust errors
   base_vars_h  <- paste(vars, stat_hitter_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_h,
                    stat_hitter_t_1[[i]],
                    sep = " + ")
   
-  hitter_simple_pooling[[2*i-1]] <- plm(formula, data = hitter_data,
-                                        model = "pooling",
-                                        index = c("id", "Anio_ref"))
-      
-  hitter_results_simple_pooling_frt[[i]] <- coeftest(hitter_simple_pooling[[2*i-1]],
-                                                     vcov = vcovHC(hitter_simple_pooling[[2*i-1]],
-                                                                   type = "HC1",
-                                                                   cluster = "group"))
-  if (i <= 9){
-    base_vars_h  <- paste(vars, stat_hitter_t[[i+12]],
-                      sep = '+')
-    formula <- paste(base_vars_h,
-                     stat_hitter_t_1[[i+12]],
-                     sep = " + ")
-    
-    hitter_simple_pooling[[2*i]] <- plm(formula, data = hitter_data,
-                                        model = "pooling",
-                                        index = c("id", "Anio_ref"))
+  h_m_pooled <- plm(formula, data = hitter_data,
+                    model = "pooling",
+                    index = c("id", "Anio_ref"))
   
-    hitter_results_simple_pooling_sec[[i]] <- coeftest(hitter_simple_pooling[[2*i]],
-                                                       vcov = vcovHC(hitter_simple_pooling[[2*i]],
-                                                                     type = "HC1",
-                                                                     cluster = "group"))
-  }
+  my_lm_cluster <- coeftest(h_m_pooled,
+                            vcov = vcovHC(h_m_pooled,
+                                          type = "HC1",
+                                          cluster = "group"))
+  
+  print(my_lm_cluster)
 }
-
-# Print the first block of results
-stargazer(hitter_results_simple_pooling_frt,
-          type = "text",
-          title = "Bateadores: Modelo Pooling")
-# Print the second block of results
-stargazer(hitter_results_simple_pooling_sec,
-          type = "text",
-          title = "Bateadores: Modelo Pooling")
-```
-
-```{r hitter_stimation_simple_pooling_second}
-# Loop over the variables in var_hitter_list
-for (i in 22:length(stat_hitter_t_1)){
-  # Run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
-                      sep = '+')
-  formula <- paste(base_vars_h,
-                   stat_hitter_t_1[[i]],
-                   sep = " + ")
-  
-  hitter_simple_pooling[[i]] <- plm(formula, data = hitter_data,
-                                         model = "pooling",
-                                         index = c("id", "Anio_ref"))
-  
-  hitter_results_simple_pooling_thr[[i - 21]] <- coeftest(hitter_simple_pooling[[i]],
-                                                          vcov = vcovHC(hitter_simple_pooling[[i]],
-                                                                       type = "HC1",
-                                                                       cluster = "group"))
-}
-
-# Print the third block of results
-stargazer(hitter_results_simple_pooling_thr,
-          type = "text",
-          title = "Bateadores: Modelo Pooling")
 ```
 
 

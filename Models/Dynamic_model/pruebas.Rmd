@@ -1,0 +1,364 @@
+---
+title: "Dynamic Model"
+author: "Antonio Huerta Montellano"
+date: "\today"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(comment = NA)
+```
+
+```{r libraries, include=FALSE}
+library(lmtest) # for robust standard errors
+library(dplyr) # for group_by function
+library(ggplot2) # for better plots
+library(dplyr) # for data managment
+library(clubSandwich) # Grouped errors
+library(sandwich) # MOre error options
+library(tidyr) # Datframes manipulation
+library(stargazer)
+library(lubridate)
+library(plm)
+```
+
+
+## Exploración de los paneles
+
+Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, a los fielderos.
+
+```{r import_panel}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
+```
+Por otro lado, se mostrarán las dimensiones de cada pánel
+```{r panel_dimentions}
+print("Bateadores: ")
+print(dim(hitters_panel))
+print("")
+print("Fildeadores: ")
+print(dim(fielders_panel))
+```
+
+Debido a que en las estadísticas descriptivas se observó un shock en el año de la pandemia COVID-19, se obtendrán las estimaciones quitando el año 2020.
+
+```{r covid_filter, include=FALSE}
+# filter out rows with year 2020
+# Bateadores
+hitters_panel_covid <- hitters_panel %>% 
+                       filter(Anio_t != 2020)
+# Fildeadores
+fielders_panel_covid <- fielders_panel %>%
+                        filter(Anio_t != 2020)
+```
+
+
+
+## Segmentación por grupo
+
+Lo que haremos es dividir los paneles en ciertas categorías. Primero, veamos todas las posiciones en los páneles
+```{r positions}
+print("Bateadores:")
+print(unique(hitters_panel$Posicion_t))
+print("")
+print("Fildeadores:")
+print(unique(fielders_panel$Posicion_t))
+```
+Arriba se muestran las posiciones de los jugadores en nuestras bases de datos. A pesar de que en los bateadores aparezcan posiciones defensivas se debe a que estos juegan tanto como ofensivos como defensivos. Estando en la ofensiva se juega en las misma posición que todos por lo que no es necesario especificar que ocupala posición de bateador (**H**). Sin embargo, cuando se dice que es un bateador designado (**DH**) ya que este solo juega en la ofensiva para sustituir a un lanzador/pitcher.
+
+Por otro lado, veamos cuantas observaciones hay por posición.
+
+```{r positions_count_hitter}
+hitters_panel %>% count(Posicion_t, sort = TRUE)
+```
+
+```{r positions_count_fielder}
+fielders_panel %>% count(Posicion_t, sort = TRUE)
+```
+
+
+Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos el split de todas las posiciones y luego concatenaremos de acuerdo a los grupos de interés:
+
+**Ofensivos:**
+
+- **Bateador designado (DH).**
+- **No bateador designado (H).**
+
+Debido a la falta de observaciones para los _outfielders_ es que se omitirá su estimación. Por otro lado, debido a que la mayoría de los datos para los fildeadores son de los lanzadores, podemos agruparlos de la siguiente manera
+
+**Defensivos:**
+
+- **Starting pitcher:** Lanzador inicial (SP).
+- **Relief pitcher:** Lanzador de relevo (RP) y lanzador de cierre (RP/CL)
+- **Campo corto (SS).**
+
+
+```{r position_split, include=FALSE}
+# split the data frame by category
+split_hitter <- split(hitters_panel,
+                      f = hitters_panel$Posicion_t)
+split_fielder <- split(fielders_panel,
+                       f = fielders_panel$Posicion_t)
+
+# COVID panels:
+split_hitter_covid <- split(hitters_panel_covid,
+                            f = hitters_panel_covid$Posicion_t)
+split_fielder_covid <- split(fielders_panel_covid,
+                             f = fielders_panel_covid$Posicion_t)
+```
+
+Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
+```{r group_category_split, include=FALSE}
+# Whole panel:
+# Offensive:
+h_category_1 <- split_hitter[["SP"]]
+h_category_2 <- split_hitter[["RP"]]
+h_category_3 <- split_hitter[["RP/CL"]]
+h_category_4 <- split_hitter[["C"]]
+h_category_5 <- split_hitter[["1B"]]
+h_category_6 <- split_hitter[["2B"]]
+h_category_7 <- split_hitter[["3B"]]
+h_category_8 <- split_hitter[["SS"]]
+h_category_9 <- split_hitter[["RF"]]
+h_category_10 <- split_hitter[["CF"]]
+h_category_11 <- split_hitter[["LF"]]
+d_hitter_data <- split_hitter[["DH"]]
+
+# Defensive:
+starting_data <- split_fielder[["SP"]]
+b_category_2 <- split_fielder[["RP"]]
+b_category_3 <- split_fielder[["RP/CL"]]
+shorts_data <- split_fielder[["SS"]]
+
+# COVID panel:
+# Offensive:
+cov_h_category_1 <- split_hitter_covid[["SP"]]
+cov_h_category_2 <- split_hitter_covid[["RP"]]
+cov_h_category_3 <- split_hitter_covid[["RP/CL"]]
+cov_h_category_4 <- split_hitter_covid[["C"]]
+cov_h_category_5 <- split_hitter_covid[["1B"]]
+cov_h_category_6 <- split_hitter_covid[["2B"]]
+cov_h_category_7 <- split_hitter_covid[["3B"]]
+cov_h_category_8 <- split_hitter_covid[["SS"]]
+cov_h_category_9 <- split_hitter_covid[["RF"]]
+cov_h_category_10 <- split_hitter_covid[["CF"]]
+cov_h_category_11 <- split_hitter_covid[["LF"]]
+d_hitter_cov_data <- split_hitter_covid[["DH"]]
+
+# Defensive:
+starting_cov_data <- split_fielder_covid[["SP"]]
+cov_b_category_2 <- split_fielder_covid[["RP"]]
+cov_b_category_3 <- split_fielder_covid[["RP/CL"]]
+shorts_cov_data <- split_fielder_covid[["SS"]]
+```
+
+Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
+
+```{r group_concat, include=FALSE}
+# All panels:
+# Hitters:
+# Concatenate the two categories
+hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
+                     h_category_5, h_category_6, h_category_7, h_category_8,
+                     h_category_9, h_category_10, h_category_11)
+hitter_data <- unique(hitter_data)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_data <- rbind(b_category_2, b_category_3)
+relief_pitcher_data <- unique(relief_pitcher_data)
+
+# COVID filter:
+# Hitters:
+# Concatenate the two categories
+hitter_cov_data <- rbind(cov_h_category_1, cov_h_category_2, cov_h_category_3, cov_h_category_4,
+                         cov_h_category_5, cov_h_category_6, cov_h_category_7, cov_h_category_8,
+                         cov_h_category_9, cov_h_category_10, cov_h_category_11)
+hitter_cov_data <- unique(hitter_cov_data)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_cov_data <- rbind(cov_b_category_2, cov_b_category_3)
+relief_pitcher_cov_data <- unique(relief_pitcher_cov_data)
+```
+
+Veamos las dimensiones de cada una de los paneles sin el shock de la COVID-19:
+```{r group_dimentions}
+print("Regular hitter: ")
+print(dim(hitter_cov_data))
+print("")
+print("Designated hitter: ")
+print(dim(d_hitter_cov_data))
+print("")
+print("Relief pitchers: ")
+print(dim(relief_pitcher_cov_data))
+print("")
+print("Starting pitchers: ")
+print(dim(starting_cov_data))
+print("")
+print("Short stops: ")
+print(dim(shorts_cov_data))
+```
+
+
+## Estimaciones y regresiones
+
+Lo que resta hacer es implementar un algoritmo donde se pueda hacer el siguiente modelo para todas las estadísticas deportiva de acuerdo a si el jugador es defensivo u ofensivo:
+
+$$
+Y_{t}(\cdot) = \alpha + \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
+$$
+
+donde
+
+- $Controles_{t}$:
+    - Equipo.
+    - Edad.
+    - Año.
+- $\alpha$: Heterogeneidad del jugador.
+
+Creemos la lista de variables sobre las cuáles se va a iterar el clico
+```{r hitter_var_list, include=FALSE}
+# LIsta de variables acumuladas y anualmente promediadas_
+stat_hitter <- list("X_At_bats", "X_At_bats_2",
+                    "X_Bateos", "X_Bateos_2",
+                    "X_Bateos_promedio", "X_Bateos_promedio_2", 
+                    "X_Dobles", "X_Dobles_2",
+                    "X_Home_runs", "X_Home_runs_2",
+                    "X_Juegos_iniciados", "X_Juegos_iniciados_2",
+                    "X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
+                    "X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
+                    "X_Porcentaje_slugging", "X_Porcentaje_slugging_2",
+                    "X_Runs_batted_in", "X_Runs_batted_in_2",
+                    "X_Triples", "X_Triples_2",
+                    "X_WAR", "X_WAR_2")
+
+# Add suffix "_t" to each name
+stat_hitter_t <- paste0(stat_hitter, "_t")
+stat_hitter_t_1 <- paste0(stat_hitter, "_t_1")
+```
+
+Variables para los fildeadores
+```{r fielder_var_list, include = FALSE}
+# LIsta de variables acumuladas y anualmente promediadas_
+stat_fielder <- list('X_Bateos_2', 'X_Bateos',
+                     'X_Carreras_2', 'X_Carreras_ganadas_2',
+                     'X_Carreras_ganadas', 'X_Carreras',
+                     'X_Comando_2', 'X_Comando',
+                     'X_Control_2', 'X_Control',
+                     'X_Dominio_2', 'X_Dominio',
+                     'X_ERA_2', 'X_ERA',
+                     'X_Inning_pitched_2', 'X_Inning_pitched',
+                     'X_Losses_2', 'X_Losses',
+                     'X_Saves_2', 'X_Saves',
+                     'X_Strike_outs_2', 'X_Strike_outs',
+                     'X_WAR_2', 'X_WAR',
+                     'X_WHIP_2', 'X_WHIP',
+                     'X_Walks_2', 'X_Walks',
+                     'X_Wins_2', 'X_Wins')
+
+# Add suffix "_t" to each name
+stat_fielder_t <- paste0(stat_fielder, "_t")
+stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
+```
+
+Las variables base para ambos tipos de jugadores son los controles
+```{r controles}
+# Constroles:
+vars  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t'
+```
+
+# Estimaciones directas
+
+## Pooling 
+
+### Bateadores
+
+Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
+
+```{r hitter_stimation_simple_pooling_first}
+# Create a model to store the results
+hitter_simple_pooling <- list()
+hitter_results_simple_pooling_frt <- list()
+hitter_results_simple_pooling_sec <- list()
+hitter_results_simple_pooling_thr <- list()
+
+# Loop over the variables in var_hitter_list
+for (i in 1:12){
+  # Run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  hitter_simple_pooling[[2*i-1]] <- plm(formula, data = hitter_data,
+                                        model = "pooling",
+                                        index = c("id", "Anio_ref"))
+      
+  hitter_results_simple_pooling_frt[[i]] <- coeftest(hitter_simple_pooling[[2*i-1]],
+                                                     vcov = vcovHC(hitter_simple_pooling[[2*i-1]],
+                                                                   type = "HC1",
+                                                                   cluster = "group"))
+  if (i <= 9){
+    base_vars_h  <- paste(vars, stat_hitter_t[[i+12]],
+                      sep = '+')
+    formula <- paste(base_vars_h,
+                     stat_hitter_t_1[[i+12]],
+                     sep = " + ")
+    
+    hitter_simple_pooling[[2*i]] <- plm(formula, data = hitter_data,
+                                        model = "pooling",
+                                        index = c("id", "Anio_ref"))
+  
+    hitter_results_simple_pooling_sec[[i]] <- coeftest(hitter_simple_pooling[[2*i]],
+                                                       vcov = vcovHC(hitter_simple_pooling[[2*i]],
+                                                                     type = "HC1",
+                                                                     cluster = "group"))
+  }
+}
+
+# Print the first block of results
+stargazer(hitter_results_simple_pooling_frt,
+          type = "text",
+          title = "Bateadores: Modelo Pooling")
+# Print the second block of results
+stargazer(hitter_results_simple_pooling_sec,
+          type = "text",
+          title = "Bateadores: Modelo Pooling")
+```
+
+```{r hitter_stimation_simple_pooling_second}
+# Loop over the variables in var_hitter_list
+for (i in 22:length(stat_hitter_t_1)){
+  # Run linear regression with grouped errors by country and robust errors
+  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+                      sep = '+')
+  formula <- paste(base_vars_h,
+                   stat_hitter_t_1[[i]],
+                   sep = " + ")
+  
+  hitter_simple_pooling[[i]] <- plm(formula, data = hitter_data,
+                                         model = "pooling",
+                                         index = c("id", "Anio_ref"))
+  
+  hitter_results_simple_pooling_thr[[i - 21]] <- coeftest(hitter_simple_pooling[[i]],
+                                                          vcov = vcovHC(hitter_simple_pooling[[i]],
+                                                                       type = "HC1",
+                                                                       cluster = "group"))
+}
+
+# Print the third block of results
+stargazer(hitter_results_simple_pooling_thr,
+          type = "text",
+          title = "Bateadores: Modelo Pooling")
+```
+
+
+
+
