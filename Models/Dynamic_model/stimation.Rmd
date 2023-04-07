@@ -760,20 +760,6 @@ for (j in 1:fielder_rep){
 }
 ```
 
-```{r}
-hitter_vars_1 <- c("X_Bateos",
-                   "X_Porcentaje_On_base_plus_slugging_2",
-                    "X_Porcentaje_on_base",
-                    "X_Porcentaje_on_base_2",
-                    "X_Porcentaje_slugging_2",
-                    "X_Runs_batted_in",
-                    "X_Triples",
-                    "X_WAR",
-                    "X_WAR_2")
-hitter_vars_1 <- paste(hitter_vars_1,
-                      collapse = " + ")
-```
-
 
 # Estimaciones conjuntas
 Lo que se hará ahora es volver a estimar los modelos anteriores, pero con todas las variables que fueron significativas para un nivel del $\%5$. 
@@ -1420,15 +1406,19 @@ hitter_results_stimation_4 <- coeftest(hitter_stimation_4,
                                                      type = "HC1",
                                                      cluster = "group"))
 
-# Modelos
-hitter_models <- list(pooling = hitter_results_stimation_1,
-                      within = hitter_results_stimation_2,
-                      random = hitter_results_stimation_3,
-                      fd = hitter_results_stimation_4)
-
+# Models
+hitter_models_end <- list(pooling = hitter_results_stimation_1,
+                          within = hitter_results_stimation_2,
+                          random = hitter_results_stimation_3,
+                          fd = hitter_results_stimation_4)
+# List to store results
+hitter_end_models <- list(pooling = hitter_stimation_1,
+                          within = hitter_stimation_2,
+                          random = hitter_stimation_3,
+                          fd = hitter_stimation_4)
 
 # Print the third block of results
-stargazer(hitter_models,
+stargazer(hitter_models_end,
          no.space = TRUE,
          align = TRUE,
          type = "text",
@@ -1588,12 +1578,11 @@ fielder_results_stimation_4 <- coeftest(fielder_stimation_4,
                                                      type = "HC1",
                                                      cluster = "group"))
 
-# Modelos
+# Models
 fielder_models <- list(pooling = fielder_results_stimation_1,
                       within = fielder_results_stimation_2,
                       random = fielder_results_stimation_3,
                       fd = fielder_results_stimation_4)
-
 
 # Print the third block of results
 stargazer(fielder_models,
@@ -2106,13 +2095,13 @@ stargazer(fielder_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r fielder_stimation_pooling_5}
+```{r fielder_stimation_pooling_6}
 # Significant variables:
-fielder_vars_1 <- c('X_Control_t',
-                    'X_Dominio_t_1',
+fielder_vars_1 <- c('X_Dominio_t_1',
                     'X_ERA_t_1',
                     'X_ERA_t',
-                    'X_Saves_t_1')
+                    'X_Saves_t_1',
+                    '-1')
 # Lista 
 fielder_vars_1 <- paste(fielder_vars_1, collapse = " + ")
 # Within
@@ -2131,20 +2120,15 @@ fielder_vars_3 <- c('X_Control_2_t',
 # Lista 
 fielder_vars_3 <- paste(fielder_vars_3, collapse = " + ")
 # First Differences
-fielder_vars_4 <- c('X_Bateos_2_t',
-                    'X_Bateos_t',
+fielder_vars_4 <- c('X_Bateos_t',
                     'X_Carreras_ganadas_2_t',
-                    'X_ERA_t',
                     'X_ERA_t_1',
                     'X_Comando_2_t_1',
                     'X_Comando_t',
                     'X_Dominio_t',
-                    'X_Dominio_2_t_1',
-                    'X_Dominio_t_1',
                     'X_Losses_2_t_1',
                     'X_Strike_outs_2_t_1',
                     'X_Strike_outs_t',
-                    'X_WHIP_2_t',
                     'X_Walks_t',
                     '-1')
 # Lista 
@@ -2205,14 +2189,19 @@ fielder_results_stimation_4 <- coeftest(fielder_stimation_4,
                                                      cluster = "group"))
 
 # Modelos
-fielder_models <- list(pooling = fielder_results_stimation_1,
-                      within = fielder_results_stimation_2,
-                      random = fielder_results_stimation_3,
-                      fd = fielder_results_stimation_4)
+fielder_models_end <- list(pooling = fielder_results_stimation_1,
+                           within = fielder_results_stimation_2,
+                           random = fielder_results_stimation_3,
+                           fd = fielder_results_stimation_4)
+# List to store models:
+fielder_end_models <- list(pooling = fielder_stimation_1,
+                            within = fielder_stimation_2,
+                            random = fielder_stimation_3,
+                            fd = fielder_stimation_4)
 
 
 # Print the third block of results
-stargazer(fielder_models,
+stargazer(fielder_models_end,
          no.space = TRUE,
          align = TRUE,
          type = "text",
@@ -2220,7 +2209,210 @@ stargazer(fielder_models,
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```
+Tanto para bateadores comunes y bateadores iniciales, se filtraron las variables para obtener el modelo conjunto más adecuado.
 
+
+# Cambio estructural para el 2020 - COVID-19
+
+Estimaremos los mismos modelos refinados, pero omitiendo el año 2020 para evaluar si hay un cambio estructural
+
+### Bateadores
+
+```{r hitter_stimation_cov}
+# Pooling:
+formula <- paste(vars,
+                 hitter_vars_1,
+                 sep = " + ")
+# Create a model to store the results
+hitter_stimation_1_cov <- plm(formula, data = hitter_cov_data,
+                              model = "pooling",
+                              index = c("id", "Anio_ref"))
+# To store the results
+hitter_results_stimation_1_cov <- coeftest(hitter_stimation_1,
+                                           vcov = vcovHC(hitter_stimation_1,
+                                                         type = "HC1",
+                                                         cluster = "group"))
+# Within:
+formula <- paste(vars,
+                 hitter_vars_2,
+                 sep = " + ")
+# Create a model to store the results
+hitter_stimation_2_cov <- plm(formula, data = hitter_cov_data,
+                              model = "within",
+                              index = c("id", "Anio_ref"))
+# To store the results
+hitter_results_stimation_2_cov <- coeftest(hitter_stimation_2,
+                                           vcov = vcovHC(hitter_stimation_2,
+                                                         type = "HC1",
+                                                         cluster = "group"))
+# Random:
+formula <- paste(vars,
+                 hitter_vars_3,
+                 sep = " + ")
+# Create a model to store the results
+hitter_stimation_3_cov <- plm(formula, data = hitter_cov_data,
+                              model = "random",
+                              index = c("id", "Anio_ref"))
+# To store the results
+hitter_results_stimation_3_cov <- coeftest(hitter_stimation_3,
+                                           vcov = vcovHC(hitter_stimation_3,
+                                                         type = "HC1",
+                                                         cluster = "group"))
+# First Differences:
+formula <- paste(vars,
+                 hitter_vars_4,
+                 sep = " + ")
+# Create a model to store the results
+hitter_stimation_4_cov <- plm(formula, data = hitter_cov_data,
+                              model = "fd",
+                              index = c("id", "Anio_ref"))
+# To store the results
+hitter_results_stimation_4_cov <- coeftest(hitter_stimation_4,
+                                           vcov = vcovHC(hitter_stimation_4,
+                                                         type = "HC1",
+                                                         cluster = "group"))
+
+# Models:
+hitter_models_cov <- list(pooling = hitter_results_stimation_1_cov,
+                          within = hitter_results_stimation_2_cov,
+                          random = hitter_results_stimation_3_cov,
+                          fd = hitter_results_stimation_4_cov)
+# Store models:
+hitter_end_models_cov <- list(pooling = hitter_stimation_1_cov,
+                              within = hitter_stimation_2_cov,
+                              random = hitter_stimation_3_cov,
+                              fd = hitter_stimation_4_cov)
+
+# Print the third block of results
+stargazer(hitter_models_cov,
+         no.space = TRUE,
+         align = TRUE,
+         type = "text",
+         title = "Bateadores: Comparación de los modelos - COVID-19",
+         column.labels = c("Pooling", "Within", 
+                           "Random effects","First-Differences"))
+```
+
+### Fildeadores
+
+```{r fielder_stimation_pooling_cov}
+# Pooling:
+formula <- paste(vars,
+                 fielder_vars_1,
+                 sep = " + ")
+# Create a model to store the results
+fielder_stimation_1_cov <- plm(formula, data = starting_cov_data,
+                                model = "pooling",
+                                index = c("id", "Anio_ref"))
+# To store the results
+fielder_results_stimation_1_cov <- coeftest(fielder_stimation_1,
+                                             vcov = vcovHC(fielder_stimation_1,
+                                                           type = "HC1",
+                                                           cluster = "group"))
+      # Within:
+formula <- paste(vars,
+                 fielder_vars_2,
+                 sep = " + ")
+# Create a model to store the results
+fielder_stimation_2_cov <- plm(formula, data = starting_cov_data,
+                                model = "within",
+                                index = c("id", "Anio_ref"))
+# To store the results
+fielder_results_stimation_2_cov <- coeftest(fielder_stimation_2,
+                                             vcov = vcovHC(fielder_stimation_2,
+                                                           type = "HC1",
+                                                           cluster = "group"))
+# Random:
+formula <- paste(vars,
+                 fielder_vars_3,
+                 sep = " + ")
+# Create a model to store the results
+fielder_stimation_3_cov <- plm(formula, data = starting_cov_data,
+                                model = "random",
+                                index = c("id", "Anio_ref"))
+# To store the results
+fielder_results_stimation_3_cov <- coeftest(fielder_stimation_3,
+                                             vcov = vcovHC(fielder_stimation_3,
+                                                           type = "HC1",
+                                                           cluster = "group"))
+# First Differences:
+formula <- paste(vars,
+                 fielder_vars_4,
+                 sep = " + ")
+# Create a model to store the results
+fielder_stimation_4_cov <- plm(formula, data = starting_cov_data,
+                                model = "fd",
+                                index = c("id", "Anio_ref"))
+# To store the results
+fielder_results_stimation_4_cov <- coeftest(fielder_stimation_4,
+                                             vcov = vcovHC(fielder_stimation_4,
+                                                           type = "HC1",
+                                                           cluster = "group"))
+
+# Modelos
+fielder_models_cov <- list(pooling = fielder_results_stimation_1_cov,
+                            within = fielder_results_stimation_2_cov,
+                            random = fielder_results_stimation_3_cov,
+                            fd = fielder_results_stimation_4_cov)
+# Store model results:
+fielder_end_models_cov <- list(pooling = fielder_stimation_1_cov,
+                                within = fielder_stimation_2_cov,
+                                random = fielder_stimation_3_cov,
+                                fd = fielder_stimation_4_cov)
+
+# Print the third block of results
+stargazer(fielder_models_cov,
+         no.space = TRUE,
+         align = TRUE,
+         type = "text",
+         title = "Lanzadores Iniciales: Comparación de los modelos - COVID-19",
+         column.labels = c("Pooling", "Within", 
+                           "Random effects","First-Differences"))
+```
+Procedamos a realizar el test de Hausman para cada modelo
+```{r}
+hitter_end_models_cov[[1]]
+```
+
+```{r hitter_hausman_covid}
+# List to store results
+hitter_test_covid <- list()
+model_names <- c("Pooling",
+                 "Within", 
+                 "Random effects",
+                 "First-Differences")
+
+# Title:
+print("Bateadores: Pruebas de Hausman para el COVID-19")
+print("")
+# Loop for applying results
+for (i in 1:4){
+  hitter_test_covid[[i]] <- phtest(hitter_end_models[[i]],hitter_end_models_cov[[i]])
+  print(model_names[[i]])
+  print(hitter_test_covid[[i]])
+}
+```
+```{r fielder_hausman_covid}
+# List to store results
+fielder_test_covid <- list()
+model_names <- c("Pooling",
+                 "Within", 
+                 "Random effects",
+                 "First-Differences")
+
+# Title:
+print("Lanzadores iniciales: Pruebas de Hausman para el COVID-19")
+print("")
+# Loop for applying results
+for (i in 1:4){
+  fielder_test_covid[[i]] <- phtest(fielder_end_models[[i]],
+                                    fielder_end_models_cov[[i]])
+  print(model_names[[i]])
+  print(fielder_test_covid[[i]])
+}
+```
+
+Vemos que solo hay un cambio estructural para el caso de los bateadores bajo el modelo de primeras diferencias.
 
 # PCA - Estimación directa
 
@@ -2842,5 +3034,72 @@ for (i in 1:length(stat_fielder_t_1)){
   print("Wu Haussman test:")
   print(phtest(s_m_first_d_i,s_m_first_d_f))
 }
+```
+
+# Cambio en el poder de negociación al convertirse en agente
+
+Obtendremos el estimador del cambio en el poder de negociación un periodo antes de que el jugador se convierta en agente libre con el primer periodo como agente libre. Importemos las bases de datos
+
+```{r import_panel_ch}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+hitters_panel_ch <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_hitters_cum_ch.csv')
+fielders_panel_ch <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_fielders_cum_ch.csv')
+```
+Por otro lado, se mostrarán las dimensiones de cada pánel
+```{r panel_dimentions_ch}
+print("Bateadores: ")
+print(dim(hitters_panel_ch))
+print("")
+print("Fildeadores: ")
+print(dim(fielders_panel_ch))
+```
+
+```{r position_split_ch, include=FALSE}
+# split the data frame by category
+split_hitter_ch <- split(hitters_panel_ch,
+                         f = hitters_panel_ch$Posicion_t)
+split_fielder_ch <- split(fielders_panel_ch,
+                          f = fielders_panel_ch$Posicion_t)
+```
+
+Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
+```{r group_category_split_ch, include=FALSE}
+# Whole panel:
+# Offensive:
+h_category_1_ch <- split_hitter_ch[["SP"]]
+h_category_2_ch <- split_hitter_ch[["RP"]]
+h_category_3_ch <- split_hitter_ch[["RP/CL"]]
+h_category_4_ch <- split_hitter_ch[["C"]]
+h_category_5_ch <- split_hitter_ch[["1B"]]
+h_category_6_ch <- split_hitter_ch[["2B"]]
+h_category_7_ch <- split_hitter_ch[["3B"]]
+h_category_8_ch <- split_hitter_ch[["SS"]]
+h_category_9_ch <- split_hitter_ch[["RF"]]
+h_category_10_ch <- split_hitter_ch[["CF"]]
+h_category_11_ch <- split_hitter_ch[["LF"]]
+d_hitter_data_ch <- split_hitter_ch[["DH"]]
+
+# Defensive:
+starting_data_ch <- split_fielder_ch[["SP"]]
+b_category_2_ch <- split_fielder_ch[["RP"]]
+b_category_3_ch <- split_fielder_ch[["RP/CL"]]
+shorts_data_ch <- split_fielder_ch[["SS"]]
+```
+
+Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
+
+```{r group_concat, include=FALSE}
+# All panels:
+# Hitters:
+# Concatenate the two categories
+hitter_data_ch <- rbind(h_category_1_ch, h_category_2_ch, h_category_3_ch, h_category_4_ch,
+                        h_category_5_ch, h_category_6_ch, h_category_7_ch, h_category_8_ch,
+                        h_category_9_ch, h_category_10_ch, h_category_11_ch)
+hitter_data_ch <- unique(hitter_data_ch)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_data_ch <- rbind(b_category_2_ch, b_category_3_ch)
+relief_pitcher_data_ch <- unique(relief_pitcher_data_ch)
 ```
 
