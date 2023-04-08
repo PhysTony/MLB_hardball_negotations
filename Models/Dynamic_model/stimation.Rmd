@@ -1425,6 +1425,26 @@ stargazer(hitter_models_end,
                            "Random effects","First-Differences"))
 ```
 
+Aplicaremos un teest de Hausmann a cada pareja de modelos
+
+```{r hausman_cojoint_hitter}
+# create an empty list to store the test results
+test_results <- list()
+
+# loop through every possible pair of models
+for (i in 1:(length(hitter_end_models)-1)) {
+  for (j in (i+1):length(hitter_end_models)) {
+    # apply phtest to the pair of models
+    test_result <- phtest(hitter_end_models[[i]], hitter_end_models[[j]])
+    # add the test result to the list
+    test_results[[paste0(names(hitter_end_models[i]), "_vs_", names(hitter_end_models[j]))]] <- test_result
+  }
+}
+
+# view the test results
+test_results
+```
+
 
 ## Lanzadores
 
@@ -2207,6 +2227,26 @@ stargazer(fielder_models_end,
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```
+Aplicaremos un teest de Hausmann a cada pareja de modelos
+
+```{r hausman_cojoint_fielder}
+# create an empty list to store the test results
+test_results <- list()
+
+# loop through every possible pair of models
+for (i in 1:(length(fielder_end_models)-1)) {
+  for (j in (i+1):length(fielder_end_models)) {
+    # apply phtest to the pair of models
+    test_result <- phtest(fielder_end_models[[i]], fielder_end_models[[j]])
+    # add the test result to the list
+    test_results[[paste0(names(fielder_end_models[i]), "_vs_", names(fielder_end_models[j]))]] <- test_result
+  }
+}
+
+# view the test results
+test_results
+```
+
 Tanto para bateadores comunes y bateadores iniciales, se filtraron las variables para obtener el modelo conjunto más adecuado.
 
 
@@ -3401,4 +3441,130 @@ Son equivalentes al pooling debido a que solo obtenemos la estimación para un p
 Presenta las mismas restricciones que el estimador *within*.
 
 # Difference in Differences
+
+Análogo a la sección anterior, importemos las bases de datos correspondientes
+
+```{r import_panel_did}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+hitters_panel_did <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_hitters_cum_did.csv')
+fielders_panel_did <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_fielders_cum_did.csv')
+```
+Por otro lado, se mostrarán las dimensiones de cada pánel
+```{r panel_dimentions_did}
+print("Bateadores: ")
+print(dim(hitters_panel_did))
+print("")
+print("Fildeadores: ")
+print(dim(fielders_panel_did))
+```
+
+```{r position_dummyfication_did}
+# Convert categorical column to numerical
+hitters_panel_did$position_num_t <- as.numeric(factor(hitters_panel_did$Posicion_t))
+fielders_panel_did$position_num_t <- as.numeric(factor(fielders_panel_did$Posicion_t))
+hitters_panel_did$team_num_t <- as.numeric(factor(hitters_panel_did$Acronimo_t))
+fielders_panel_did$team_num_t <- as.numeric(factor(fielders_panel_did$Acronimo_t))
+```
+
+Como adelanto, se descartaron los controles por posición puesto que no son significativos para los modelos y afectan los resultados. Tal vez por el hehco de que los jugadores tienden a rotar de posición en un mismo partido e incluso a lo largo de la temporada. aAgreguemos una columna de 1's que represente la dummy de ser agente libre
+
+```{r fa_dummy_did}
+# add a column of 1s to the panel data
+hitters_panel_did <- cbind(hitters_panel_did,
+                           fa = rep(1, nrow(hitters_panel_did)))
+fielders_panel_did <- cbind(fielders_panel_did,
+                            fa = rep(1, nrow(fielders_panel_did)))
+```
+
+```{r position_split_did, include=FALSE}
+# split the data frame by category
+split_hitter_did <- split(hitters_panel_did,
+                         f = hitters_panel_did$Posicion_t)
+split_fielder_did <- split(fielders_panel_did,
+                          f = fielders_panel_did$Posicion_t)
+```
+
+Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
+```{r group_category_split_ch, include=FALSE}
+# Whole panel:
+# Offensive:
+h_category_1_did <- split_hitter_did[["SP"]]
+h_category_2_did <- split_hitter_did[["RP"]]
+h_category_3_did <- split_hitter_did[["RP/CL"]]
+h_category_4_did <- split_hitter_did[["C"]]
+h_category_5_did <- split_hitter_did[["1B"]]
+h_category_6_did <- split_hitter_did[["2B"]]
+h_category_7_did <- split_hitter_did[["3B"]]
+h_category_8_did <- split_hitter_did[["SS"]]
+h_category_9_did <- split_hitter_did[["RF"]]
+h_category_10_did <- split_hitter_did[["CF"]]
+h_category_11_did <- split_hitter_did[["LF"]]
+d_hitter_data_did <- split_hitter_did[["DH"]]
+
+# Defensive:
+starting_data_did <- split_fielder_did[["SP"]]
+b_category_2_did <- split_fielder_did[["RP"]]
+b_category_3_did <- split_fielder_did[["RP/CL"]]
+shorts_data_did <- split_fielder_did[["SS"]]
+```
+
+Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
+
+```{r group_concat_did, include=FALSE}
+# All panels:
+# Hitters:
+# Concatenate the two categories
+hitter_data_did <- rbind(h_category_1_did, h_category_2_did, h_category_3_did, h_category_4_did,
+                        h_category_5_did, h_category_6_did, h_category_7_did, h_category_8_did,
+                        h_category_9_did, h_category_10_did, h_category_11_did)
+hitter_data_did <- unique(hitter_data_did)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_data_did <- rbind(b_category_2_did, b_category_3_did)
+relief_pitcher_data_did <- unique(relief_pitcher_data_did)
+```
+
+Ahora,  estimare el modelo DID para múltiples años. En este caso, ya contamos con una columna que tiene los años escalados de manera adecuada para indicar con 0 el primer año de tratamiento.
+
+```{r}
+hitter_data_did$Anio_did
+```
+```{r}
+hitter_data_did <- subset(hitter_data_did, Anio_did < 10)
+```
+```{r}
+hitter_data_did$Anio_did
+```
+
+
+```{r}
+# Assuming 'panel_data' is your panel data frame with the following columns:
+# 'Jugador' (player name), 'Salario' (salary), and 'Year' (year of observation)
+
+# Create a treatment dummy variable
+hitter_data_did$treatment <- ifelse(hitter_data_did$Tratamiento == 'Si', 1, 0)
+
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(hitter_data_did,
+                        index = c("Jugador","Anio_did"))
+
+# Estimate DID model with multiple periods
+did_model <- plm(Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did > 0),
+                 data = plm_data,
+                 model="within")
+
+# Extract ATE estimate from DID model
+ate_estimate <- coef(did_model)["treatment:factor(Anio_did >= 0)TRUE"]
+
+# Plot ATE estimate
+ggplot(data=data.frame(ate_estimate), aes(x = "", y = ate_estimate)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  ggtitle("Average Treatment Effect (ATE)") +
+  xlab("") +
+  ylab("Salary Change") +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5))
+
+```
 
