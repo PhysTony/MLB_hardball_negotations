@@ -3527,44 +3527,79 @@ relief_pitcher_data_did <- unique(relief_pitcher_data_did)
 
 Ahora,  estimare el modelo DID para múltiples años. En este caso, ya contamos con una columna que tiene los años escalados de manera adecuada para indicar con 0 el primer año de tratamiento.
 
-```{r}
-hitter_data_did$Anio_did
-```
-```{r}
+```{r did_requirements, include=FALSE}
+# Filter nan values
+hitter_data_did <- na.omit(hitter_data_did)
+# Filter error
 hitter_data_did <- subset(hitter_data_did, Anio_did < 10)
-```
-```{r}
-hitter_data_did$Anio_did
-```
-
-
-```{r}
-# Assuming 'panel_data' is your panel data frame with the following columns:
-# 'Jugador' (player name), 'Salario' (salary), and 'Year' (year of observation)
-
 # Create a treatment dummy variable
 hitter_data_did$treatment <- ifelse(hitter_data_did$Tratamiento == 'Si', 1, 0)
 
+
+# Filter nan values
+starting_data_did <- na.omit(starting_data_did)
+# Filter error
+starting_data_did <- subset(starting_data_did, Anio_did < 10)
+# Create a treatment dummy variable
+starting_data_did$treatment <- ifelse(starting_data_did$Tratamiento == 'Si', 1, 0)
+```
+
+Obtengamos el efecto promedio de convertirse en agentes libres
+
+```{r hitter_did_stimation}
 # Convert panel_data to a plm data object
 plm_data <- pdata.frame(hitter_data_did,
-                        index = c("Jugador","Anio_did"))
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0)")
 
 # Estimate DID model with multiple periods
-did_model <- plm(Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did > 0),
+did_model <- plm(formula,
                  data = plm_data,
-                 model="within")
+                 model = "within")
+
 
 # Extract ATE estimate from DID model
-ate_estimate <- coef(did_model)["treatment:factor(Anio_did >= 0)TRUE"]
+print(ate_estimate <- coef(did_model)[3])
+```
 
-# Plot ATE estimate
-ggplot(data=data.frame(ate_estimate), aes(x = "", y = ate_estimate)) +
-  geom_bar(stat="identity", fill="steelblue") +
-  ggtitle("Average Treatment Effect (ATE)") +
-  xlab("") +
-  ylab("Salary Change") +
+```{r fielder_did_stimation}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(hitter_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0)")
+
+# Estimate DID model with multiple periods
+did_model <- plm(formula,
+                 data = plm_data,
+                 model = "within")
+
+
+# Extract ATE estimate from DID model
+print(ate_estimate <- coef(did_model)[3])
+```
+
+```{r}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Y_Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = hitter_data_did$Tratamiento,
+                            Anio_did = hitter_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means, aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line() +
+  ggtitle("Parallel Trends Assumption") +
+  xlab("Year") +
+  ylab("Mean Outcome") +
+  scale_color_manual(values = c("blue", "red")) +
   theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5))
-
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "red")
 ```
 
