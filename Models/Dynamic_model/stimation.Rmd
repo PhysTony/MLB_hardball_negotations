@@ -3552,37 +3552,37 @@ plm_data <- pdata.frame(hitter_data_did,
                         index = c("Jugador","Anio_ref"))
 
 # Specify the formula using as.formula
-formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0)")
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t")
 
 # Estimate DID model with multiple periods
-did_model <- plm(formula,
-                 data = plm_data,
-                 model = "within")
+hitter_did_model <- plm(formula,
+                         data = plm_data,
+                         model = "within")
 
 
 # Extract ATE estimate from DID model
-print(ate_estimate <- coef(did_model)[3])
+print(hitter_ate_estimate <- coef(hitter_did_model)[4])
 ```
 
 ```{r fielder_did_stimation}
 # Convert panel_data to a plm data object
-plm_data <- pdata.frame(hitter_data_did,
+plm_data <- pdata.frame(starting_data_did,
                         index = c("Jugador","Anio_ref"))
 
 # Specify the formula using as.formula
-formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0)")
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t")
 
 # Estimate DID model with multiple periods
-did_model <- plm(formula,
-                 data = plm_data,
-                 model = "within")
+starting_did_model <- plm(formula,
+                           data = plm_data,
+                           model = "within")
 
 
 # Extract ATE estimate from DID model
-print(ate_estimate <- coef(did_model)[3])
+print(starting_ate_estimate <- coef(starting_did_model)[4])
 ```
 
-```{r}
+```{r hitter_parallel_tendancy_y}
 # Create a data frame with outcome variable, treatment indicator, and time variable
 parallel_data <- data.frame(Y_Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
                             Tratamiento = hitter_data_did$Tratamiento,
@@ -3592,14 +3592,284 @@ parallel_data <- data.frame(Y_Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_r
 parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
 
 # Create plot
-ggplot(data = parallel_means, aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
-  geom_line() +
-  ggtitle("Parallel Trends Assumption") +
-  xlab("Year") +
-  ylab("Mean Outcome") +
-  scale_color_manual(values = c("blue", "red")) +
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Bateadores - Tendencias de Y") +
+  xlab("Año escalado") +
+  ylab('Cambio poder de negociación') +
+  scale_color_manual(values = c("blue", "orange")) +
   theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_vline(xintercept = 0, linetype = "dashed", color = "red")
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = 0.3,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_hitter_y.pdf")
 ```
 
+```{r fielder_parallel_tendancy_y}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Y_Sueldo_regular_norm_t = starting_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = starting_data_did$Tratamiento,
+                            Anio_did = starting_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did,
+                            data = parallel_data,
+                            FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Lanzadores iniciales - Tendencias de Y") +
+  xlab("Año escalado") +
+  ylab('Cambio poder de negociación') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = -0.2,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_starting_y.pdf")
+```
+
+Repitamos lo mismo para los salarios
+
+```{r hitter_did_stimation}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(hitter_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
+
+# Estimate DID model with multiple periods
+hitter_did_model <- plm(formula,
+                         data = plm_data,
+                         model = "within")
+
+
+# Extract ATE estimate from DID model
+print(hitter_ate_estimate <- coef(hitter_did_model)[6])
+```
+
+```{r fielder_did_stimation}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(starting_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
+
+# Estimate DID model with multiple periods
+starting_did_model <- plm(formula,
+                           data = plm_data,
+                           model = "within")
+
+
+# Extract ATE estimate from DID model
+print(starting_ate_estimate <- coef(starting_did_model)[6])
+```
+
+```{r hitter_parallel_tendancy}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = hitter_data_did$Tratamiento,
+                            Anio_did = hitter_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Bateadores - Tendencias de los salarios") +
+  xlab("Año escalado") +
+  ylab('Salario') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = 0.2,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_hitter_w.pdf")
+```
+
+```{r fielder_parallel_tendancy}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Sueldo_regular_norm_t = starting_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = starting_data_did$Tratamiento,
+                            Anio_did = starting_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data,
+                            FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Lanzadores iniciales - Tendencias de los salarios") +
+  xlab("Año escalado") +
+  ylab('Salario') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = -0.2,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_starting_w.pdf", width = 10, height = 8, dpi = 300)
+```
