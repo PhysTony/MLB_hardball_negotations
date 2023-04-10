@@ -3871,5 +3871,5 @@ ggplot(data = parallel_means,
             vjust = -0.5) +
   labs(color = "Agente libre")
 # Save the plot as a PDF file
-ggsave("did_model_plot_starting_w.pdf", width = 10, height = 8, dpi = 300)
+ggsave("did_model_plot_starting_w.pdf")
 ```
