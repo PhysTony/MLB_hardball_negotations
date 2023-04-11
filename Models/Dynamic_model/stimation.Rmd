@@ -11,6 +11,7 @@ output:
 library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 opts_chunk$set(comment = NA)
+options(warn = FALSE) # ignore warnings
 ```
 
 ```{r libraries, include=FALSE}
@@ -31,11 +32,12 @@ library(plm)
 
 Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, a los fielderos.
 
-```{r import_panel}
+```{r import_panel, include=FALSE, warning=FALSE}
 setwd("~/Documentos/Github/Proyectos/MLB_HN/")
 hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
 fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
 ```
+
 Por otro lado, se mostrarán las dimensiones de cada pánel
 ```{r panel_dimentions}
 print("Bateadores: ")
@@ -77,8 +79,6 @@ hitters_panel_covid <- hitters_panel %>%
 fielders_panel_covid <- fielders_panel %>%
                         filter(Anio_t != 2020)
 ```
-
-
 
 ## Segmentación por grupo
 
@@ -1422,7 +1422,11 @@ stargazer(hitter_models_end,
          type = "text",
          title = "Bateadores: Comparación de los modelos - Refinamiento final",
          column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"))
+                           "Random effects","First-Differences"),
+         covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
+                              "$X_{T_{t-1}}$", "$X_{BA_{t-1}}$", "$X_{GS_{t-1}}$", 
+                              "$X_{OBP^{2}_{t}}$", "$X_{WAR_{t}}$", "$X_{WAR^{2}_{t}}$",
+                              "Intercepto"))
 ```
 
 Aplicaremos un teest de Hausmann a cada pareja de modelos
@@ -2225,7 +2229,16 @@ stargazer(fielder_models_end,
          type = "text",
          title = "Lanzadores Iniciales: Comparación de los modelos - Cuarto refinamiento",
          column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"))
+                           "Random effects","First-Differences"),
+         covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
+                              "$X_{Control^{2}_{t}}$", "$X_{Control_{t}}$",
+                              "$X_{Dominio_{t-1}}$", "$X_{H_{t}}$",
+                              "$X_{ER^{2}_{t}}$","$X_{ERA_{t-1}}$","$X_{ERA_{t}}$",
+                              "$X_{S_{t-1}}$","$X_{S^{2}_{t-1}}$","$X_{S_{t}}$",
+                              "$X_{Comando^{2}_{t-1}}$","$X_{Comando_{t}}$",
+                              "$X_{Dominio_{t}}$","$X_{L^{2}_{t-1}}$",
+                              "$X_{SO^{2}_{t-1}}$","$X_{SO_{t}}$","$X_{BB_{t}}$",
+                              "Intercepto"))
 ```
 Aplicaremos un teest de Hausmann a cada pareja de modelos
 
@@ -2328,7 +2341,11 @@ stargazer(hitter_models_cov,
          type = "text",
          title = "Bateadores: Comparación de los modelos - COVID-19",
          column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"))
+                           "Random effects","First-Differences"),
+         covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
+                              "$X_{T_{t-1}}$", "$X_{BA_{t-1}}$", "$X_{GS_{t-1}}$", 
+                              "$X_{OBP^{2}_{t}}$", "$X_{WAR_{t}}$", "$X_{WAR^{2}_{t}}$",
+                              "Intercepto"))
 ```
 
 ### Fildeadores
@@ -2405,12 +2422,18 @@ stargazer(fielder_models_cov,
          type = "text",
          title = "Lanzadores Iniciales: Comparación de los modelos - COVID-19",
          column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"))
+                           "Random effects","First-Differences"),
+         covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
+                              "$X_{Control^{2}_{t}}$", "$X_{Control_{t}}$",
+                              "$X_{Dominio_{t-1}}$", "$X_{H_{t}}$",
+                              "$X_{ER^{2}_{t}}$","$X_{ERA_{t-1}}$","$X_{ERA_{t}}$",
+                              "$X_{S_{t-1}}$","$X_{S^{2}_{t-1}}$","$X_{S_{t}}$",
+                              "$X_{Comando^{2}_{t-1}}$","$X_{Comando_{t}}$",
+                              "$X_{Dominio_{t}}$","$X_{L^{2}_{t-1}}$",
+                              "$X_{SO^{2}_{t-1}}$","$X_{SO_{t}}$","$X_{BB_{t}}$",
+                              "Intercepto"))
 ```
 Procedamos a realizar el test de Hausman para cada modelo
-```{r}
-hitter_end_models_cov[[1]]
-```
 
 ```{r hitter_hausman_covid}
 # List to store results
@@ -2499,23 +2522,23 @@ formula <- paste(vars,
                  sep = " + ")
 
 # Create a model to store the results
-fielder_simple_poooling_pca <- plm(formula, data = starting_data,
-                          model = "pooling",
-                          index = c("id", "Anio_ref"))
+fielder_simple_pooling_pca <- plm(formula, data = starting_data,
+                                  model = "pooling",
+                                  index = c("id", "Anio_ref"))
 
 # To store the results
-fielder_results_simple_pooling_pca <- coeftest(fielder_simple_poooling_pca,
-                                       vcov = vcovHC(fielder_simple_poooling_pca,
+fielder_results_simple_pooling_pca <- coeftest(fielder_simple_pooling_pca,
+                                       vcov = vcovHC(fielder_simple_pooling_pca,
                                                      type = "HC1",
                                                      cluster = "group"))
 
 # Print the third block of results
 stargazer(fielder_results_simple_pooling_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Lanzadores Iniciales: Modelo Pooling con PCA",
-        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: Modelo Pooling con PCA",
+          covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                               "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
                              "Intercepto"))
 ```
 
@@ -2702,6 +2725,42 @@ stargazer(fielder_results_simple_fd_pca,
         covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                              "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
                              "Intercepto"))
+```
+Mostremos los resultados de manera conjunta
+
+```{r hitter_all_pca_models}
+hitter_pca_models <- list(hitter_simple_pooling_pca,
+                       hitter_simple_within_pca,
+                       hitter_simple_random_pca,
+                       hitter_simple_fd_pca)
+
+# Print the third block of results
+stargazer(hitter_pca_models,
+          no.space = TRUE,
+          type = "text",
+          title = "Bateadores regulares: Modelos con PCA",
+          column.labels = c("Pooling", "Within", 
+                            "RE","FD"),
+          covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                               "Intercepto"))
+```
+```{r fielder_all_pca_models}
+fielder_pca_models <- list(fielder_simple_pooling_pca,
+                           fielder_simple_within_pca,
+                           fielder_simple_random_pca,
+                           fielder_simple_fd_pca)
+
+# Print the third block of results
+stargazer(fielder_pca_models,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: Modelos con PCA",
+          column.labels = c("Pooling", "Within", 
+                            "RE","FD"),
+          covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                               "Intercepto"))
 ```
 
 # Comparación entre periodos
@@ -3552,7 +3611,7 @@ plm_data <- pdata.frame(hitter_data_did,
                         index = c("Jugador","Anio_ref"))
 
 # Specify the formula using as.formula
-formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t")
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
 
 # Estimate DID model with multiple periods
 hitter_did_model <- plm(formula,
@@ -3561,7 +3620,7 @@ hitter_did_model <- plm(formula,
 
 
 # Extract ATE estimate from DID model
-print(hitter_ate_estimate <- coef(hitter_did_model)[4])
+print(hitter_ate_estimate <- coef(hitter_did_model)[6])
 ```
 
 ```{r fielder_did_stimation}
@@ -3570,7 +3629,7 @@ plm_data <- pdata.frame(starting_data_did,
                         index = c("Jugador","Anio_ref"))
 
 # Specify the formula using as.formula
-formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t")
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
 
 # Estimate DID model with multiple periods
 starting_did_model <- plm(formula,
@@ -3579,7 +3638,7 @@ starting_did_model <- plm(formula,
 
 
 # Extract ATE estimate from DID model
-print(starting_ate_estimate <- coef(starting_did_model)[4])
+print(starting_ate_estimate <- coef(starting_did_model)[6])
 ```
 
 ```{r hitter_parallel_tendancy_y}
