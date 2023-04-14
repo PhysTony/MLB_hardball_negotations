@@ -32,7 +32,7 @@ library(plm)
 
 Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, a los fielderos.
 
-```{r import_panel, include=FALSE, warning=FALSE}
+```{r import_panel, include = FALSE, warning = FALSE}
 setwd("~/Documentos/Github/Proyectos/MLB_HN/")
 hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
 fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
@@ -51,10 +51,15 @@ Como la posición del jugador es un control, necesitaremos pasar de columna cate
 
 ```{r position_dummyfication}
 # Convert categorical column to numerical
+# Position;
 hitters_panel$position_num_t <- as.numeric(factor(hitters_panel$Posicion_t))
 fielders_panel$position_num_t <- as.numeric(factor(fielders_panel$Posicion_t))
+# Team:
 hitters_panel$team_num_t <- as.numeric(factor(hitters_panel$Acronimo_t))
 fielders_panel$team_num_t <- as.numeric(factor(fielders_panel$Acronimo_t))
+# Free Agent dummy
+hitters_panel <- cbind(setNames(data.frame(rep(1, nrow(hitters_panel))), "Agente_t"), hitters_panel)
+fielders_panel <- cbind(setNames(data.frame(rep(1, nrow(fielders_panel))), "Agente_t"), fielders_panel)
 ```
 
 Como adelanto, se descartaron los controles por posición puesto que no son significativos para los modelos y afectan los resultados. Tal vez por el hehco de que los jugadores tienden a rotar de posición en un mismo partido e incluso a lo largo de la temporada. aAgreguemos una columna de 1's que represente la dummy de ser agente libre
@@ -232,7 +237,7 @@ print(dim(shorts_cov_data))
 Lo que resta hacer es implementar un algoritmo donde se pueda hacer el siguiente modelo para todas las estadísticas deportiva de acuerdo a si el jugador es defensivo u ofensivo:
 
 $$
-Y_{t}(\cdot) = \alpha + \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
+Y_{t}(\cdot) = \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
 $$
 
 donde
@@ -292,7 +297,9 @@ stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
 Las variables base para ambos tipos de jugadores son los controles
 ```{r controles}
 # Constroles:
-vars  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t'
+vars_ms  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t'
+# Constroles:
+vars_fe  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t -1'
 ```
 
 ```{r hitter_stats_labels}
@@ -300,22 +307,22 @@ hitter_stats_1 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                    "$X_{AB_{t}}$","$X_{AB_{t-1}}$","$X_{AB^{2}_{t}}$","$X_{AB^{2}_{t-1}}$",
                    "$X_{H_{t}}$","$X_{H_{t-1}}$","$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
                    "$X_{BA_{t}}$","$X_{BA_{t-1}}$", "$X_{BA^{2}_{t}}$","$X_{BA^{2}_{t-1}}$",
-                   "Intercepto")
+                   "Agente$_{t}$")
 hitter_stats_2 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                    "$X_{D_{t}}$","$X_{D_{t-1}}$","$X_{D^{2}_{t}}$","$X_{D^{2}_{t-1}}$",
                    "$X_{HR_{t}}$","$X_{HR_{t-1}}$","$X_{HR^{2}_{t}}$","$X_{HR^{2}_{t-1}}$",
                    "$X_{GS_{t}}$","$X_{GS_{t-1}}$", "$X_{GS^{2}_{t}}$","$X_{GS^{2}_{t-1}}$",
-                   "Intercepto")
+                   "Agente$_{t}$")
 hitter_stats_3 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                    "$X_{OPS_{t}}$","$X_{OPS_{t-1}}$","$X_{OPS^{2}_{t}}$","$X_{OPS^{2}_{t-1}}$",
                    "$X_{OBP_{t}}$","$X_{OBP_{t-1}}$","$X_{OBP^{2}_{t}}$","$X_{OBP^{2}_{t-1}}$",
                    "$X_{SLG_{t}}$","$X_{SLG_{t-1}}$", "$X_{SLG^{2}_{t}}$","$X_{SLG^{2}_{t-1}}$",
-                   "Intercepto")
+                   "Agente$_{t}$")
 hitter_stats_4 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                    "$X_{RBI_{t}}$","$X_{RBI_{t-1}}$","$X_{RBI^{2}_{t}}$","$X_{RBI^{2}_{t-1}}$",
                    "$X_{T_{t}}$","$X_{T_{t-1}}$","$X_{T^{2}_{t}}$","$X_{T^{2}_{t-1}}$",
                    "$X_{WAR_{t}}$","$X_{WAR_{t-1}}$", "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$",
-                   "Intercepto")
+                   "Agente$_{t}$")
 hitter_stats <- list(hitter_stats_1,
                      hitter_stats_2,
                      hitter_stats_3,
@@ -331,27 +338,27 @@ fielder_stats_1 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                     "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$","$X_{H_{t}}$","$X_{H_{t-1}}$",
                     "$X_{R^{2}_{t}}$","$X_{R^{2}_{t-1}}$","$X_{ER^{2}_{t}}$","$X_{ER^{2}_{t-1}}$",
                     "$X_{ER_{t}}$","$X_{ER_{t-1}}$", "$X_{R_{t}}$","$X_{R_{t-1}}$",
-                    "Intercepto")
+                    "Agente$_{t}$")
 fielder_stats_2 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                     "$X_{Comando^{2}_{t}}$","$X_{Comando^{2}_{t-1}}$","$X_{Comando_{t}}$","$X_{Comando_{t-1}}$",
                     "$X_{Control^{2}_{t}}$","$X_{Control^{2}_{t-1}}$","$Control_{H_{t}}$","$X_{Control_{t-1}}$",
                     "$X_{Dominio^{2}_{t}}$","$X_{Dominio^{2}_{t-1}}$","$X_{Dominio_{t}}$","$X_{Dominio_{t-1}}$",
-                    "Intercepto")
+                    "Agente$_{t}$")
 fielder_stats_3 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                     "$X_{ERA^{2}_{t}}$","$X_{ERA^{2}_{t-1}}$","$X_{ERA_{t}}$","$X_{ERA_{t-1}}$",
                     "$X_{IP^{2}_{t}}$","$X_{IP^{2}_{t-1}}$","$X_{IP_{t}}$","$X_{IP_{t-1}}$",
                     "$X_{L^{2}_{t}}$","$X_{L^{2}_{t-1}}$", "$X_{L_{t}}$","$X_{L_{t-1}}$",
-                    "Intercepto")
+                    "Agente$_{t}$")
 fielder_stats_4 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                     "$X_{S^{2}_{t}}$","$X_{S^{2}_{t-1}}$","$X_{S_{t}}$","$X_{S_{t-1}}$",
                     "$X_{SO^{2}_{t}}$","$X_{SO^{2}_{t-1}}$","$X_{SO_{t}}$","$X_{SO_{t-1}}$",
                     "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$","$X_{WAR_{t}}$","$X_{WAR_{t-1}}$",
-                    "Intercepto")
+                    "Agente$_{t}$")
 fielder_stats_5 = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                     "$X_{WHIP^{2}_{t}}$","$X_{WHIP^{2}_{t-1}}$","$X_{WHIP_{t}}$","$X_{WHIP_{t-1}}$",
                     "$X_{BB^{2}_{t}}$","$X_{BB^{2}_{t-1}}$","$X_{BB_{t}}$","$X_{BB_{t-1}}$",
                     "$X_{W^{2}_{t}}$","$X_{W^{2}_{t-1}}$","$X_{W_{t}}$","$X_{W_{t-1}}$",
-                    "Intercepto")
+                    "Agente$_{t}$")
 fielder_stats <- list(fielder_stats_1,
                       fielder_stats_2,
                       fielder_stats_3,
@@ -391,7 +398,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_ms, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -439,7 +446,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_ms, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -489,7 +496,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_fe, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -506,7 +513,7 @@ for (j in 1:hitter_rep){
   }
   
   # Print the third block of results
-  stargazer(hitter_results_simple_pooling[[j]],
+  stargazer(hitter_results_simple_within[[j]],
           no.space = TRUE,
           type = "text",
           title = "Bateadores: Estimador Within",
@@ -537,7 +544,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_fe, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -587,7 +594,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_ms, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -635,7 +642,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_ms, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -685,7 +692,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_fe, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -733,7 +740,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_fe, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -3178,7 +3185,7 @@ split_fielder_ch <- split(fielders_panel_ch,
 ```
 
 Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
-```{r group_category_split_ch, include=FALSE}
+```{r group_category_split_ch_1, include=FALSE}
 # Whole panel:
 # Offensive:
 h_category_1_ch <- split_hitter_ch[["SP"]]
@@ -3770,7 +3777,7 @@ ggsave("did_model_plot_starting_y.pdf")
 
 Repitamos lo mismo para los salarios
 
-```{r hitter_did_stimation}
+```{r hitter_did_stimation_w}
 # Convert panel_data to a plm data object
 plm_data <- pdata.frame(hitter_data_did,
                         index = c("Jugador","Anio_ref"))
@@ -3788,7 +3795,7 @@ hitter_did_model <- plm(formula,
 print(hitter_ate_estimate <- coef(hitter_did_model)[6])
 ```
 
-```{r fielder_did_stimation}
+```{r fielder_did_stimation_w}
 # Convert panel_data to a plm data object
 plm_data <- pdata.frame(starting_data_did,
                         index = c("Jugador","Anio_ref"))
