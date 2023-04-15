@@ -765,7 +765,6 @@ for (j in 1:fielder_rep){
 }
 ```
 
-
 # Estimaciones conjuntas
 Lo que se hará ahora es volver a estimar los modelos anteriores, pero con todas las variables que fueron significativas para un nivel del $\%5$. 
 
@@ -828,7 +827,6 @@ hitter_vars_4 <- c("X_At_bats",
                    "X_Home_runs_2",
                    "X_Juegos_iniciados",
                    "X_Porcentaje_On_base_plus_slugging",
-                   "X_Porcentaje_On_base_plus_slugging_2",
                    "X_Porcentaje_on_base",
                    "X_Porcentaje_on_base_2",
                    "X_Runs_batted_in",
@@ -845,7 +843,7 @@ hitter_vars_4 <- c(paste(stat_hitter_t, collapse = " + "),
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -861,7 +859,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_2[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -877,7 +875,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -893,7 +891,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -923,23 +921,25 @@ stargazer(hitter_models,
          type = "text",
          title = "Bateadores: Comparación de los modelos",
          covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
-                              "$X_{AB_{t}}$", "$X_{H^{2}_{t}}$", "$X_{H_{t}}$", 
+                              "$X_{AB_{t}}$", "$X_{H^{2}_{t}}$", "$X_{H_{t}}$",
+                              "$X_{OPS^{2}_{t}}$",
                               "$X_{BA_{t}}$", "$X_{BA^{2}_{t}}$",
                               "$X_{HR_{t}}$", "$X_{HR^{2}_{t}}$", 
-                              "$X_{GS_{t}}$", "$X_{OPS_{t}}$", "$X_{OPS^{2}_{t}}$",
+                              "$X_{GS_{t}}$", "$X_{OPS_{t}}$", 
                               "$X_{OBP_{t}}$", "$X_{OBP^{2}_{t}}$",
                               "$X_{SLG^{2}_{t}}$", "$X_{RBI_{t}}$",
                               "$X_{T_{t}}$","$X_{T^{2}_{t}}$", 
                               "$X_{WAR_{t}}$", "$X_{WAR^{2}_{t}}$", 
-                              "$X_{AB_{t-1}}$", "$X_{H^{2}_{t-1}}$", "$X_{H_{t-1}}$", 
+                              "$X_{AB_{t-1}}$", "$X_{H^{2}_{t-1}}$", "$X_{H_{t-1}}$",
+                              "$X_{OPS^{2}_{t-1}}$",
                               "$X_{BA_{t-1}}$", "$X_{BA^{2}_{t-1}}$",
                               "$X_{HR_{t-1}}$", "$X_{HR^{2}_{t-1}}$", 
-                              "$X_{GS_{t-1}}$", "$X_{OPS_{t-1}}$", "$X_{OPS^{2}_{t-1}}$",
+                              "$X_{GS_{t-1}}$", "$X_{OPS_{t-1}}$",
                               "$X_{OBP_{t-1}}$", "$X_{OBP^{2}_{t-1}}$",
                               "$X_{SLG^{2}_{t-1}}$", "$X_{RBI_{t-1}}$",
                               "$X_{T_{t-1}}$","$X_{T^{2}_{t-1}}$", 
                               "$X_{WAR_{t-1}}$", "$X_{WAR^{2}_{t-1}}$", 
-                              "Intercepto"),
+                              "Agente$_{t}$"),
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```
@@ -978,7 +978,7 @@ hitter_vars_4 <- paste(hitter_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -991,7 +991,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1004,7 +1004,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1017,7 +1017,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1074,7 +1074,7 @@ hitter_vars_4 <- paste(hitter_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1087,7 +1087,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1100,7 +1100,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1113,7 +1113,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1171,7 +1171,7 @@ hitter_vars_4 <- paste(hitter_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1184,7 +1184,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1197,7 +1197,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1210,7 +1210,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1267,7 +1267,7 @@ hitter_vars_4 <- paste(hitter_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1280,7 +1280,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1293,7 +1293,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1306,7 +1306,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1359,7 +1359,7 @@ hitter_vars_4 <- paste(hitter_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1372,7 +1372,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1385,7 +1385,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1398,7 +1398,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1543,7 +1543,7 @@ fielder_vars_4 <- c(paste(stat_fielder_t, collapse = " + "),
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1559,7 +1559,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_2[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1575,7 +1575,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1591,7 +1591,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1689,7 +1689,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1702,7 +1702,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1715,7 +1715,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1728,7 +1728,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1821,7 +1821,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1834,7 +1834,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1847,7 +1847,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1860,7 +1860,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1940,7 +1940,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1953,7 +1953,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1966,7 +1966,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1979,7 +1979,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -2055,7 +2055,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -2068,7 +2068,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -2081,7 +2081,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -2094,7 +2094,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -2165,7 +2165,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -2178,7 +2178,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -2191,7 +2191,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -2204,7 +2204,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -2278,7 +2278,7 @@ Estimaremos los mismos modelos refinados, pero omitiendo el año 2020 para evalu
 
 ```{r hitter_stimation_cov}
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -2291,7 +2291,7 @@ hitter_results_stimation_1_cov <- coeftest(hitter_stimation_1,
                                                          type = "HC1",
                                                          cluster = "group"))
 # Within:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -2304,7 +2304,7 @@ hitter_results_stimation_2_cov <- coeftest(hitter_stimation_2,
                                                          type = "HC1",
                                                          cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  hitter_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -2317,7 +2317,7 @@ hitter_results_stimation_3_cov <- coeftest(hitter_stimation_3,
                                                          type = "HC1",
                                                          cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  hitter_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -2359,7 +2359,7 @@ stargazer(hitter_models_cov,
 
 ```{r fielder_stimation_pooling_cov}
 # Pooling:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -2371,8 +2371,8 @@ fielder_results_stimation_1_cov <- coeftest(fielder_stimation_1,
                                              vcov = vcovHC(fielder_stimation_1,
                                                            type = "HC1",
                                                            cluster = "group"))
-      # Within:
-formula <- paste(vars,
+# Within:
+formula <- paste(vars_fe,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -2385,7 +2385,7 @@ fielder_results_stimation_2_cov <- coeftest(fielder_stimation_2,
                                                            type = "HC1",
                                                            cluster = "group"))
 # Random:
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -2398,7 +2398,7 @@ fielder_results_stimation_3_cov <- coeftest(fielder_stimation_3,
                                                            type = "HC1",
                                                            cluster = "group"))
 # First Differences:
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -2494,7 +2494,7 @@ Lo que haremos ahore es obtener los estimadores con los componentes principales 
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca1_t_1'
 
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  pca_vars,
                  sep = " + ")
 
@@ -2524,7 +2524,7 @@ stargazer(hitter_results_simple_pooling_pca,
 ```{r starting_stimation_pooling_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  pca_vars,
                  sep = " + ")
 
@@ -2556,7 +2556,7 @@ stargazer(fielder_results_simple_pooling_pca,
 ```{r hitter_stimation_simple_fe_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca1_t_1'
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  pca_vars,
                  sep = " + ")
 
@@ -2586,7 +2586,7 @@ stargazer(hitter_results_simple_within_pca,
 ```{r starting_stimation_fe_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  pca_vars,
                  sep = " + ")
 
@@ -2619,7 +2619,7 @@ stargazer(fielder_results_simple_within_pca,
 ```{r hitter_stimation_simple_random_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca1_t_1'
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  pca_vars,
                  sep = " + ")
 
@@ -2649,7 +2649,7 @@ stargazer(hitter_results_simple_random_pca,
 ```{r starting_stimation_random_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars,
+formula <- paste(vars_ms,
                  pca_vars,
                  sep = " + ")
 
@@ -2681,7 +2681,7 @@ stargazer(fielder_results_simple_random_pca,
 ```{r hitter_stimation_simple_fd_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t+ pca1_t_1'
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  pca_vars,
                  sep = " + ")
 
@@ -2710,7 +2710,7 @@ stargazer(hitter_results_simple_fd_pca,
 ```{r starting_stimation_fd_pca}
 # run linear regression with grouped errors by country and robust errors
 pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars,
+formula <- paste(vars_fe,
                  pca_vars,
                  sep = " + ")
 
@@ -2825,7 +2825,7 @@ Haremos las estimaciones con todos los modelos para obtener un análisis robusto
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_hitter_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+  base_vars_h  <- paste(vars_ms, stat_hitter_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_h,
                    stat_hitter_t_1[[i]],
@@ -2865,7 +2865,7 @@ for (i in 1:length(stat_hitter_t_1)){
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_fielder_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+  base_vars_s  <- paste(vars_ms, stat_fielder_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_s,
                    stat_fielder_t_1[[i]],
@@ -2906,7 +2906,7 @@ for (i in 1:length(stat_fielder_t_1)){
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_hitter_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+  base_vars_h  <- paste(vars_fe, stat_hitter_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_h,
                    stat_hitter_t_1[[i]],
@@ -2945,7 +2945,7 @@ for (i in 1:length(stat_hitter_t_1)){
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_fielder_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+  base_vars_s  <- paste(vars_fe, stat_fielder_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_s,
                    stat_fielder_t_1[[i]],
@@ -2986,7 +2986,7 @@ for (i in 1:length(stat_fielder_t_1)){
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_hitter_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+  base_vars_h  <- paste(vars_ms, stat_hitter_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_h,
                    stat_hitter_t_1[[i]],
@@ -3025,7 +3025,7 @@ for (i in 1:length(stat_hitter_t_1)){
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_fielder_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+  base_vars_s  <- paste(vars_ms, stat_fielder_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_s,
                    stat_fielder_t_1[[i]],
@@ -3068,7 +3068,7 @@ Se obtendrán las estimaciones de las variables referentes a estadísticas depor
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_hitter_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_h  <- paste(vars, stat_hitter_t[[i]],
+  base_vars_h  <- paste(vars_fe, stat_hitter_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_h,
                    stat_hitter_t_1[[i]],
@@ -3107,7 +3107,7 @@ for (i in 1:length(stat_hitter_t_1)){
 # loop over the variables in var_hitter_list
 for (i in 1:length(stat_fielder_t_1)){
   # run linear regression with grouped errors by country and robust errors
-  base_vars_s  <- paste(vars, stat_fielder_t[[i]],
+  base_vars_s  <- paste(vars_fe, stat_fielder_t[[i]],
                       sep = '+')
   formula <- paste(base_vars_s,
                    stat_fielder_t_1[[i]],
@@ -3366,7 +3366,7 @@ for (j in 1:hitter_rep_ch){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_hitter_t_ch[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_ms, stat_hitter_t_ch[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1_ch[[i + hitter_stat_num*(j - 1)]],
@@ -3393,7 +3393,7 @@ for (j in 1:hitter_rep_ch){
   if (j == 3){
     for (i in 1:4){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_hitter_t_ch[[i + hitter_stat_num*(j)]],
+    base_vars_h  <- paste(vars_ms, stat_hitter_t_ch[[i + hitter_stat_num*(j)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1_ch[[i + hitter_stat_num*(j)]],
@@ -3442,7 +3442,7 @@ for (j in 1:fielder_rep_ch){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_fielder_t_ch[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(vars_fe, stat_fielder_t_ch[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1_ch[[i + fielder_stat_num*(j - 1)]],
@@ -3469,7 +3469,7 @@ for (j in 1:fielder_rep_ch){
   if (j == 4){
     for (i in 1:2){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars, stat_fielder_t_ch[[i + fielder_stat_num*(j)]],
+    base_vars_h  <- paste(vars_fe, stat_fielder_t_ch[[i + fielder_stat_num*(j)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1_ch[[i + fielder_stat_num*(j)]],
