@@ -985,7 +985,7 @@ for (j in 1:fielder_rep){
   stargazer(fielder_results_simple_fd[[j]],
           no.space = TRUE,
           type = "text",
-          title = "Lanzadores Iniciales: Efectos Aleatorios",
+          title = "Lanzadores Iniciales: Primeras Diferencias",
           covariate.labels = fielder_stats[[j]])
 }
 ```
@@ -3474,7 +3474,7 @@ starting_data_did$treatment <- ifelse(starting_data_did$Tratamiento == 'Si', 1, 
 
 Obtengamos el efecto promedio de convertirse en agentes libres
 
-```{r hitter_did_stimation}
+```{r hitter_did_stimation_y}
 # Convert panel_data to a plm data object
 plm_data <- pdata.frame(hitter_data_did,
                         index = c("Jugador","Anio_ref"))
@@ -3487,18 +3487,24 @@ hitter_did_model <- plm(formula,
                          data = plm_data,
                          model = "within")
 
+# Group standard errors:
+hitter_did_results <- coeftest(hitter_did_model,
+                               vcov = vcovHC(hitter_did_model,
+                                             type = "HC1",
+                                             cluster = "group"))
+
 # Print the third block of results
-  stargazer(fielder_results_simple_pooling_ch[[5]],
+stargazer(hitter_did_results,
           no.space = TRUE,
           type = "text",
-          title = "Bateadores: Modelo Pooling",
-          covariate.labels = fielder_stats_ch[[5]])
-
-# Extract ATE estimate from DID model
-print(hitter_ate_estimate <- coef(hitter_did_model)[6])
+          title = "Bateadores regulares: Y DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
 ```
 
-```{r fielder_did_stimation}
+```{r fielder_did_stimation_y}
 # Convert panel_data to a plm data object
 plm_data <- pdata.frame(starting_data_did,
                         index = c("Jugador","Anio_ref"))
@@ -3512,8 +3518,21 @@ starting_did_model <- plm(formula,
                            model = "within")
 
 
-# Extract ATE estimate from DID model
-print(starting_ate_estimate <- coef(starting_did_model)[6])
+# Group standard errors:
+starting_did_results <- coeftest(starting_did_model,
+                                 vcov = vcovHC(starting_did_model,
+                                               type = "HC1",
+                                               cluster = "group"))
+
+# Print the third block of results
+stargazer(starting_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: Y DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
 ```
 
 ```{r hitter_parallel_tendancy_y}
@@ -3628,7 +3647,7 @@ ggplot(data = parallel_means,
     #Texto de la Leyenda
     legend.text = element_text(size = 13),
     
-    # POsición de la leyenda:
+    # Posición de la leyenda:
     legend.position = "bottom"
   ) +
   scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
@@ -3653,14 +3672,21 @@ plm_data <- pdata.frame(hitter_data_did,
 # Specify the formula using as.formula
 formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
 
-# Estimate DID model with multiple periods
-hitter_did_model <- plm(formula,
-                         data = plm_data,
-                         model = "within")
+# Group standard errors:
+hitter_did_results <- coeftest(hitter_did_model,
+                               vcov = vcovHC(hitter_did_model,
+                                             type = "HC1",
+                                             cluster = "group"))
 
-
-# Extract ATE estimate from DID model
-print(hitter_ate_estimate <- coef(hitter_did_model)[6])
+# Print the third block of results
+stargazer(hitter_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Bateadores regulares: Salario regular DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
 ```
 
 ```{r fielder_did_stimation_w}
@@ -3676,9 +3702,21 @@ starting_did_model <- plm(formula,
                            data = plm_data,
                            model = "within")
 
+# Group standard errors:
+starting_did_results <- coeftest(starting_did_model,
+                                 vcov = vcovHC(starting_did_model,
+                                               type = "HC1",
+                                               cluster = "group"))
 
-# Extract ATE estimate from DID model
-print(starting_ate_estimate <- coef(starting_did_model)[6])
+# Print the third block of results
+stargazer(starting_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: w DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
 ```
 
 ```{r hitter_parallel_tendancy}
