@@ -1,0 +1,492 @@
+---
+title: "Dynamic Model - Differences In Differences"
+author: "Antonio Huerta Montellano"
+date: "\today"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(comment = NA)
+options(warn = FALSE) # ignore warnings
+```
+
+```{r libraries, include=FALSE}
+library(lmtest) # for robust standard errors
+library(dplyr) # for group_by function
+library(ggplot2) # for better plots
+library(dplyr) # for data managment
+library(clubSandwich) # Grouped errors
+library(sandwich) # MOre error options
+library(tidyr) # Datframes manipulation
+library(stargazer) # For output formats
+library(lubridate)
+library(plm)
+```
+
+# Differences in Differences
+
+```{r import_panel_did, include=FALSE}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+hitters_panel_did <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_hitters_cum_did.csv')
+fielders_panel_did <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_fielders_cum_did.csv')
+```
+
+```{r position_dummyfication_did, include=FALSE}
+# Convert categorical column to numerical
+hitters_panel_did$position_num_t <- as.numeric(factor(hitters_panel_did$Posicion_t))
+fielders_panel_did$position_num_t <- as.numeric(factor(fielders_panel_did$Posicion_t))
+hitters_panel_did$team_num_t <- as.numeric(factor(hitters_panel_did$Acronimo_t))
+fielders_panel_did$team_num_t <- as.numeric(factor(fielders_panel_did$Acronimo_t))
+```
+
+```{r fa_dummy_did, include=FALSE}
+# add a column of 1s to the panel data
+hitters_panel_did <- cbind(hitters_panel_did,
+                           fa = rep(1, nrow(hitters_panel_did)))
+fielders_panel_did <- cbind(fielders_panel_did,
+                            fa = rep(1, nrow(fielders_panel_did)))
+```
+
+```{r position_split_did, include=FALSE}
+# split the data frame by category
+split_hitter_did <- split(hitters_panel_did,
+                         f = hitters_panel_did$Posicion_t)
+split_fielder_did <- split(fielders_panel_did,
+                          f = fielders_panel_did$Posicion_t)
+```
+
+```{r group_category_split_ch, include=FALSE}
+# Whole panel:
+# Offensive:
+h_category_1_did <- split_hitter_did[["SP"]]
+h_category_2_did <- split_hitter_did[["RP"]]
+h_category_3_did <- split_hitter_did[["RP/CL"]]
+h_category_4_did <- split_hitter_did[["C"]]
+h_category_5_did <- split_hitter_did[["1B"]]
+h_category_6_did <- split_hitter_did[["2B"]]
+h_category_7_did <- split_hitter_did[["3B"]]
+h_category_8_did <- split_hitter_did[["SS"]]
+h_category_9_did <- split_hitter_did[["RF"]]
+h_category_10_did <- split_hitter_did[["CF"]]
+h_category_11_did <- split_hitter_did[["LF"]]
+d_hitter_data_did <- split_hitter_did[["DH"]]
+
+# Defensive:
+starting_data_did <- split_fielder_did[["SP"]]
+b_category_2_did <- split_fielder_did[["RP"]]
+b_category_3_did <- split_fielder_did[["RP/CL"]]
+shorts_data_did <- split_fielder_did[["SS"]]
+```
+
+Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
+
+```{r group_concat_did, include=FALSE}
+# All panels:
+# Hitters:
+# Concatenate the two categories
+hitter_data_did <- rbind(h_category_1_did, h_category_2_did, h_category_3_did, h_category_4_did,
+                        h_category_5_did, h_category_6_did, h_category_7_did, h_category_8_did,
+                        h_category_9_did, h_category_10_did, h_category_11_did)
+hitter_data_did <- unique(hitter_data_did)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_data_did <- rbind(b_category_2_did, b_category_3_did)
+relief_pitcher_data_did <- unique(relief_pitcher_data_did)
+```
+
+Ahora,  estimare el modelo DID para múltiples años. En este caso, ya contamos con una columna que tiene los años escalados de manera adecuada para indicar con 0 el primer año de tratamiento.
+
+```{r did_requirements, include=FALSE}
+# Filter nan values
+hitter_data_did <- na.omit(hitter_data_did)
+# Filter error
+hitter_data_did <- subset(hitter_data_did, Anio_did < 10)
+# Create a treatment dummy variable
+hitter_data_did$treatment <- ifelse(hitter_data_did$Tratamiento == 'Si', 1, 0)
+
+
+# Filter nan values
+starting_data_did <- na.omit(starting_data_did)
+# Filter error
+starting_data_did <- subset(starting_data_did, Anio_did < 10)
+# Create a treatment dummy variable
+starting_data_did$treatment <- ifelse(starting_data_did$Tratamiento == 'Si', 1, 0)
+```
+
+Obtengamos el efecto promedio de convertirse en agentes libres
+
+```{r hitter_did_stimation_y, echo=FALSE, eval=TRUE}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(hitter_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
+
+# Estimate DID model with multiple periods
+hitter_did_model <- plm(formula,
+                         data = plm_data,
+                         model = "within")
+
+# Group standard errors:
+hitter_did_results <- coeftest(hitter_did_model,
+                               vcov = vcovHC(hitter_did_model,
+                                             type = "HC1",
+                                             cluster = "group"))
+
+# Print the third block of results
+stargazer(hitter_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Bateadores regulares: Y DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
+```
+
+```{r fielder_did_stimation_y, echo=FALSE, eval=TRUE}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(starting_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
+
+# Estimate DID model with multiple periods
+starting_did_model <- plm(formula,
+                           data = plm_data,
+                           model = "within")
+
+
+# Group standard errors:
+starting_did_results <- coeftest(starting_did_model,
+                                 vcov = vcovHC(starting_did_model,
+                                               type = "HC1",
+                                               cluster = "group"))
+
+# Print the third block of results
+stargazer(starting_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: Y DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
+```
+
+```{r hitter_parallel_tendancy_y, echo=FALSE, eval=TRUE}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Y_Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = hitter_data_did$Tratamiento,
+                            Anio_did = hitter_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Bateadores - Tendencias de Y") +
+  xlab("Año escalado") +
+  ylab('Cambio poder de negociación') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = 0.3,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_hitter_y.pdf")
+```
+
+```{r fielder_parallel_tendancy_y, echo=FALSE, eval=TRUE}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Y_Sueldo_regular_norm_t = starting_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = starting_data_did$Tratamiento,
+                            Anio_did = starting_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did,
+                            data = parallel_data,
+                            FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Lanzadores iniciales - Tendencias de Y") +
+  xlab("Año escalado") +
+  ylab('Cambio poder de negociación') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # Posición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = -0.2,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_starting_y.pdf")
+```
+
+Repitamos lo mismo para los salarios
+
+```{r hitter_did_stimation_w, echo=FALSE, eval=TRUE}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(hitter_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
+
+# Group standard errors:
+hitter_did_results <- coeftest(hitter_did_model,
+                               vcov = vcovHC(hitter_did_model,
+                                             type = "HC1",
+                                             cluster = "group"))
+
+# Print the third block of results
+stargazer(hitter_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Bateadores regulares: Salario regular DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
+```
+
+```{r fielder_did_stimation_w, echo=FALSE, eval=TRUE}
+# Convert panel_data to a plm data object
+plm_data <- pdata.frame(starting_data_did,
+                        index = c("Jugador","Anio_ref"))
+
+# Specify the formula using as.formula
+formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
+
+# Estimate DID model with multiple periods
+starting_did_model <- plm(formula,
+                           data = plm_data,
+                           model = "within")
+
+# Group standard errors:
+starting_did_results <- coeftest(starting_did_model,
+                                 vcov = vcovHC(starting_did_model,
+                                               type = "HC1",
+                                               cluster = "group"))
+
+# Print the third block of results
+stargazer(starting_did_results,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: w DID",
+          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
+                               "Anios_contrato$_{t}$",
+                               "Edad$_{t}$", "Equipo$_{t}$",
+                               "ATE"))
+```
+
+```{r hitter_parallel_tendancy, echo=FALSE, eval=TRUE}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = hitter_data_did$Tratamiento,
+                            Anio_did = hitter_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Bateadores - Tendencias de los salarios") +
+  xlab("Año escalado") +
+  ylab('Salario') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = 0.2,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_hitter_w.pdf")
+```
+
+```{r fielder_parallel_tendancy, echo=FALSE, eval=TRUE}
+# Create a data frame with outcome variable, treatment indicator, and time variable
+parallel_data <- data.frame(Sueldo_regular_norm_t = starting_data_did$Y_Sueldo_regular_norm_t,
+                            Tratamiento = starting_data_did$Tratamiento,
+                            Anio_did = starting_data_did$Anio_did)
+
+# Calculate mean outcome for treatment and control groups at each time period
+parallel_means <- aggregate(Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data,
+                            FUN = mean)
+
+# Create plot
+ggplot(data = parallel_means,
+       aes(x = Anio_did, y = Sueldo_regular_norm_t, color = Tratamiento)) +
+  geom_line(size = 1.5) +
+  ggtitle("Lanzadores iniciales - Tendencias de los salarios") +
+  xlab("Año escalado") +
+  ylab('Salario') +
+  scale_color_manual(values = c("blue", "orange")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  geom_vline(xintercept = 0,
+             linetype = "dashed",
+             color = "red",
+             size = 1.5) + 
+  theme(
+    #Título de los ejes:
+    axis.title.x = element_text(color = "Black",
+                                size = 15,
+                                face = "bold"),
+    axis.title.y = element_text(color="Black",
+                                size = 15,
+                                face = "bold"),
+    
+    #Texto de los ejes:
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),  
+    
+    #T?tulo del gr?fico:
+    plot.title = element_text(color = "Black",
+                              size = 20, 
+                              hjust = 0.5,
+                              face = "bold"),
+    
+    #T?tulo de la Leyenda:
+    legend.title = element_text(size = 15),
+    
+    #Texto de la Leyenda
+    legend.text = element_text(size = 13),
+    
+    # POsición de la leyenda:
+    legend.position = "bottom"
+  ) +
+  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
+  geom_text(aes(label = "Tratamiento"), x = 2, y = -0.2,
+            size = 4.5,
+            color = "navy",
+            angle = 0,
+            hjust = 0.5,
+            vjust = -0.5) +
+  labs(color = "Agente libre")
+# Save the plot as a PDF file
+ggsave("did_model_plot_starting_w.pdf")
+```

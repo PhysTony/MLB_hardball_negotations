@@ -1,5 +1,5 @@
 ---
-title: "Dynamic Model"
+title: "Dynamic Model - Structural Changes"
 author: "Antonio Huerta Montellano"
 date: "\today"
 output:
@@ -26,29 +26,13 @@ library(lubridate)
 library(plm)
 ```
 
-
-## Exploración de los paneles
-
-Importemos los paneles donde un pánel corresponde a los bateadores y, el otro, a los fielderos.
-
 ```{r import_panel, include = FALSE, warning = FALSE}
 setwd("~/Documentos/Github/Proyectos/MLB_HN/")
 hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
 fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
 ```
 
-Por otro lado, se mostrarán las dimensiones de cada pánel
-```{r panel_dimentions}
-print("Bateadores: ")
-print(dim(hitters_panel))
-print("")
-print("Fildeadores: ")
-print(dim(fielders_panel))
-```
-
-Como la posición del jugador es un control, necesitaremos pasar de columna categórica a columna numérica.
-
-```{r position_dummyfication}
+```{r position_dummyfication, include=FALSE}
 # Convert categorical column to numerical
 # Position;
 hitters_panel$position_num_t <- as.numeric(factor(hitters_panel$Posicion_t))
@@ -61,18 +45,13 @@ hitters_panel <- cbind(setNames(data.frame(rep(1, nrow(hitters_panel))), "Agente
 fielders_panel <- cbind(setNames(data.frame(rep(1, nrow(fielders_panel))), "Agente_t"), fielders_panel)
 ```
 
-Como adelanto, se descartaron los controles por posición puesto que no son significativos para los modelos y afectan los resultados. Tal vez por el hehco de que los jugadores tienden a rotar de posición en un mismo partido e incluso a lo largo de la temporada. aAgreguemos una columna de 1's que represente la dummy de ser agente libre
-
-```{r fa_dummy}
+```{r fa_dummy, include=FALSE}
 # add a column of 1s to the panel data
 hitters_panel <- cbind(hitters_panel,
                        fa = rep(1, nrow(hitters_panel)))
 fielders_panel <- cbind(fielders_panel,
                         fa = rep(1, nrow(fielders_panel)))
 ```
-
-
-Debido a que en las estadísticas descriptivas se observó un shock en el año de la pandemia COVID-19, se obtendrán las estimaciones quitando el año 2020.
 
 ```{r covid_filter, include=FALSE}
 # filter out rows with year 2020
@@ -84,44 +63,13 @@ fielders_panel_covid <- fielders_panel %>%
                         filter(Anio_t != 2020)
 ```
 
-## Segmentación por grupo
-
-Lo que haremos es dividir los paneles en ciertas categorías. Primero, veamos todas las posiciones en los páneles
-```{r positions}
-print("Bateadores:")
-print(unique(hitters_panel$Posicion_t))
-print("")
-print("Fildeadores:")
-print(unique(fielders_panel$Posicion_t))
-```
-Arriba se muestran las posiciones de los jugadores en nuestras bases de datos. A pesar de que en los bateadores aparezcan posiciones defensivas se debe a que estos juegan tanto como ofensivos como defensivos. Estando en la ofensiva se juega en las misma posición que todos por lo que no es necesario especificar que ocupala posición de bateador (**H**). Sin embargo, cuando se dice que es un bateador designado (**DH**) ya que este solo juega en la ofensiva para sustituir a un lanzador/pitcher.
-
-Por otro lado, veamos cuantas observaciones hay por posición.
-
-```{r positions_count_hitter}
+```{r positions_count_hitter, include=FALSE}
 hitters_panel %>% count(Posicion_t, sort = TRUE)
 ```
 
-```{r positions_count_fielder}
+```{r positions_count_fielder, include=FALSE}
 fielders_panel %>% count(Posicion_t, sort = TRUE)
 ```
-
-
-Continuemos con la segmentación de acuerdo a categorías. Primero, obtendremos el split de todas las posiciones y luego concatenaremos de acuerdo a los grupos de interés:
-
-**Ofensivos:**
-
-- **Bateador designado (DH).**
-- **No bateador designado (H).**
-
-Debido a la falta de observaciones para los _outfielders_ es que se omitirá su estimación. Por otro lado, debido a que la mayoría de los datos para los fildeadores son de los lanzadores, podemos agruparlos de la siguiente manera
-
-**Defensivos:**
-
-- **Starting pitcher:** Lanzador inicial (SP).
-- **Relief pitcher:** Lanzador de relevo (RP) y lanzador de cierre (RP/CL)
-- **Campo corto (SS).**
-
 
 ```{r position_split, include=FALSE}
 # split the data frame by category
@@ -137,7 +85,6 @@ split_fielder_covid <- split(fielders_panel_covid,
                              f = fielders_panel_covid$Posicion_t)
 ```
 
-Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
 ```{r group_category_split, include=FALSE}
 # Whole panel:
 # Offensive:
@@ -182,8 +129,6 @@ cov_b_category_3 <- split_fielder_covid[["RP/CL"]]
 shorts_cov_data <- split_fielder_covid[["SS"]]
 ```
 
-Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
-
 ```{r group_concat, include=FALSE}
 # All panels:
 # Hitters:
@@ -212,41 +157,6 @@ relief_pitcher_cov_data <- rbind(cov_b_category_2, cov_b_category_3)
 relief_pitcher_cov_data <- unique(relief_pitcher_cov_data)
 ```
 
-Veamos las dimensiones de cada una de los paneles sin el shock de la COVID-19:
-```{r group_dimentions}
-print("Regular hitter: ")
-print(dim(hitter_cov_data))
-print("")
-print("Designated hitter: ")
-print(dim(d_hitter_cov_data))
-print("")
-print("Relief pitchers: ")
-print(dim(relief_pitcher_cov_data))
-print("")
-print("Starting pitchers: ")
-print(dim(starting_cov_data))
-print("")
-print("Short stops: ")
-print(dim(shorts_cov_data))
-```
-
-
-## Estimaciones y regresiones
-
-Lo que resta hacer es implementar un algoritmo donde se pueda hacer el siguiente modelo para todas las estadísticas deportiva de acuerdo a si el jugador es defensivo u ofensivo:
-
-$$
-Y_{t}(\cdot) = \beta_{0}X_{t} + \beta_{1}\text{Controles}_{t} + u_{t}
-$$
-
-donde
-
-- $Controles_{t}$:
-    - Equipo.
-    - Edad.
-    - Año.
-
-Creemos la lista de variables sobre las cuáles se va a iterar el clico
 ```{r hitter_var_list, include=FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
 stat_hitter <- list("X_At_bats", "X_At_bats_2",
@@ -267,7 +177,6 @@ stat_hitter_t <- paste0(stat_hitter, "_t")
 stat_hitter_t_1 <- paste0(stat_hitter, "_t_1")
 ```
 
-Variables para los fildeadores
 ```{r fielder_var_list, include = FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
 stat_fielder <- list('X_Bateos_2', 'X_Bateos',
@@ -291,16 +200,14 @@ stat_fielder_t <- paste0(stat_fielder, "_t")
 stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
 ```
 
-
-Las variables base para ambos tipos de jugadores son los controles
-```{r controles}
+```{r controles, include=FALSE}
 # Constroles:
 vars_ms  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t'
 # Constroles:
 vars_fe  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t -1'
 ```
 
-```{r hitter_stats_labels}
+```{r hitter_stats_labels, include=FALSE}
 hitter_stats_1 = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                    "$X_{AB_{t}}$","$X_{AB_{t-1}}$","$X_{AB^{2}_{t}}$","$X_{AB^{2}_{t-1}}$",
                    "$X_{H_{t}}$","$X_{H_{t-1}}$","$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
@@ -332,7 +239,7 @@ hitter_rep <- 4
 hitter_stat_num <- 6
 ```
 
-```{r hitter_list_var_long, include=FALSE, results='hide'}
+```{r hitter_list_var_long, include=FALSE}
 hitter_stats_long <- list(c("Edad$_{t}$","Años contrato$_{t}$",
                             "Eqipo$_{t}$", 
                             "$X_{AB_{t}}$","$X_{AB_{t-1}}$",
@@ -433,7 +340,7 @@ hitter_stats_long <- list(c("Edad$_{t}$","Años contrato$_{t}$",
 ```
 
 
-```{r fielder_stats_labels}
+```{r fielder_stats_labels, include=FALSE}
 fielder_stats_1 = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                     "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$","$X_{H_{t}}$","$X_{H_{t-1}}$",
                     "$X_{R^{2}_{t}}$","$X_{R^{2}_{t-1}}$","$X_{ER^{2}_{t}}$","$X_{ER^{2}_{t-1}}$",
@@ -470,7 +377,7 @@ fielder_rep <- 5
 fielder_stat_num <- 6
 ```
 
-```{r fielder_list_var_long, include=FALSE, results='hide'}
+```{r fielder_list_var_long, include=FALSE}
 fielder_stats_long <- list(c("Edad$_{t}$","Años contrato$_{t}$",
                               "Eqipo$_{t}$", 
                               "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
@@ -594,15 +501,7 @@ fielder_stats_long <- list(c("Edad$_{t}$","Años contrato$_{t}$",
                             )
 ```
 
-# Estimaciones directas
-
-## Pooling 
-
-### Bateadores
-
-Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
-
-```{r hitter_stimation_simple_pooling}
+```{r hitter_stimation_simple_pooling, include=FALSE}
 # Create a model to store the results
 hitter_simple_pooling <- list()
 
@@ -646,9 +545,7 @@ for (j in 1:hitter_rep){
 }
 ```
 
-### Starting pitcher
-
-```{r starting_stimation_pooling}
+```{r starting_stimation_pooling, include=FALSE}
 # Create a model to store the results
 fielder_simple_pooling <- list()
 
@@ -694,13 +591,7 @@ for (j in 1:fielder_rep){
 }
 ```
 
-## Efectos fijos
-
-### Bateadores
-
-Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
-
-```{r hitter_stimation_simple_within}
+```{r hitter_stimation_simple_within, include=FALSE}
 # Create a model to store the results
 hitter_simple_within <- list()
 
@@ -746,7 +637,7 @@ for (j in 1:hitter_rep){
 
 ### Starting pitcher
 
-```{r starting_stimation_within}
+```{r starting_stimation_within, include=FALSE}
 # Create a model to store the results
 fielder_simple_within <- list()
 
@@ -792,13 +683,7 @@ for (j in 1:fielder_rep){
 }
 ```
 
-## Efectos aleatorios
-
-### Bateadores
-
-Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
-
-```{r hitter_stimation_simple_random}
+```{r hitter_stimation_simple_random, include=FALSE}
 # Create a model to store the results
 hitter_simple_random <- list()
 
@@ -842,9 +727,7 @@ for (j in 1:hitter_rep){
 }
 ```
 
-### Starting pitcher
-
-```{r starting_stimation_random}
+```{r starting_stimation_random, include=FALSE}
 # Create a model to store the results
 fielder_simple_random <- list()
 
@@ -890,13 +773,7 @@ for (j in 1:fielder_rep){
 }
 ```
 
-## First Differences
-
-### Bateadores
-
-Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
-
-```{r hitter_stimation_simple_fd}
+```{r hitter_stimation_simple_fd, include=FALSE}
 # Create a model to store the results
 hitter_simple_fd <- list()
 
@@ -940,9 +817,7 @@ for (j in 1:hitter_rep){
 }
 ```
 
-### Starting pitcher
-
-```{r starting_stimation_fd}
+```{r starting_stimation_fd, include=FALSE}
 # Create a model to store the results
 fielder_simple_fd <- list()
 
@@ -988,14 +863,7 @@ for (j in 1:fielder_rep){
 }
 ```
 
-# Estimaciones conjuntas
-Lo que se hará ahora es volver a estimar los modelos anteriores, pero con todas las variables que fueron significativas para un nivel del $\%5$. 
-
-## Bateadores
-
-Para los bateadores las variables significativas son:
-
-```{r hitter_stimation_1}
+```{r hitter_stimation_1, include=FALSE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Bateos",
@@ -1063,7 +931,6 @@ stat_hitter_t_1 <- paste0(hitter_vars_4, "_t_1")
 # Lista 
 hitter_vars_4 <- c(paste(stat_hitter_t, collapse = " + "),
                    paste(stat_hitter_t_1, collapse = " + "))
-
 
 # Pooling:
 formula <- paste(vars_ms,
@@ -1166,9 +1033,8 @@ stargazer(hitter_models,
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```
-Como se puede observar, no todas las variables son significativas de manera conjunta. Reducieremos la cantidad de variables en la estimación ya que muchas de estas están correlacionadas con otras dentro de la misma. Nos quedaremos con las que fueron significativas en el modelo anterior, además de las WAR puesto que son un tipo de PCA.
 
-```{r hitter_stimation_2}
+```{r hitter_stimation_2, results=TRUE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Triples_t_1",
@@ -1273,7 +1139,8 @@ stargazer(hitter_models,
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```
-```{r hitter_stimation_3}
+
+```{r hitter_stimation_3, results=TRUE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Triples_t_1",
@@ -1374,7 +1241,7 @@ stargazer(hitter_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r hitter_stimation_ecom}
+```{r hitter_stimation_ecom, results=TRUE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Triples_t_1",
@@ -1479,9 +1346,7 @@ stargazer(hitter_models,
                            "Random effects","First-Differences"))
 ```
 
-Aplicaremos un teest de Hausmann a cada pareja de modelos
-
-```{r hausman_cojoint_hitter}
+```{r hausman_cojoint_hitter, results=TRUE}
 # create an empty list to store the test results
 test_results <- list()
 
@@ -1499,11 +1364,7 @@ for (i in 1:(length(hitter_end_models)-1)) {
 test_results
 ```
 
-Se halló evidencia de un cambio estructural entre cualquiera de los modelos.
-
-## Lanzadores
-
-```{r fielder_stimation_pooling_1}
+```{r fielder_stimation_pooling_1, results=TRUE}
 # Significant variables:
 fielder_vars_1 <- c('X_Control_2',
                     'X_Control',
@@ -1666,9 +1527,8 @@ stargazer(fielder_models,
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```
-Seguiremos el proceso análogo de refinamiento para cada modelo
 
-```{r fielder_stimation_pooling_2}
+```{r fielder_stimation_pooling_2, results=TRUE}
 # Significant variables:
 fielder_vars_1 <- c('X_Control_2_t',
                     'X_Control_t',
@@ -1802,7 +1662,7 @@ stargazer(fielder_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r fielder_stimation_pooling_ecom}
+```{r fielder_stimation_pooling_ecom, results=TRUE}
 # Significant variables:
 fielder_vars_1 <- c('X_Control_2_t',
                     'X_Control_t',
@@ -1938,9 +1798,7 @@ stargazer(fielder_models,
                            "Random effects","First-Differences"))
 ```
 
-Aplicaremos un teest de Hausmann a cada pareja de modelos
-
-```{r hausman_cojoint_fielder}
+```{r hausman_cojoint_fielder, results=TRUE}
 # create an empty list to store the test results
 test_results <- list()
 
@@ -1958,16 +1816,13 @@ for (i in 1:(length(fielder_end_models)-1)) {
 test_results
 ```
 
-Solo hay evidencia de un cambio estructural entre el estimador _within_ y _fd_.
-
-
 # Cambio estructural para el 2020 - COVID-19
 
-Estimaremos los mismos modelos refinados, pero omitiendo el año 2020 para evaluar si hay un cambio estructural
+Estimaremos los mismos modelos refinados, pero omitiendo el año 2020 para evaluar si hay un cambio estructural.
 
 ### Bateadores
 
-```{r hitter_stimation_cov}
+```{r hitter_stimation_cov, echo=FALSE, eval=TRUE}
 # Pooling:
 formula <- paste(vars_ms,
                  hitter_vars_1,
@@ -2048,7 +1903,7 @@ stargazer(hitter_models_cov,
 
 ### Fildeadores
 
-```{r fielder_stimation_pooling_cov}
+```{r fielder_stimation_pooling_cov, echo=FALSE, eval=TRUE}
 # Pooling:
 formula <- paste(vars_ms,
                  fielder_vars_1,
@@ -2133,7 +1988,7 @@ stargazer(fielder_models_cov,
 ```
 Procedamos a realizar el test de Hausman para cada modelo
 
-```{r hitter_hausman_covid}
+```{r hitter_hausman_covid, echo=FALSE, eval=TRUE}
 # List to store results
 hitter_test_covid <- list()
 model_names <- c("Pooling",
@@ -2169,296 +2024,6 @@ for (i in 1:4){
   print(model_names[[i]])
   print(fielder_test_covid[[i]])
 }
-```
-
-Vemos que solo hay un cambio estructural para el caso de los bateadores bajo el modelo de primeras diferencias.
-
-# PCA - Estimación directa
-
-Lo que haremos ahore es obtener los estimadores con los componentes principales obtenidos en el tratamiento de los páneles, lo cuales ya son el número óptimo de componentes.
-
-## Pooling
-
-### Bateadores
-
-```{r hitter_stimation_simple_pooling_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca1_t_1'
-
-formula <- paste(vars_ms,
-                 pca_vars,
-                 sep = " + ")
-
-# Create a model to store the results
-hitter_simple_pooling_pca <- plm(formula, data = hitter_data,
-                         model = "pooling",
-                         index = c("id", "Anio_ref"))
-
-# To store the results
-hitter_results_simple_pooling_pca <- coeftest(hitter_simple_pooling_pca,
-                                      vcov = vcovHC(hitter_simple_pooling_pca,
-                                                    type = "HC1",
-                                                    cluster = "group"))
-
-# Print the third block of results
-stargazer(hitter_results_simple_pooling_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Bateadores: Modelo Pooling con PCA",
-        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-
-### Starting pitcher
-
-```{r starting_stimation_pooling_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars_ms,
-                 pca_vars,
-                 sep = " + ")
-
-# Create a model to store the results
-fielder_simple_pooling_pca <- plm(formula, data = starting_data,
-                                  model = "pooling",
-                                  index = c("id", "Anio_ref"))
-
-# To store the results
-fielder_results_simple_pooling_pca <- coeftest(fielder_simple_pooling_pca,
-                                       vcov = vcovHC(fielder_simple_pooling_pca,
-                                                     type = "HC1",
-                                                     cluster = "group"))
-
-# Print the third block of results
-stargazer(fielder_results_simple_pooling_pca,
-          no.space = TRUE,
-          type = "text",
-          title = "Lanzadores Iniciales: Modelo Pooling con PCA",
-          covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                               "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
-                               "Agente$_{t}$"))
-```
-
-## Efectos fijos
-
-### Bateadores
-
-```{r hitter_stimation_simple_fe_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca1_t_1'
-formula <- paste(vars_fe,
-                 pca_vars,
-                 sep = " + ")
-
-# Create a model to store the results
-hitter_simple_within_pca <- plm(formula, data = hitter_data,
-                       model = "within",
-                       index = c("id", "Anio_ref"))
-
-# To store the results
-hitter_results_simple_within_pca <- coeftest(hitter_simple_within_pca,
-                                      vcov = vcovHC(hitter_simple_within_pca,
-                                        type = "HC1",
-                                        cluster = "group"))
-
-# Print the third block of results
-stargazer(hitter_results_simple_within_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Bateadores: Estimador Within con PCA",
-        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-
-### Starting pitcher
-
-```{r starting_stimation_fe_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars_fe,
-                 pca_vars,
-                 sep = " + ")
-
-# Create a model to store the results
-fielder_simple_within_pca <- plm(formula, data = starting_data,
-                               model = "within",
-                               index = c("id", "Anio_ref"))
-
-# To store the results
-fielder_results_simple_within_pca <- coeftest(fielder_simple_within_pca,
-                                              vcov = vcovHC(fielder_simple_within_pca,
-                                                            type = "HC1",
-                                                            cluster = "group"))
-
-
-# Print the third block of results
-stargazer(fielder_results_simple_within_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Lanzadores Iniciales: Estimador Within con PCA",
-        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-
-## Efectos aleatorios
-
-### Bateadores
-
-```{r hitter_stimation_simple_random_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca1_t_1'
-formula <- paste(vars_ms,
-                 pca_vars,
-                 sep = " + ")
-
-# Create a model to store the results
-hitter_simple_random_pca <- plm(formula, data = hitter_data,
-                               model = "random",
-                               index = c("id", "Anio_ref"))
-
-# To store the results
-hitter_results_simple_random_pca <- coeftest(hitter_simple_random_pca,
-                                        vcov = vcovHC(hitter_simple_random_pca,
-                                                      type = "HC1",
-                                                      cluster = "group"))
-
-# Print the third block of results
-stargazer(hitter_results_simple_random_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Bateadores: Efectos Aleatorios con PCA",
-        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-
-### Starting pitcher
-
-```{r starting_stimation_random_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars_ms,
-                 pca_vars,
-                 sep = " + ")
-
-# Create a model to store the results
-fielder_simple_random_pca <- plm(formula, data = starting_data,
-                               model = "random",
-                               index = c("id", "Anio_ref"))
-
-# To store the results
-fielder_results_simple_random_pca <- coeftest(fielder_simple_random_pca,
-                                              vcov = vcovHC(fielder_simple_random_pca,
-                                                            type = "HC1",
-                                                            cluster = "group"))
-
-# Print the third block of results
-stargazer(fielder_results_simple_random_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Lanzadores Iniciales: Efectos Aleatorios con PCA",
-        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-
-## First Differences
-
-### Bateadores
-
-```{r hitter_stimation_simple_fd_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t+ pca1_t_1'
-formula <- paste(vars_fe,
-                 pca_vars,
-                 sep = " + ")
-
-hitter_simple_fd_pca <- plm(formula, data = hitter_data,
-                             model = "fd",
-                             index = c("id", "Anio_ref"))
-
-# To store the results
-hitter_results_simple_fd_pca <- coeftest(hitter_simple_fd_pca,
-                                        vcov = vcovHC(hitter_simple_fd_pca,
-                                                      type = "HC1",
-                                                      cluster = "group"))
-
-# Print the third block of results
-stargazer(hitter_results_simple_fd_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Bateadores: Primeras Diferencias con PCA",
-        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-
-### Starting pitcher
-
-```{r starting_stimation_fd_pca}
-# run linear regression with grouped errors by country and robust errors
-pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
-formula <- paste(vars_fe,
-                 pca_vars,
-                 sep = " + ")
-
-fielder_simple_fd_pca <- plm(formula, data = starting_data,
-                               model = "fd",
-                               index = c("id", "Anio_ref"))
-
-# To store the results
-fielder_results_simple_fd_pca <- coeftest(fielder_simple_fd_pca,
-                                              vcov = vcovHC(fielder_simple_fd_pca,
-                                                            type = "HC1",
-                                                            cluster = "group"))
-
-# Print the third block of results
-stargazer(fielder_results_simple_fd_pca,
-        no.space = TRUE,
-        type = "text",
-        title = "Lanzadores Iniciales: Primeras Diferencias con PCA",
-        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
-                             "Agente$_{t}$"))
-```
-Mostremos los resultados de manera conjunta
-
-```{r hitter_all_pca_models}
-hitter_pca_models <- list(hitter_simple_pooling_pca,
-                       hitter_simple_within_pca,
-                       hitter_simple_random_pca,
-                       hitter_simple_fd_pca)
-
-# Print the third block of results
-stargazer(hitter_pca_models,
-          no.space = TRUE,
-          type = "text",
-          title = "Bateadores regulares: Modelos con PCA",
-          column.labels = c("Pooling", "Within", 
-                            "RE","FD"),
-          covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
-                               "Agente$_{t}$"))
-```
-```{r fielder_all_pca_models}
-fielder_pca_models <- list(fielder_simple_pooling_pca,
-                           fielder_simple_within_pca,
-                           fielder_simple_random_pca,
-                           fielder_simple_fd_pca)
-
-# Print the third block of results
-stargazer(fielder_pca_models,
-          no.space = TRUE,
-          type = "text",
-          title = "Lanzadores Iniciales: Modelos con PCA",
-          column.labels = c("Pooling", "Within", 
-                            "RE","FD"),
-          covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
-                               "Agente$_{t}$"))
 ```
 
 # Comparación entre periodos
@@ -2512,7 +2077,7 @@ Haremos las estimaciones con todos los modelos para obtener un análisis robusto
 
 ### Bateadores
 
-```{r hitter_stimation_simple_pooling_fa}
+```{r hitter_stimation_simple_pooling_fa, echo=FALSE, eval=TRUE}
 # To store models
 hitter_model_pooling_fa <- list()
 
@@ -2563,7 +2128,7 @@ for (i in 1:length(stat_hitter_t_1)){
 
 ### Starting pitcher
 
-```{r starting_stimation_pooling_ini}
+```{r starting_stimation_pooling_ini, echo=FALSE, eval=TRUE}
 # To store models
 fielder_model_pooling_fa <- list()
 
@@ -2615,7 +2180,7 @@ for (i in 1:length(stat_fielder_t_1)){
 
 ### Bateadores
 
-```{r hitter_stimation_simple_within_ini}
+```{r hitter_stimation_simple_within_ini, echo=FALSE, eval=TRUE}
 # To store results:
 hitter_model_fe_fa <- list()
 
@@ -2666,7 +2231,7 @@ for (i in 1:length(stat_hitter_t_1)){
 
 ### Starting pitcher
 
-```{r starting_stimation_within_ini}
+```{r starting_stimation_within_ini, echo=FALSE, eval=TRUE}
 # To store results:
 fielder_model_fe_fa <- list()
 
@@ -2719,7 +2284,7 @@ for (i in 1:length(stat_fielder_t_1)){
 
 ### Bateadores
 
-```{r hitter_stimation_simple_random_ini}
+```{r hitter_stimation_simple_random_ini, echo=FALSE, eval=TRUE}
 # To store results:
 hitter_model_random_fa <- list()
 
@@ -2772,7 +2337,7 @@ for (i in 1:length(stat_hitter_t_1)){
 
 ### Starting pitcher
 
-```{r starting_stimation_random_ini}
+```{r starting_stimation_random_ini, echo=FALSE, eval=TRUE}
 # To store results:
 fielder_model_random_fa <- list()
 
@@ -2827,7 +2392,7 @@ for (i in 1:length(stat_fielder_t_1)){
 
 Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
 
-```{r hitter_stimation_simple_fd_ini}
+```{r hitter_stimation_simple_fd_ini, echo=FALSE, eval=TRUE}
 # To Store results:
 hitter_model_fd_fa <- list()
 
@@ -2877,7 +2442,7 @@ for (i in 1:length(stat_hitter_t_1)){
 
 ### Starting pitcher
 
-```{r starting_stimation_fd_ini}
+```{r starting_stimation_fd_ini, echo=FALSE, eval=TRUE}
 # To Store results
 fielder_model_fd_fa <- list()
 
@@ -2929,21 +2494,13 @@ for (i in 1:length(stat_fielder_t_1)){
 
 Obtendremos el estimador del cambio en el poder de negociación un periodo antes de que el jugador se convierta en agente libre con el primer periodo como agente libre. Importemos las bases de datos
 
-```{r import_panel_ch}
+```{r import_panel_ch, include=FALSE}
 setwd("~/Documentos/Github/Proyectos/MLB_HN/")
 hitters_panel_ch <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_hitters_cum_ch.csv')
 fielders_panel_ch <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_fielders_cum_ch.csv')
 ```
-Por otro lado, se mostrarán las dimensiones de cada pánel
-```{r panel_dimentions_ch}
-print("Bateadores: ")
-print(dim(hitters_panel_ch))
-print("")
-print("Fildeadores: ")
-print(dim(fielders_panel_ch))
-```
 
-```{r position_dummyfication_ch}
+```{r position_dummyfication_ch, include=FALSE}
 # Convert categorical column to numerical
 hitters_panel_ch$position_num_t <- as.numeric(factor(hitters_panel_ch$Posicion_t))
 fielders_panel_ch$position_num_t <- as.numeric(factor(fielders_panel_ch$Posicion_t))
@@ -2951,9 +2508,7 @@ hitters_panel_ch$team_num_t <- as.numeric(factor(hitters_panel_ch$Acronimo_t))
 fielders_panel_ch$team_num_t <- as.numeric(factor(fielders_panel_ch$Acronimo_t))
 ```
 
-Como adelanto, se descartaron los controles por posición puesto que no son significativos para los modelos y afectan los resultados. Tal vez por el hehco de que los jugadores tienden a rotar de posición en un mismo partido e incluso a lo largo de la temporada. aAgreguemos una columna de 1's que represente la dummy de ser agente libre
-
-```{r fa_dummy_ch}
+```{r fa_dummy_ch, include=FALSE}
 # add a column of 1s to the panel data
 hitters_panel_ch <- cbind(hitters_panel_ch,
                           fa = rep(1, nrow(hitters_panel_ch)))
@@ -2969,7 +2524,6 @@ split_fielder_ch <- split(fielders_panel_ch,
                           f = fielders_panel_ch$Posicion_t)
 ```
 
-Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
 ```{r group_category_split_ch_1, include=FALSE}
 # Whole panel:
 # Offensive:
@@ -3012,7 +2566,6 @@ relief_pitcher_data_ch <- unique(relief_pitcher_data_ch)
 
 Procedamos con las estimaciones de forma directa, no conjunta, puesto que tenemos como objetivo probar que hay un aumento en el poder de negociación
 
-Creemos la lista de variables sobre las cuáles se va a iterar el clico
 ```{r hitter_var_list_ch, include=FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
 stat_hitter_ch <- list("X_At_bats", "X_At_bats_2",
@@ -3032,7 +2585,6 @@ stat_hitter_t_ch <- paste0(stat_hitter_ch, "_t")
 stat_hitter_t_1_ch <- paste0(stat_hitter_ch, "_t_1")
 ```
 
-Variables para los fildeadores
 ```{r fielder_var_list_ch, include = FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
 stat_fielder_ch <- list('X_Bateos_2', 'X_Bateos',
@@ -3054,14 +2606,12 @@ stat_fielder_t_ch <- paste0(stat_fielder_ch, "_t")
 stat_fielder_t_1_ch <- paste0(stat_fielder_ch, "_t_1")
 ```
 
-
-Las variables base para ambos tipos de jugadores son los controles
-```{r controles_ch}
+```{r controles_ch, include=FALSE}
 # Constroles:
 vars  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t'
 ```
 
-```{r hitter_stats_labels_ch}
+```{r hitter_stats_labels_ch, echo=FALSE, eval=TRUE}
 hitter_stats_1_ch = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                        "$X_{AB_{t}}$","$X_{AB_{t-1}}$","$X_{AB^{2}_{t}}$","$X_{AB^{2}_{t-1}}$",
                        "$X_{H_{t}}$","$X_{H_{t-1}}$","$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
@@ -3091,7 +2641,7 @@ hitter_rep_ch <- 3
 hitter_stat_num <- 6
 ```
 
-```{r fielder_stats_labels_ch}
+```{r fielder_stats_labels_ch, echo=FALSE, eval=TRUE}
 fielder_stats_1_ch = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
                         "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$","$X_{H_{t}}$","$X_{H_{t-1}}$",
                         "$X_{R^{2}_{t}}$","$X_{R^{2}_{t-1}}$","$X_{ER^{2}_{t}}$","$X_{ER^{2}_{t-1}}$",
@@ -3132,7 +2682,7 @@ fielder_stat_num <- 6
 
 Se obtendrán las estimaciones de las variables referentes a estadísticas deportivas sin controles
 
-```{r hitter_stimation_simple_pooling_ch}
+```{r hitter_stimation_simple_pooling_ch, echo=FALSE, eval=TRUE}
 # Create a model to store the results
 hitter_simple_pooling_ch <- list()
 
@@ -3208,7 +2758,7 @@ Ahora evaluaremos los cambios estructurales compararemos los modelos estimados p
 
 ### Hitter
 
-```{r hitter_periods_fa}
+```{r hitter_periods_fa, echo=FALSE, eval=TRUE}
 # To store results:
 hitter_model_pooling_ch <- list()
 compare_list <- c("X_Triples_t","X_Triples_2_t")
@@ -3245,7 +2795,7 @@ for (i in 1:length(stat_hitter_t)){
 
 ### Starting pitcher
 
-```{r starting_stimation_pooling_ch}
+```{r starting_stimation_pooling_ch, echo=FALSE, eval=TRUE}
 # Create a model to store the results
 fielder_simple_pooling_ch <- list()
 
@@ -3319,7 +2869,7 @@ for (j in 1:fielder_rep_ch){
 }
 ```
 
-```{r fielder_periods_fa}
+```{r fielder_periods_fa, echo=FALSE, eval=TRUE}
 # To store results:
 fielder_model_pooling_ch <- list()
 compare_list <- c("X_Saves_t","X_Saves_2_t")
@@ -3356,7 +2906,7 @@ for (i in 1:length(stat_fielder_t)){
 
 ## Efectos aleatorios
 
-POr definición, necesitamos más de un periodo de observación. Por lo tanto, no obtendremos dicho modelo por esa restricción.
+Por definición, necesitamos más de un periodo de observación. Por lo tanto, no obtendremos dicho modelo por esa restricción.
 
 ## Efectos aleatorios
 
@@ -3365,481 +2915,3 @@ Son equivalentes al pooling debido a que solo obtenemos la estimación para un p
 ## First Differences
 
 Presenta las mismas restricciones que el estimador *within*.
-
-# Differences in Differences
-
-Análogo a la sección anterior, importemos las bases de datos correspondientes
-
-```{r import_panel_did}
-setwd("~/Documentos/Github/Proyectos/MLB_HN/")
-hitters_panel_did <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_hitters_cum_did.csv')
-fielders_panel_did <- read.csv('ETL_Data/Panel/Cumulative/Bargaining_change/panel_fielders_cum_did.csv')
-```
-Por otro lado, se mostrarán las dimensiones de cada pánel
-```{r panel_dimentions_did}
-print("Bateadores: ")
-print(dim(hitters_panel_did))
-print("")
-print("Fildeadores: ")
-print(dim(fielders_panel_did))
-```
-
-```{r position_dummyfication_did}
-# Convert categorical column to numerical
-hitters_panel_did$position_num_t <- as.numeric(factor(hitters_panel_did$Posicion_t))
-fielders_panel_did$position_num_t <- as.numeric(factor(fielders_panel_did$Posicion_t))
-hitters_panel_did$team_num_t <- as.numeric(factor(hitters_panel_did$Acronimo_t))
-fielders_panel_did$team_num_t <- as.numeric(factor(fielders_panel_did$Acronimo_t))
-```
-
-Como adelanto, se descartaron los controles por posición puesto que no son significativos para los modelos y afectan los resultados. Tal vez por el hehco de que los jugadores tienden a rotar de posición en un mismo partido e incluso a lo largo de la temporada. aAgreguemos una columna de 1's que represente la dummy de ser agente libre
-
-```{r fa_dummy_did}
-# add a column of 1s to the panel data
-hitters_panel_did <- cbind(hitters_panel_did,
-                           fa = rep(1, nrow(hitters_panel_did)))
-fielders_panel_did <- cbind(fielders_panel_did,
-                            fa = rep(1, nrow(fielders_panel_did)))
-```
-
-```{r position_split_did, include=FALSE}
-# split the data frame by category
-split_hitter_did <- split(hitters_panel_did,
-                         f = hitters_panel_did$Posicion_t)
-split_fielder_did <- split(fielders_panel_did,
-                          f = fielders_panel_did$Posicion_t)
-```
-
-Segundo, crearemos las categorías de acuerdo a la especificación mencionada arriba
-```{r group_category_split_ch, include=FALSE}
-# Whole panel:
-# Offensive:
-h_category_1_did <- split_hitter_did[["SP"]]
-h_category_2_did <- split_hitter_did[["RP"]]
-h_category_3_did <- split_hitter_did[["RP/CL"]]
-h_category_4_did <- split_hitter_did[["C"]]
-h_category_5_did <- split_hitter_did[["1B"]]
-h_category_6_did <- split_hitter_did[["2B"]]
-h_category_7_did <- split_hitter_did[["3B"]]
-h_category_8_did <- split_hitter_did[["SS"]]
-h_category_9_did <- split_hitter_did[["RF"]]
-h_category_10_did <- split_hitter_did[["CF"]]
-h_category_11_did <- split_hitter_did[["LF"]]
-d_hitter_data_did <- split_hitter_did[["DH"]]
-
-# Defensive:
-starting_data_did <- split_fielder_did[["SP"]]
-b_category_2_did <- split_fielder_did[["RP"]]
-b_category_3_did <- split_fielder_did[["RP/CL"]]
-shorts_data_did <- split_fielder_did[["SS"]]
-```
-
-Tercero, concatenaremos estas bases de datos de acuerdo a los grupos señalados anteriormente
-
-```{r group_concat_did, include=FALSE}
-# All panels:
-# Hitters:
-# Concatenate the two categories
-hitter_data_did <- rbind(h_category_1_did, h_category_2_did, h_category_3_did, h_category_4_did,
-                        h_category_5_did, h_category_6_did, h_category_7_did, h_category_8_did,
-                        h_category_9_did, h_category_10_did, h_category_11_did)
-hitter_data_did <- unique(hitter_data_did)
-
-# Fielders:
-# Concatenate the two categories
-relief_pitcher_data_did <- rbind(b_category_2_did, b_category_3_did)
-relief_pitcher_data_did <- unique(relief_pitcher_data_did)
-```
-
-Ahora,  estimare el modelo DID para múltiples años. En este caso, ya contamos con una columna que tiene los años escalados de manera adecuada para indicar con 0 el primer año de tratamiento.
-
-```{r did_requirements, include=FALSE}
-# Filter nan values
-hitter_data_did <- na.omit(hitter_data_did)
-# Filter error
-hitter_data_did <- subset(hitter_data_did, Anio_did < 10)
-# Create a treatment dummy variable
-hitter_data_did$treatment <- ifelse(hitter_data_did$Tratamiento == 'Si', 1, 0)
-
-
-# Filter nan values
-starting_data_did <- na.omit(starting_data_did)
-# Filter error
-starting_data_did <- subset(starting_data_did, Anio_did < 10)
-# Create a treatment dummy variable
-starting_data_did$treatment <- ifelse(starting_data_did$Tratamiento == 'Si', 1, 0)
-```
-
-Obtengamos el efecto promedio de convertirse en agentes libres
-
-```{r hitter_did_stimation_y}
-# Convert panel_data to a plm data object
-plm_data <- pdata.frame(hitter_data_did,
-                        index = c("Jugador","Anio_ref"))
-
-# Specify the formula using as.formula
-formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
-
-# Estimate DID model with multiple periods
-hitter_did_model <- plm(formula,
-                         data = plm_data,
-                         model = "within")
-
-# Group standard errors:
-hitter_did_results <- coeftest(hitter_did_model,
-                               vcov = vcovHC(hitter_did_model,
-                                             type = "HC1",
-                                             cluster = "group"))
-
-# Print the third block of results
-stargazer(hitter_did_results,
-          no.space = TRUE,
-          type = "text",
-          title = "Bateadores regulares: Y DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
-                               "Edad$_{t}$", "Equipo$_{t}$",
-                               "ATE"))
-```
-
-```{r fielder_did_stimation_y}
-# Convert panel_data to a plm data object
-plm_data <- pdata.frame(starting_data_did,
-                        index = c("Jugador","Anio_ref"))
-
-# Specify the formula using as.formula
-formula <- as.formula("Y_Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
-
-# Estimate DID model with multiple periods
-starting_did_model <- plm(formula,
-                           data = plm_data,
-                           model = "within")
-
-
-# Group standard errors:
-starting_did_results <- coeftest(starting_did_model,
-                                 vcov = vcovHC(starting_did_model,
-                                               type = "HC1",
-                                               cluster = "group"))
-
-# Print the third block of results
-stargazer(starting_did_results,
-          no.space = TRUE,
-          type = "text",
-          title = "Lanzadores Iniciales: Y DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
-                               "Edad$_{t}$", "Equipo$_{t}$",
-                               "ATE"))
-```
-
-```{r hitter_parallel_tendancy_y}
-# Create a data frame with outcome variable, treatment indicator, and time variable
-parallel_data <- data.frame(Y_Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
-                            Tratamiento = hitter_data_did$Tratamiento,
-                            Anio_did = hitter_data_did$Anio_did)
-
-# Calculate mean outcome for treatment and control groups at each time period
-parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
-
-# Create plot
-ggplot(data = parallel_means,
-       aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
-  geom_line(size = 1.5) +
-  ggtitle("Bateadores - Tendencias de Y") +
-  xlab("Año escalado") +
-  ylab('Cambio poder de negociación') +
-  scale_color_manual(values = c("blue", "orange")) +
-  theme_bw() +
-  geom_vline(xintercept = 0,
-             linetype = "dashed",
-             color = "red",
-             size = 1.5) + 
-  theme(
-    #Título de los ejes:
-    axis.title.x = element_text(color = "Black",
-                                size = 15,
-                                face = "bold"),
-    axis.title.y = element_text(color="Black",
-                                size = 15,
-                                face = "bold"),
-    
-    #Texto de los ejes:
-    axis.text.x = element_text(size = 15),
-    axis.text.y = element_text(size = 15),  
-    
-    #T?tulo del gr?fico:
-    plot.title = element_text(color = "Black",
-                              size = 20, 
-                              hjust = 0.5,
-                              face = "bold"),
-    
-    #T?tulo de la Leyenda:
-    legend.title = element_text(size = 15),
-    
-    #Texto de la Leyenda
-    legend.text = element_text(size = 13),
-    
-    # POsición de la leyenda:
-    legend.position = "bottom"
-  ) +
-  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
-  geom_text(aes(label = "Tratamiento"), x = 2, y = 0.3,
-            size = 4.5,
-            color = "navy",
-            angle = 0,
-            hjust = 0.5,
-            vjust = -0.5) +
-  labs(color = "Agente libre")
-# Save the plot as a PDF file
-ggsave("did_model_plot_hitter_y.pdf")
-```
-
-```{r fielder_parallel_tendancy_y}
-# Create a data frame with outcome variable, treatment indicator, and time variable
-parallel_data <- data.frame(Y_Sueldo_regular_norm_t = starting_data_did$Y_Sueldo_regular_norm_t,
-                            Tratamiento = starting_data_did$Tratamiento,
-                            Anio_did = starting_data_did$Anio_did)
-
-# Calculate mean outcome for treatment and control groups at each time period
-parallel_means <- aggregate(Y_Sueldo_regular_norm_t ~ Tratamiento + Anio_did,
-                            data = parallel_data,
-                            FUN = mean)
-
-# Create plot
-ggplot(data = parallel_means,
-       aes(x = Anio_did, y = Y_Sueldo_regular_norm_t, color = Tratamiento)) +
-  geom_line(size = 1.5) +
-  ggtitle("Lanzadores iniciales - Tendencias de Y") +
-  xlab("Año escalado") +
-  ylab('Cambio poder de negociación') +
-  scale_color_manual(values = c("blue", "orange")) +
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_vline(xintercept = 0,
-             linetype = "dashed",
-             color = "red",
-             size = 1.5) + 
-  theme(
-    #Título de los ejes:
-    axis.title.x = element_text(color = "Black",
-                                size = 15,
-                                face = "bold"),
-    axis.title.y = element_text(color="Black",
-                                size = 15,
-                                face = "bold"),
-    
-    #Texto de los ejes:
-    axis.text.x = element_text(size = 15),
-    axis.text.y = element_text(size = 15),  
-    
-    #T?tulo del gr?fico:
-    plot.title = element_text(color = "Black",
-                              size = 20, 
-                              hjust = 0.5,
-                              face = "bold"),
-    
-    #T?tulo de la Leyenda:
-    legend.title = element_text(size = 15),
-    
-    #Texto de la Leyenda
-    legend.text = element_text(size = 13),
-    
-    # Posición de la leyenda:
-    legend.position = "bottom"
-  ) +
-  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
-  geom_text(aes(label = "Tratamiento"), x = 2, y = -0.2,
-            size = 4.5,
-            color = "navy",
-            angle = 0,
-            hjust = 0.5,
-            vjust = -0.5) +
-  labs(color = "Agente libre")
-# Save the plot as a PDF file
-ggsave("did_model_plot_starting_y.pdf")
-```
-
-Repitamos lo mismo para los salarios
-
-```{r hitter_did_stimation_w}
-# Convert panel_data to a plm data object
-plm_data <- pdata.frame(hitter_data_did,
-                        index = c("Jugador","Anio_ref"))
-
-# Specify the formula using as.formula
-formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
-
-# Group standard errors:
-hitter_did_results <- coeftest(hitter_did_model,
-                               vcov = vcovHC(hitter_did_model,
-                                             type = "HC1",
-                                             cluster = "group"))
-
-# Print the third block of results
-stargazer(hitter_did_results,
-          no.space = TRUE,
-          type = "text",
-          title = "Bateadores regulares: Salario regular DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
-                               "Edad$_{t}$", "Equipo$_{t}$",
-                               "ATE"))
-```
-
-```{r fielder_did_stimation_w}
-# Convert panel_data to a plm data object
-plm_data <- pdata.frame(starting_data_did,
-                        index = c("Jugador","Anio_ref"))
-
-# Specify the formula using as.formula
-formula <- as.formula("Sueldo_regular_norm_t ~ treatment * factor(Anio_did >= 0) + Anios_de_contrato_t + Edad_t + team_num_t")
-
-# Estimate DID model with multiple periods
-starting_did_model <- plm(formula,
-                           data = plm_data,
-                           model = "within")
-
-# Group standard errors:
-starting_did_results <- coeftest(starting_did_model,
-                                 vcov = vcovHC(starting_did_model,
-                                               type = "HC1",
-                                               cluster = "group"))
-
-# Print the third block of results
-stargazer(starting_did_results,
-          no.space = TRUE,
-          type = "text",
-          title = "Lanzadores Iniciales: w DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
-                               "Edad$_{t}$", "Equipo$_{t}$",
-                               "ATE"))
-```
-
-```{r hitter_parallel_tendancy}
-# Create a data frame with outcome variable, treatment indicator, and time variable
-parallel_data <- data.frame(Sueldo_regular_norm_t = hitter_data_did$Y_Sueldo_regular_norm_t,
-                            Tratamiento = hitter_data_did$Tratamiento,
-                            Anio_did = hitter_data_did$Anio_did)
-
-# Calculate mean outcome for treatment and control groups at each time period
-parallel_means <- aggregate(Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data, FUN = mean)
-
-# Create plot
-ggplot(data = parallel_means,
-       aes(x = Anio_did, y = Sueldo_regular_norm_t, color = Tratamiento)) +
-  geom_line(size = 1.5) +
-  ggtitle("Bateadores - Tendencias de los salarios") +
-  xlab("Año escalado") +
-  ylab('Salario') +
-  scale_color_manual(values = c("blue", "orange")) +
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_vline(xintercept = 0,
-             linetype = "dashed",
-             color = "red",
-             size = 1.5) + 
-  theme(
-    #Título de los ejes:
-    axis.title.x = element_text(color = "Black",
-                                size = 15,
-                                face = "bold"),
-    axis.title.y = element_text(color="Black",
-                                size = 15,
-                                face = "bold"),
-    
-    #Texto de los ejes:
-    axis.text.x = element_text(size = 15),
-    axis.text.y = element_text(size = 15),  
-    
-    #T?tulo del gr?fico:
-    plot.title = element_text(color = "Black",
-                              size = 20, 
-                              hjust = 0.5,
-                              face = "bold"),
-    
-    #T?tulo de la Leyenda:
-    legend.title = element_text(size = 15),
-    
-    #Texto de la Leyenda
-    legend.text = element_text(size = 13),
-    
-    # POsición de la leyenda:
-    legend.position = "bottom"
-  ) +
-  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
-  geom_text(aes(label = "Tratamiento"), x = 2, y = 0.2,
-            size = 4.5,
-            color = "navy",
-            angle = 0,
-            hjust = 0.5,
-            vjust = -0.5) +
-  labs(color = "Agente libre")
-# Save the plot as a PDF file
-ggsave("did_model_plot_hitter_w.pdf")
-```
-
-```{r fielder_parallel_tendancy}
-# Create a data frame with outcome variable, treatment indicator, and time variable
-parallel_data <- data.frame(Sueldo_regular_norm_t = starting_data_did$Y_Sueldo_regular_norm_t,
-                            Tratamiento = starting_data_did$Tratamiento,
-                            Anio_did = starting_data_did$Anio_did)
-
-# Calculate mean outcome for treatment and control groups at each time period
-parallel_means <- aggregate(Sueldo_regular_norm_t ~ Tratamiento + Anio_did, data = parallel_data,
-                            FUN = mean)
-
-# Create plot
-ggplot(data = parallel_means,
-       aes(x = Anio_did, y = Sueldo_regular_norm_t, color = Tratamiento)) +
-  geom_line(size = 1.5) +
-  ggtitle("Lanzadores iniciales - Tendencias de los salarios") +
-  xlab("Año escalado") +
-  ylab('Salario') +
-  scale_color_manual(values = c("blue", "orange")) +
-  theme_bw() +
-  theme(plot.title = element_text(hjust = 0.5)) +
-  geom_vline(xintercept = 0,
-             linetype = "dashed",
-             color = "red",
-             size = 1.5) + 
-  theme(
-    #Título de los ejes:
-    axis.title.x = element_text(color = "Black",
-                                size = 15,
-                                face = "bold"),
-    axis.title.y = element_text(color="Black",
-                                size = 15,
-                                face = "bold"),
-    
-    #Texto de los ejes:
-    axis.text.x = element_text(size = 15),
-    axis.text.y = element_text(size = 15),  
-    
-    #T?tulo del gr?fico:
-    plot.title = element_text(color = "Black",
-                              size = 20, 
-                              hjust = 0.5,
-                              face = "bold"),
-    
-    #T?tulo de la Leyenda:
-    legend.title = element_text(size = 15),
-    
-    #Texto de la Leyenda
-    legend.text = element_text(size = 13),
-    
-    # POsición de la leyenda:
-    legend.position = "bottom"
-  ) +
-  scale_x_continuous(breaks = seq(-10, 10, by = 2)) +
-  geom_text(aes(label = "Tratamiento"), x = 2, y = -0.2,
-            size = 4.5,
-            color = "navy",
-            angle = 0,
-            hjust = 0.5,
-            vjust = -0.5) +
-  labs(color = "Agente libre")
-# Save the plot as a PDF file
-ggsave("did_model_plot_starting_w.pdf")
-```

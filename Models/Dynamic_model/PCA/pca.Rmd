@@ -1,0 +1,397 @@
+---
+title: "Dynamic Model - PCA"
+author: "Antonio Huerta Montellano"
+date: "\today"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(comment = NA)
+options(warn = FALSE) # ignore warnings
+```
+
+```{r libraries, include=FALSE}
+library(lmtest) # for robust standard errors
+library(dplyr) # for group_by function
+library(ggplot2) # for better plots
+library(dplyr) # for data managment
+library(clubSandwich) # Grouped errors
+library(sandwich) # MOre error options
+library(tidyr) # Datframes manipulation
+library(stargazer) # For output formats
+library(lubridate)
+library(plm)
+```
+
+
+```{r import_panel, include = FALSE, warning = FALSE}
+setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
+```
+
+```{r position_dummyfication, include=FALSE}
+# Convert categorical column to numerical
+# Position;
+hitters_panel$position_num_t <- as.numeric(factor(hitters_panel$Posicion_t))
+fielders_panel$position_num_t <- as.numeric(factor(fielders_panel$Posicion_t))
+# Team:
+hitters_panel$team_num_t <- as.numeric(factor(hitters_panel$Acronimo_t))
+fielders_panel$team_num_t <- as.numeric(factor(fielders_panel$Acronimo_t))
+# Free Agent dummy
+hitters_panel <- cbind(setNames(data.frame(rep(1, nrow(hitters_panel))), "Agente_t"), hitters_panel)
+fielders_panel <- cbind(setNames(data.frame(rep(1, nrow(fielders_panel))), "Agente_t"), fielders_panel)
+```
+
+```{r fa_dummy, include=FALSE}
+# add a column of 1s to the panel data
+hitters_panel <- cbind(hitters_panel,
+                       fa = rep(1, nrow(hitters_panel)))
+fielders_panel <- cbind(fielders_panel,
+                        fa = rep(1, nrow(fielders_panel)))
+```
+
+
+```{r position_split, include=FALSE}
+# split the data frame by category
+split_hitter <- split(hitters_panel,
+                      f = hitters_panel$Posicion_t)
+split_fielder <- split(fielders_panel,
+                       f = fielders_panel$Posicion_t)
+```
+
+```{r group_category_split, include=FALSE}
+# Whole panel:
+# Offensive:
+h_category_1 <- split_hitter[["SP"]]
+h_category_2 <- split_hitter[["RP"]]
+h_category_3 <- split_hitter[["RP/CL"]]
+h_category_4 <- split_hitter[["C"]]
+h_category_5 <- split_hitter[["1B"]]
+h_category_6 <- split_hitter[["2B"]]
+h_category_7 <- split_hitter[["3B"]]
+h_category_8 <- split_hitter[["SS"]]
+h_category_9 <- split_hitter[["RF"]]
+h_category_10 <- split_hitter[["CF"]]
+h_category_11 <- split_hitter[["LF"]]
+d_hitter_data <- split_hitter[["DH"]]
+
+# Defensive:
+starting_data <- split_fielder[["SP"]]
+b_category_2 <- split_fielder[["RP"]]
+b_category_3 <- split_fielder[["RP/CL"]]
+shorts_data <- split_fielder[["SS"]]
+```
+
+```{r group_concat, include=FALSE}
+# All panels:
+# Hitters:
+# Concatenate the two categories
+hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
+                     h_category_5, h_category_6, h_category_7, h_category_8,
+                     h_category_9, h_category_10, h_category_11)
+hitter_data <- unique(hitter_data)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_data <- rbind(b_category_2, b_category_3)
+relief_pitcher_data <- unique(relief_pitcher_data)
+```
+
+```{r controles, include=FALSE}
+# Constroles:
+vars_ms  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t'
+# Constroles:
+vars_fe  <- 'Y_Sueldo_regular_norm_t ~ Edad_t + Anios_de_contrato_t + team_num_t -1'
+```
+# PCA - Estimación directa
+
+Lo que haremos ahore es obtener los estimadores con los componentes principales obtenidos en el tratamiento de los páneles, lo cuales ya son el número óptimo de componentes.
+
+## Pooling
+
+### Bateadores
+
+```{r hitter_stimation_simple_pooling_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca1_t_1'
+
+formula <- paste(vars_ms,
+                 pca_vars,
+                 sep = " + ")
+
+# Create a model to store the results
+hitter_simple_pooling_pca <- plm(formula, data = hitter_data,
+                         model = "pooling",
+                         index = c("id", "Anio_ref"))
+
+# To store the results
+hitter_results_simple_pooling_pca <- coeftest(hitter_simple_pooling_pca,
+                                      vcov = vcovHC(hitter_simple_pooling_pca,
+                                                    type = "HC1",
+                                                    cluster = "group"))
+
+# Print the third block of results
+stargazer(hitter_results_simple_pooling_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Bateadores: Modelo Pooling con PCA",
+        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+
+### Starting pitcher
+
+```{r starting_stimation_pooling_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
+formula <- paste(vars_ms,
+                 pca_vars,
+                 sep = " + ")
+
+# Create a model to store the results
+fielder_simple_pooling_pca <- plm(formula, data = starting_data,
+                                  model = "pooling",
+                                  index = c("id", "Anio_ref"))
+
+# To store the results
+fielder_results_simple_pooling_pca <- coeftest(fielder_simple_pooling_pca,
+                                       vcov = vcovHC(fielder_simple_pooling_pca,
+                                                     type = "HC1",
+                                                     cluster = "group"))
+
+# Print the third block of results
+stargazer(fielder_results_simple_pooling_pca,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: Modelo Pooling con PCA",
+          covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                               "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
+                               "Agente$_{t}$"))
+```
+
+## Efectos fijos
+
+### Bateadores
+
+```{r hitter_stimation_simple_fe_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca1_t_1'
+formula <- paste(vars_fe,
+                 pca_vars,
+                 sep = " + ")
+
+# Create a model to store the results
+hitter_simple_within_pca <- plm(formula, data = hitter_data,
+                       model = "within",
+                       index = c("id", "Anio_ref"))
+
+# To store the results
+hitter_results_simple_within_pca <- coeftest(hitter_simple_within_pca,
+                                      vcov = vcovHC(hitter_simple_within_pca,
+                                        type = "HC1",
+                                        cluster = "group"))
+
+# Print the third block of results
+stargazer(hitter_results_simple_within_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Bateadores: Estimador Within con PCA",
+        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+
+### Starting pitcher
+
+```{r starting_stimation_fe_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
+formula <- paste(vars_fe,
+                 pca_vars,
+                 sep = " + ")
+
+# Create a model to store the results
+fielder_simple_within_pca <- plm(formula, data = starting_data,
+                               model = "within",
+                               index = c("id", "Anio_ref"))
+
+# To store the results
+fielder_results_simple_within_pca <- coeftest(fielder_simple_within_pca,
+                                              vcov = vcovHC(fielder_simple_within_pca,
+                                                            type = "HC1",
+                                                            cluster = "group"))
+
+
+# Print the third block of results
+stargazer(fielder_results_simple_within_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Lanzadores Iniciales: Estimador Within con PCA",
+        covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+
+## Efectos aleatorios
+
+### Bateadores
+
+```{r hitter_stimation_simple_random_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca1_t_1'
+formula <- paste(vars_ms,
+                 pca_vars,
+                 sep = " + ")
+
+# Create a model to store the results
+hitter_simple_random_pca <- plm(formula, data = hitter_data,
+                               model = "random",
+                               index = c("id", "Anio_ref"))
+
+# To store the results
+hitter_results_simple_random_pca <- coeftest(hitter_simple_random_pca,
+                                        vcov = vcovHC(hitter_simple_random_pca,
+                                                      type = "HC1",
+                                                      cluster = "group"))
+
+# Print the third block of results
+stargazer(hitter_results_simple_random_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Bateadores: Efectos Aleatorios con PCA",
+        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+
+### Starting pitcher
+
+```{r starting_stimation_random_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
+formula <- paste(vars_ms,
+                 pca_vars,
+                 sep = " + ")
+
+# Create a model to store the results
+fielder_simple_random_pca <- plm(formula, data = starting_data,
+                               model = "random",
+                               index = c("id", "Anio_ref"))
+
+# To store the results
+fielder_results_simple_random_pca <- coeftest(fielder_simple_random_pca,
+                                              vcov = vcovHC(fielder_simple_random_pca,
+                                                            type = "HC1",
+                                                            cluster = "group"))
+
+# Print the third block of results
+stargazer(fielder_results_simple_random_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Lanzadores Iniciales: Efectos Aleatorios con PCA",
+        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+
+## First Differences
+
+### Bateadores
+
+```{r hitter_stimation_simple_fd_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t+ pca1_t_1'
+formula <- paste(vars_fe,
+                 pca_vars,
+                 sep = " + ")
+
+hitter_simple_fd_pca <- plm(formula, data = hitter_data,
+                             model = "fd",
+                             index = c("id", "Anio_ref"))
+
+# To store the results
+hitter_results_simple_fd_pca <- coeftest(hitter_simple_fd_pca,
+                                        vcov = vcovHC(hitter_simple_fd_pca,
+                                                      type = "HC1",
+                                                      cluster = "group"))
+
+# Print the third block of results
+stargazer(hitter_results_simple_fd_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Bateadores: Primeras Diferencias con PCA",
+        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+
+### Starting pitcher
+
+```{r starting_stimation_fd_pca, echo=FALSE, eval=TRUE}
+# run linear regression with grouped errors by country and robust errors
+pca_vars <- 'pca1_t + pca2_t + pca1_t_1 + pca2_t_1'
+formula <- paste(vars_fe,
+                 pca_vars,
+                 sep = " + ")
+
+fielder_simple_fd_pca <- plm(formula, data = starting_data,
+                               model = "fd",
+                               index = c("id", "Anio_ref"))
+
+# To store the results
+fielder_results_simple_fd_pca <- coeftest(fielder_simple_fd_pca,
+                                              vcov = vcovHC(fielder_simple_fd_pca,
+                                                            type = "HC1",
+                                                            cluster = "group"))
+
+# Print the third block of results
+stargazer(fielder_results_simple_fd_pca,
+        no.space = TRUE,
+        type = "text",
+        title = "Lanzadores Iniciales: Primeras Diferencias con PCA",
+        covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                             "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
+                             "Agente$_{t}$"))
+```
+Mostremos los resultados de manera conjunta
+
+```{r hitter_all_pca_models, echo=FALSE, eval=TRUE}
+hitter_pca_models <- list(hitter_simple_pooling_pca,
+                       hitter_simple_within_pca,
+                       hitter_simple_random_pca,
+                       hitter_simple_fd_pca)
+
+# Print the third block of results
+stargazer(hitter_pca_models,
+          no.space = TRUE,
+          type = "text",
+          title = "Bateadores regulares: Modelos con PCA",
+          column.labels = c("Pooling", "Within", 
+                            "RE","FD"),
+          covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                               "Agente$_{t}$"))
+```
+
+```{r fielder_all_pca_models, echo=FALSE, eval=TRUE}
+fielder_pca_models <- list(fielder_simple_pooling_pca,
+                           fielder_simple_within_pca,
+                           fielder_simple_random_pca,
+                           fielder_simple_fd_pca)
+
+# Print the third block of results
+stargazer(fielder_pca_models,
+          no.space = TRUE,
+          type = "text",
+          title = "Lanzadores Iniciales: Modelos con PCA",
+          column.labels = c("Pooling", "Within", 
+                            "RE","FD"),
+          covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
+                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                               "Agente$_{t}$"))
+```
