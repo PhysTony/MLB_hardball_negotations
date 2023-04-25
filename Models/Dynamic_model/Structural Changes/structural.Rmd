@@ -2112,12 +2112,12 @@ for (i in 1:length(stat_hitter_t_1)){
   h_m_pooled <- list(my_lm_cluster_i,my_lm_cluster_f)
   
   # Print the third block of results
-  stargazer(h_m_pooled,
-            no.space = TRUE,
-            type = "text",
-            title = "Bateadores regulares: Efecto de la edad (Pooling)",
-            column.labels = c("Primeros dos años", "Años restantes"),
-            covariate.labels = hitter_stats_long[[i]])
+  #stargazer(h_m_pooled,
+  #          no.space = TRUE,
+  #          type = "text",
+   #         title = "Bateadores regulares: Efecto de la edad (Pooling)",
+    #        column.labels = c("Primeros dos años", "Años restantes"),
+     #       covariate.labels = hitter_stats_long[[i]])
   
   # Hausman test:
   print("")

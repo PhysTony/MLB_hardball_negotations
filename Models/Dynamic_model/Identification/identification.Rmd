@@ -171,6 +171,7 @@ donde
     - Equipo.
     - Edad.
     - Año.
+    - Ser agente.
 
 ```{r hitter_var_list, include=FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
@@ -562,7 +563,7 @@ for (j in 1:hitter_rep){
   # Print the third block of results
   stargazer(hitter_results_simple_pooling[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Bateadores: Modelo Pooling",
           covariate.labels = hitter_stats[[j]])
 }
@@ -610,7 +611,7 @@ for (j in 1:fielder_rep){
   # Print the third block of results
   stargazer(fielder_results_simple_pooling[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Lanzadores Iniciales: Modelo Pooling",
           covariate.labels = fielder_stats[[j]])
 }
@@ -660,7 +661,7 @@ for (j in 1:hitter_rep){
   # Print the third block of results
   stargazer(hitter_results_simple_within[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Bateadores: Estimador Within",
           covariate.labels = hitter_stats[[j]])
 }
@@ -708,7 +709,7 @@ for (j in 1:fielder_rep){
   # Print the third block of results
   stargazer(fielder_results_simple_within[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Lanzadores Iniciales: Estimador Within",
           covariate.labels = fielder_stats[[j]])
 }
@@ -758,7 +759,7 @@ for (j in 1:hitter_rep){
   # Print the third block of results
   stargazer(hitter_results_simple_random[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Bateadores: Efectos Aleatorios",
           covariate.labels = hitter_stats[[j]])
 }
@@ -806,7 +807,7 @@ for (j in 1:fielder_rep){
   # Print the third block of results
   stargazer(fielder_results_simple_random[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Lanzadores Iniciales: Efectos Aleatorios",
           covariate.labels = fielder_stats[[j]])
 }
@@ -856,7 +857,7 @@ for (j in 1:hitter_rep){
   # Print the third block of results
   stargazer(hitter_results_simple_fd[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Bateadores: Primeras Diferencias",
           covariate.labels = hitter_stats[[j]])
 }
@@ -904,7 +905,7 @@ for (j in 1:fielder_rep){
   # Print the third block of results
   stargazer(fielder_results_simple_fd[[j]],
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Lanzadores Iniciales: Primeras Diferencias",
           covariate.labels = fielder_stats[[j]])
 }
@@ -1396,10 +1397,23 @@ hitter_end_models <- list(pooling = hitter_stimation_1,
 stargazer(hitter_models,
          no.space = TRUE,
          align = TRUE,
-         type = "text",
+         type = "latex",
          title = "Bateadores: Comparación de los modelos - Econométrico final",
          column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"))
+                           "Efecto Aleatorios","First-Differences"),
+         covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
+                              "$X_{T_{t-1}}$",
+                              "$X_{AB_{t}}$", "$X_{AB_{t-1}}$",
+                              "$X_{H_{t}}$", "$X_{H^{2}_{t-1}}$",
+                              "$X_{GS_{t}}$","$X_{GS_{t-1}}$",
+                              "$X_{OPS_{t-1}}$",
+                              "$X_{OBP_{t-1}}$", "$X_{OBP^{2}_{t}}$",
+                              "$X_{T_{t}}$","$X_{T^{2}_{t}}$", 
+                              "$X_{WAR_{t}}$", 
+                              "$X_{WAR_{t-1}}$", "$X_{WAR^{2}_{t}}$", 
+                              "$X_{HR_{t-1}}$",
+                              "$X_{RBI_{t-1}}$",
+                              "Agente$_{t}$"))
 ```
 
 Aplicaremos un teest de Hausmann a cada pareja de modelos
@@ -1855,10 +1869,28 @@ fielder_end_models <- list(pooling = fielder_stimation_1,
 stargazer(fielder_models,
          no.space = TRUE,
          align = TRUE,
-         type = "text",
+         type = "latex",
          title = "Lanzadores Iniciales: Comparación de los modelos - Segundo refinamiento",
          column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"))
+                           "Random effects","First-Differences"),
+         covariate.labels = c("$Edad_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$", 
+                              "$X_{Control^{2}_{t}}$", "$X_{Control_{t}}$",
+                              "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
+                              "$X_{H{t}}$","$X_{ER^{2}_{t}}$",
+                              "$X_{Dominio_{t-1}}$", "$X_{IP^{2}_{t}}$",
+                              "$X_{L^{2}_{t-1}}$","$X_{ERA_{t-1}}$",
+                              "$X_{R_{t}}$","$X_{Comando^{2}_{t-1}}$",
+                              "$X_{Comando_{t}}$","$X_{Comando_{t-1}}$",
+                              "$X_{Control^{2}_{t-1}}$","$X_{Control_{t-1}}$",
+                              "$X_{Dominio^{2}_{t}}$","$X_{Dominio_{t}}$",
+                              "$X_{Dominio^{2}_{t-1}}$","$X_{ERA_{t}}$",
+                              "$X_{S^{2}_{t}}$","$X_{S^{2}_{t-1}}$",
+                              "$X_{S_{t}}$","$X_{S_{t-1}}$",
+                              "$X_{SO^{2}_{t-1}}$","$X_{SO_{t}}$",
+                              "$X_{SO_{t-1}}$",
+                              "$X_{WAR^{2}_{t-1}}$","$X_{WAR^{2}_{t}}$",
+                              "$X_{BB^{2}_{t}}$","$X_{BB_{t}}$",
+                              "Agente$_{t}$"))
 ```
 
 Aplicaremos un teest de Hausmann a cada pareja de modelos
