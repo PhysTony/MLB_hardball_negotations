@@ -1034,7 +1034,7 @@ stargazer(hitter_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r hitter_stimation_2, results=TRUE}
+```{r hitter_stimation_2, echo=FALSE, eval=TRUE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Triples_t_1",
@@ -1140,7 +1140,7 @@ stargazer(hitter_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r hitter_stimation_3, results=TRUE}
+```{r hitter_stimation_3, echo=FALSE, eval=TRUE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Triples_t_1",
@@ -1241,7 +1241,7 @@ stargazer(hitter_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r hitter_stimation_ecom, results=TRUE}
+```{r hitter_stimation_ecom, echo=FALSE, eval=TRUE}
 # Significant variables:
 # Pooling:
 hitter_vars_1 <- c("X_Triples_t_1",
@@ -1346,7 +1346,7 @@ stargazer(hitter_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r hausman_cojoint_hitter, results=TRUE}
+```{r hausman_cojoint_hitter, echo=FALSE, eval=TRUE}
 # create an empty list to store the test results
 test_results <- list()
 
@@ -1364,7 +1364,7 @@ for (i in 1:(length(hitter_end_models)-1)) {
 test_results
 ```
 
-```{r fielder_stimation_pooling_1, results=TRUE}
+```{r fielder_stimation_pooling_1, echo=FALSE, eval=TRUE}
 # Significant variables:
 fielder_vars_1 <- c('X_Control_2',
                     'X_Control',
@@ -1528,7 +1528,7 @@ stargazer(fielder_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r fielder_stimation_pooling_2, results=TRUE}
+```{r fielder_stimation_pooling_2, echo=FALSE, eval=TRUE}
 # Significant variables:
 fielder_vars_1 <- c('X_Control_2_t',
                     'X_Control_t',
@@ -1662,7 +1662,7 @@ stargazer(fielder_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r fielder_stimation_pooling_ecom, results=TRUE}
+```{r fielder_stimation_pooling_ecom, echo=FALSE, eval=TRUE}
 # Significant variables:
 fielder_vars_1 <- c('X_Control_2_t',
                     'X_Control_t',
@@ -1798,7 +1798,7 @@ stargazer(fielder_models,
                            "Random effects","First-Differences"))
 ```
 
-```{r hausman_cojoint_fielder, results=TRUE}
+```{r hausman_cojoint_fielder, echo=FALSE, eval=TRUE}
 # create an empty list to store the test results
 test_results <- list()
 
