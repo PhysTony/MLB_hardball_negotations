@@ -353,7 +353,7 @@ fielder_results_simple_fd_pca <- coeftest(fielder_simple_fd_pca,
 # Print the third block of results
 stargazer(fielder_results_simple_fd_pca,
         no.space = TRUE,
-        type = "latex",
+        type = "text",
         title = "Lanzadores Iniciales: Primeras Diferencias con PCA",
         covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
                              "PCA$_{1_{t}}$", "PCA$_{2_{t}}$", "PCA$_{1_{t-1}}$", "PCA$_{2_{t-1}}$",
@@ -362,15 +362,15 @@ stargazer(fielder_results_simple_fd_pca,
 Mostremos los resultados de manera conjunta
 
 ```{r hitter_all_pca_models, echo=FALSE, eval=TRUE}
-hitter_pca_models <- list(hitter_simple_pooling_pca,
-                       hitter_simple_within_pca,
-                       hitter_simple_random_pca,
-                       hitter_simple_fd_pca)
+hitter_pca_models <- list(hitter_results_simple_pooling_pca,
+                       hitter_results_simple_within_pca,
+                       hitter_results_simple_random_pca,
+                       hitter_results_simple_fd_pca)
 
 # Print the third block of results
 stargazer(hitter_pca_models,
           no.space = TRUE,
-          type = "latex",
+          type = "text",
           title = "Bateadores regulares: Modelos con PCA",
           column.labels = c("Pooling", "Within", 
                             "RE","FD"),
@@ -380,19 +380,20 @@ stargazer(hitter_pca_models,
 ```
 
 ```{r fielder_all_pca_models, echo=FALSE, eval=TRUE}
-fielder_pca_models <- list(fielder_simple_pooling_pca,
-                           fielder_simple_within_pca,
-                           fielder_simple_random_pca,
-                           fielder_simple_fd_pca)
+fielder_pca_models <- list(fielder_results_simple_pooling_pca,
+                           fielder_results_simple_within_pca,
+                           fielder_results_simple_random_pca,
+                           fielder_results_simple_fd_pca)
 
 # Print the third block of results
 stargazer(fielder_pca_models,
           no.space = TRUE,
-          type = "latex",
+          type = "text",
           title = "Lanzadores Iniciales: Modelos con PCA",
           column.labels = c("Pooling", "Within", 
                             "RE","FD"),
           covariate.labels = c("Edad$_{t}$" , "Años contrato$_{t}$", "Eqipo$_{t}$",
-                               "PCA$_{1_{t}}$", "PCA$_{1_{t-1}}$",
+                               "PCA$_{1_{t}}$", "PCA$_{2_{t}}$",
+                               "PCA$_{1_{t-1}}$","PCA$_{2_{t-1}}$",
                                "Agente$_{t}$"))
 ```

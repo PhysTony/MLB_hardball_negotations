@@ -1340,7 +1340,7 @@ hitter_end_models <- list(pooling = hitter_stimation_1,
 stargazer(hitter_models,
          no.space = TRUE,
          align = TRUE,
-         type = "text",
+         type = "latex",
          title = "Bateadores: Comparación de los modelos - Econométrico final",
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))

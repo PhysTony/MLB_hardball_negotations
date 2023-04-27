@@ -141,10 +141,10 @@ hitter_did_results <- coeftest(hitter_did_model,
 # Print the third block of results
 stargazer(hitter_did_results,
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Bateadores regulares: Y DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
+          covariate.labels = c("Tratamiento", "Periodo agente",
+                               "Años contrato$_{t}$",
                                "Edad$_{t}$", "Equipo$_{t}$",
                                "ATE"))
 ```
@@ -174,8 +174,8 @@ stargazer(starting_did_results,
           no.space = TRUE,
           type = "text",
           title = "Lanzadores Iniciales: Y DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
+          covariate.labels = c("Tratamiento", "Periodo agente",
+                               "Años contrato$_{t}$",
                                "Edad$_{t}$", "Equipo$_{t}$",
                                "ATE"))
 ```
@@ -326,10 +326,10 @@ hitter_did_results <- coeftest(hitter_did_model,
 # Print the third block of results
 stargazer(hitter_did_results,
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Bateadores regulares: Salario regular DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
+          covariate.labels = c("Tratamiento", "Periodo agente",
+                               "Años contrato$_{t}$",
                                "Edad$_{t}$", "Equipo$_{t}$",
                                "ATE"))
 ```
@@ -356,10 +356,10 @@ starting_did_results <- coeftest(starting_did_model,
 # Print the third block of results
 stargazer(starting_did_results,
           no.space = TRUE,
-          type = "text",
+          type = "latex",
           title = "Lanzadores Iniciales: w DID",
-          covariate.labels = c("Tratamiento", "Agent_period$_{t}$",
-                               "Anios_contrato$_{t}$",
+          covariate.labels = c("Tratamiento", "Periodo agente",
+                               "Años contrato$_{t}$",
                                "Edad$_{t}$", "Equipo$_{t}$",
                                "ATE"))
 ```
