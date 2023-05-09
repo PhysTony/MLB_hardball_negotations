@@ -2071,7 +2071,49 @@ starting_remaining <- starting_data_split %>%
 
 Haremos las estimaciones con todos los modelos para obtener un análisis robusto
 
-## Primeros dos años
+
+```{r hitter_var_list_aux, include=FALSE}
+# LIsta de variables acumuladas y anualmente promediadas_
+stat_hitter <- list("X_At_bats", "X_At_bats_2",
+                    "X_Bateos", "X_Bateos_2",
+                    "X_Bateos_promedio", "X_Bateos_promedio_2", 
+                    "X_Dobles", "X_Dobles_2",
+                    "X_Home_runs", "X_Home_runs_2",
+                    "X_Juegos_iniciados", "X_Juegos_iniciados_2",
+                    "X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
+                    "X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
+                    "X_Porcentaje_slugging", "X_Porcentaje_slugging_2",
+                    "X_Runs_batted_in", "X_Runs_batted_in_2",
+                    "X_Triples", "X_Triples_2",
+                    "X_WAR", "X_WAR_2")
+
+# Add suffix "_t" to each name
+stat_hitter_t <- paste0(stat_hitter, "_t")
+stat_hitter_t_1 <- paste0(stat_hitter, "_t_1")
+```
+
+```{r fielder_var_list_aux, include = FALSE}
+# LIsta de variables acumuladas y anualmente promediadas_
+stat_fielder <- list('X_Bateos_2', 'X_Bateos',
+                     'X_Carreras_2', 'X_Carreras_ganadas_2',
+                     'X_Carreras_ganadas', 'X_Carreras',
+                     'X_Comando_2', 'X_Comando',
+                     'X_Control_2', 'X_Control',
+                     'X_Dominio_2', 'X_Dominio',
+                     'X_ERA_2', 'X_ERA',
+                     'X_Inning_pitched_2', 'X_Inning_pitched',
+                     'X_Losses_2', 'X_Losses',
+                     'X_Saves_2', 'X_Saves',
+                     'X_Strike_outs_2', 'X_Strike_outs',
+                     'X_WAR_2', 'X_WAR',
+                     'X_WHIP_2', 'X_WHIP',
+                     'X_Walks_2', 'X_Walks',
+                     'X_Wins_2', 'X_Wins')
+
+# Add suffix "_t" to each name
+stat_fielder_t <- paste0(stat_fielder, "_t")
+stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
+```
 
 ## Pooling 
 
@@ -2112,12 +2154,12 @@ for (i in 1:length(stat_hitter_t_1)){
   h_m_pooled <- list(my_lm_cluster_i,my_lm_cluster_f)
   
   # Print the third block of results
-  #stargazer(h_m_pooled,
-  #          no.space = TRUE,
-  #          type = "text",
-   #         title = "Bateadores regulares: Efecto de la edad (Pooling)",
-    #        column.labels = c("Primeros dos años", "Años restantes"),
-     #       covariate.labels = hitter_stats_long[[i]])
+  stargazer(h_m_pooled,
+            no.space = TRUE,
+            type = "text",
+           title = "Bateadores regulares: Efecto de la edad (Pooling)",
+          column.labels = c("Primeros dos años", "Años restantes"),
+         covariate.labels = hitter_stats_long[[i]])
   
   # Hausman test:
   print("")
@@ -2305,9 +2347,7 @@ for (i in 1:length(stat_hitter_t_1)){
                               vcov = vcovHC(hitter_model_random_fa[[i]],
                                             type = "HC1",
                                             cluster = "group"))
-  print(my_lm_cluster_i)
   
-  print("Remaining years:")
   h_m_random_f <- plm(formula, data = hitter_remaining,
                       model = "random",
                       index = c("id", "Anio_ref"))
@@ -2904,7 +2944,7 @@ for (i in 1:length(stat_fielder_t)){
 }
 ```
 
-## Efectos aleatorios
+## Within
 
 Por definición, necesitamos más de un periodo de observación. Por lo tanto, no obtendremos dicho modelo por esa restricción.
 
