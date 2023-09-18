@@ -34,155 +34,6 @@ hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hi
 fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
 ```
 
-```{r panel_revenue}
-mlb_teams_2022 <- data.frame(
-  Team = c("COL", "BAL", "TEX", "MIN", "TB", "STL", "DET", "CIN", "CHW", "SD", 
-           "MIA", "KC", "SEA", "BOS", "PIT", "NYY", "CLE", "NYM", "HOU", "OAK", 
-           "LAD", "LAA", "WSH", "PHI", "ATL", "MIL", "TOR", "SF", "CHC", "ARI"),
-  Team_Payroll = c(140012218, 44888388, 150037446, 149030158, 98342073, 156428325, 136287588, 115467321, 203205326, 224511694, 
-                   82954422, 92613711, 115838907, 211812131, 56184032, 252957200, 66477492, 268292506, 183791796, 48443900, 
-                   270381426, 179877811, 126809535, 244484097, 179938888, 130769325, 177013980, 162453046, 151054737, 85964090),
-  Year = rep(2022, 30)
-)
-
-mlb_teams_2021 <- data.frame(
-  Team = c("TB", "SF", "MIL", "OAK", "SEA", "CHW", "HOU", "TOR", "CIN", 
-           "ATL", "DET", "LAD", "BOS", "MIA", "SD", "STL", "MIN", "COL", 
-           "KC", "NYY", "PHI", "LAA", "CHC", "PIT", "BAL", "WSH", "TEX", 
-           "ARI", "NYM"),
-  Team_Payroll = c(70836327, 171890308, 99377415, 90400598, 83822113, 140926169, 194222042, 150140253, 50670534, 
-                   152750691, 86348945, 265343390, 187100784, 58157900, 179764272, 151469994, 120084606, 116408966, 
-                   91595545, 205669863, 197263223, 183849560, 144037170, 54356609, 42421870, 144415187, 95788819, 
-                   91632929, 201189189),
-  Year = rep(2021, 29)
-)
-
-mlb_teams_2020 <- data.frame(
-  Team = c("TB", "OAK", "ATL", "CHW", "SD", "CLE", "MIN", "LAD", "TOR", "MIA", 
-           "BAL", "MIL", "CIN", "KC", "SF", "CHC", "PHI", "SEA", "LAA", "NYY", 
-           "STL", "HOU", "DET", "WSH", "COL", "NYM", "ARI", "PIT", "BOS", "TEX"),
-  Team_Payroll = c(28290689, 36720178, 63561931, 53665251, 73097954, 39299107, 55679689, 124917397, 54997060, 34222260, 
-                   23478635, 41434086, 55535890, 34812194, 73408817, 86596171, 73543547, 51433829, 67040893, 111939081, 
-                   73246343, 82890957, 43164880, 75067703, 67808533, 81945598, 65598752, 25337837, 84210390, 64214137),
-  Year = rep(2020, 30)
-)
-
-mlb_teams_2019 <- data.frame(
-  Team = c("TB", "MIN", "OAK", "HOU", "CLE", "ATL", "LAD", "ARI", "MIL", "WSH", 
-           "NYY", "NYM", "PIT", "STL", "CHW", "TEX", "CIN", "PHI", "SD", "TOR", 
-           "BAL", "COL", "SEA", "BOS", "LAA", "CHC", "MIA", "KC", "SF", "DET"),
-  Team_Payroll = c(64178722, 125256003, 98644531, 167138259, 106838693, 143947963, 207000814, 119327905, 135889019, 172307808, 
-                   223019037, 146835812, 72176474, 173762164, 91371201, 148538766, 128691569, 159637244, 103699790, 111371067, 
-                   73316689, 157091013, 144391293, 229166880, 160270385, 221580085, 75596271, 104773003, 178582126, 114631137),
-  Year = rep(2019, 30)
-)
-
-mlb_teams_2018 <- data.frame(
-  Team = c("OAK", "TB", "MIL", "HOU", "CLE", "ATL", "LAD", "ARI", "WSH", "NYY", 
-           "NYM", "PIT", "BOS", "COL", "PHI", "STL", "CHW", "TEX", "CIN", "SD", 
-           "TOR", "LAA", "SEA", "CHC", "MIA", "DET", "KC", "SF", "BAL"),
-  Team_Payroll = c(80315288, 68810167, 108982016, 163524216, 143104703, 130849395, 199582045, 141724597, 181382609, 
-                   180098151, 150187987, 91025861, 227398860, 143968544, 104297471, 163534311, 71839808, 140625018, 
-                   100305768, 103773315, 150946147, 173717599, 160993827, 194259933, 91665500, 130959889, 129944821, 
-                   205665348, 130413607),
-  Year = rep(2018, 29)
-)
-
-mlb_teams_2017 <- data.frame(
-  Team = c("HOU", "CLE", "ARI", "MIL", "WSH", "MIN", "TB", "CHC", "COL", "OAK", 
-           "NYY", "STL", "MIA", "LAD", "BOS", "CIN", "PIT", "ATL", "TEX", "SD", 
-           "SEA", "CHW", "KC", "LAA", "PHI", "NYM", "TOR", "BAL", "DET", "SF"),
-  Team_Payroll = c(138344211, 132258928, 102619475, 68945179, 182238854, 121048871, 77811205, 172092536, 139324341, 
-                   73477080, 209044502, 145256085, 110765599, 259166393, 209872508, 96436003, 100503030, 105218575, 
-                   163400840, 76921678, 160797330, 85495238, 148227822, 166161209, 104020808, 143990158, 175617487, 
-                   175295707, 188498884, 189806809),
-  Year = rep(2017, 30)
-)
-
-mlb_teams_2016 <- data.frame(
-  Team = c("STL", "CLE", "WSH", "MIL", "HOU", "CHC", "COL", "MIA", "PIT", "TB", 
-           "TOR", "TEX", "SEA", "ARI", "BOS", "BAL", "CIN", "NYM", "SD", "OAK", 
-           "CHW", "ATL", "MIN", "KC", "SF", "PHI", "DET", "LAA", "NYY", "LAD"),
-  Team_Payroll = c(0, 105971268, 139383852, 62161191, 103328742, 184352494, 107902280, 77715306, 99518136, 63908549, 
-                   148385479, 163021690, 146536553, 97874482, 207758836, 150248832, 88626437, 147738514, 83435559, 83109288, 
-                   129715686, 96080633, 97244457, 141587358, 178834344, 103898809, 200179285, 174295919, 220743376, 266745494),
-  Year = rep(2016, 30)
-)
-
-mlb_teams_2015 <- data.frame(
-  Team = c("PIT", "TOR", "HOU", "STL", "CHC", "KC", "ARI", "NYM", "TB", "TEX", 
-           "MIN", "BAL", "LAA", "NYY", "OAK", "WSH", "SEA", "MIA", "SD", "COL", 
-           "CHW", "BOS", "MIL", "DET", "CIN", "LAD", "ATL", "PHI"),
-  Team_Payroll = c(99435606, 138309664, 81450835, 132178951, 132993810, 126529835, 76781801, 115698927, 76582652, 
-                   156445607, 106431818, 117784476, 143348162, 221242659, 80376830, 165655095, 126045473, 76090525, 
-                   107915272, 107102051, 118875487, 183481478, 94010873, 162160921, 116333097, 302735080, 110913266, 141722639),
-  Year = rep(2015, 28)
-)
-
-mlb_teams_2014 <- data.frame(
-  Team = c("BAL", "PIT", "OAK", "LAA", "WSH", "CLE", "KC", "DET", "MIA", "STL", 
-           "SEA", "MIL", "TOR", "NYM", "TB", "HOU", "LAD", "SF", "MIN", "CHW", 
-           "COL", "CHC", "ATL", "SD", "CIN", "NYY", "ARI", "PHI", "BOS", "TEX"),
-  Team_Payroll = c(113562943, 76974115, 92888412, 165244781, 143278577, 84481929, 98558300, 172143106, 50559679, 
-                   121340470, 115534174, 108777046, 141812172, 94478037, 76821046, 51679490, 242157818, 160336782, 
-                   87494478, 89297302, 96772365, 89539741, 116865707, 85001967, 113351318, 212512317, 106343190, 
-                   175061605, 170095758, 139630583),
-  Year = rep(2014, 30)
-)
-
-mlb_teams_2013 <- data.frame(
-  Team = c("OAK", "PIT", "TB", "ATL", "CLE", "BOS", "STL", "CIN", "DET", "BAL", 
-           "KC", "TEX", "ARI", "WSH", "COL", "SD", "MIL", "LAA", "NYM", "SEA", 
-           "TOR", "MIN", "MIA", "SF", "LAD", "CHC", "HOU", "CHW", "NYY", "PHI"),
-  Team_Payroll = c(67055517, 71480984, 72600703, 94947950, 93008897, 170734264, 120192638, 106804640, 155032966, 
-                   99630869, 85398434, 137937146, 88316478, 116584094, 79017288, 73286341, 88221045, 141542644, 
-                   101300814, 82720022, 131771168, 81300970, 36209554, 140280186, 236694375, 100052899, 35077913, 
-                   111777595, 235957526, 163536898),
-  Year = rep(2013, 30)
-)
-
-mlb_teams_2012 <- data.frame(
-  Team = c("OAK", "WSH", "TB", "CIN", "BAL", "ATL", "TEX", "STL", "MIL", "ARI", 
-           "CHW", "SF", "PIT", "SD", "LAA", "KC", "DET", "LAD", "NYY", "TOR", 
-           "SEA", "CLE", "COL", "NYM", "MIA", "MIN", "PHI", "HOU", "BOS", "CHC"),
-  Team_Payroll = c(60470192, 98044359, 69854135, 89901498, 82932168, 97928056, 138312903, 119957765, 110595795, 
-                   82411013, 108841055, 137043205, 61118682, 63828925, 157168625, 70344235, 143782286, 117584717, 
-                   226799742, 96031627, 84289928, 77057243, 87232529, 104988166, 98120191, 107939507, 178822491, 
-                   54547239, 173216551, 116341526),
-  Year = rep(2012, 30)
-)
-
-mlb_teams_2011 <- data.frame(
-  Team = c("Rays", "Rangers", "Diamondbacks", "Brewers", "Tigers", "Cardinals", "Blue Jays", "Braves", "Red Sox", 
-           "Phillies", "Royals", "Reds", "Yankees", "Rockies", "Padres", "Pirates", "Athletics", "Dodgers", "Angels", 
-           "Giants", "Orioles", "White Sox", "Mets", "Cubs", "Mariners", "Astros", "Twins"),
-  Team_Payroll = c(45386925, 103741721, 65189970, 92277138, 111521015, 0, 73491604, 98696230, 170490761, 170018182, 
-                   52072804, 81920546, 210950685, 82897934, 48018810, 48393645, 75655048, 115174517, 146648559, 
-                   125242452, 94751399, 127263027, 142245841, 138083584, 101429148, 85323388, 113979594),
-  Year = rep(2011, 27)
-)
-
-mlb_teams_2010 <- data.frame(
-  Team = c("TB", "STL", "CIN", "SD", "MIN", "TEX", "TOR", "COL", "SF", 
-           "PHI", "KC", "BOS", "DET", "WSH", "LAA", "CLE", "LAD", "NYY", 
-           "ARI", "HOU", "NYM", "BAL", "CHC", "PIT", "SEA"),
-  Team_Payroll = c(73111908, 0, 76183915, 43679800, 88115519, 84947880, 72167275, 77433135, 98178333, 
-                   137297541, 51104192, 157778541, 106838066, 48521480, 101667618, 51045206, 101450867, 
-                   223310889, 61398736, 80184822, 127702202, 70097445, 131052537, 28219000, 84907671),
-  Year = rep(2010, 25)
-)
-
-# Lista de nombres de dataframes
-df_team_values <- paste0("mlb_teams_", 2010:2022)
-
-# Convertir nombres de texto en dataframes reales
-list_of_team_values <- lapply(df_team_values, function(df) get(df))
-
-# Combinar todos los dataframes en uno solo
-panel_data <- do.call(rbind, list_of_team_values)
-```
-
-
 ```{r etl_panel, include = FALSE, warning = FALSE}
 # Convert categorical column to numerical
 # Position;
@@ -193,8 +44,8 @@ hitters_panel$team_num_t <- as.numeric(factor(hitters_panel$Acronimo_t))
 fielders_panel$team_num_t <- as.numeric(factor(fielders_panel$Acronimo_t))
 
 # add a column of 1s to the panel data
-hitters_panel <- cbind(hitters_panel, fa = rep(1, nrow(hitters_panel)))
-fielders_panel <- cbind(fielders_panel, fa = rep(1, nrow(fielders_panel)))
+#hitters_panel <- cbind(hitters_panel, fa = rep(1, nrow(hitters_panel)))
+#fielders_panel <- cbind(fielders_panel, fa = rep(1, nrow(fielders_panel)))
 
 hitters_panel %>% count(Posicion_t, sort = TRUE)
 fielders_panel %>% count(Posicion_t, sort = TRUE)
@@ -243,6 +94,7 @@ stat_hitter <- list("X_At_bats", "X_At_bats_2",
                     "X_Bateos_promedio", "X_Bateos_promedio_2", 
                     "X_Dobles", "X_Dobles_2",
                     "X_Home_runs", "X_Home_runs_2",
+                    "X_Ingresos_equipo", "X_Ingresos_equipo_2",
                     "X_Juegos_iniciados", "X_Juegos_iniciados_2",
                     "X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
                     "X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
@@ -263,6 +115,7 @@ stat_fielder <- list('X_Bateos_2', 'X_Bateos',
                      'X_Control_2', 'X_Control',
                      'X_Dominio_2', 'X_Dominio',
                      'X_ERA_2', 'X_ERA',
+                     "X_Ingresos_equipo", "X_Ingresos_equipo_2",
                      'X_Inning_pitched_2', 'X_Inning_pitched',
                      'X_Losses_2', 'X_Losses',
                      'X_Saves_2', 'X_Saves',
@@ -277,25 +130,25 @@ stat_fielder_t <- paste0(stat_fielder, "_t")
 stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
 
 # Control variables:
-vars_ms  <- 'Y_Sueldo_regular_norm_t ~ I(Edad_t^2) + I(Anios_de_contrato_t^2) + I(team_num_t^2)'
-vars_fe  <- 'Y_Sueldo_regular_norm_t ~ I(Edad_t^2) + I(Anios_de_contrato_t^2) + I(team_num_t^2) -1'
+vars_ms  <- 'Y_Sueldo_regular_norm_t ~ I(Edad_t^2) + I(Anios_de_contrato_t^2) + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
+vars_fe  <- 'Y_Sueldo_regular_norm_t ~ I(Edad_t^2) + I(Anios_de_contrato_t^2) + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
 
-hitter_stats_1 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$", 
+hitter_stats_1 = c("Edad$_{t}^2$", "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{AB_{t}}$","$X_{AB_{t-1}}$","$X_{AB^{2}_{t}}$","$X_{AB^{2}_{t-1}}$",
                    "$X_{H_{t}}$","$X_{H_{t-1}}$","$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
                    "$X_{BA_{t}}$","$X_{BA_{t-1}}$", "$X_{BA^{2}_{t}}$","$X_{BA^{2}_{t-1}}$",
                    "Agente$_{t}$")
-hitter_stats_2 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$", 
+hitter_stats_2 = c("Edad$_{t}^2$", "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{D_{t}}$","$X_{D_{t-1}}$","$X_{D^{2}_{t}}$","$X_{D^{2}_{t-1}}$",
                    "$X_{HR_{t}}$","$X_{HR_{t-1}}$","$X_{HR^{2}_{t}}$","$X_{HR^{2}_{t-1}}$",
                    "$X_{GS_{t}}$","$X_{GS_{t-1}}$", "$X_{GS^{2}_{t}}$","$X_{GS^{2}_{t-1}}$",
                    "Agente$_{t}$")
-hitter_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$", 
+hitter_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{OPS_{t}}$","$X_{OPS_{t-1}}$","$X_{OPS^{2}_{t}}$","$X_{OPS^{2}_{t-1}}$",
                    "$X_{OBP_{t}}$","$X_{OBP_{t-1}}$","$X_{OBP^{2}_{t}}$","$X_{OBP^{2}_{t-1}}$",
                    "$X_{SLG_{t}}$","$X_{SLG_{t-1}}$", "$X_{SLG^{2}_{t}}$","$X_{SLG^{2}_{t-1}}$",
                    "Agente$_{t}$")
-hitter_stats_4 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$", 
+hitter_stats_4 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{RBI_{t}}$","$X_{RBI_{t-1}}$","$X_{RBI^{2}_{t}}$","$X_{RBI^{2}_{t-1}}$",
                    "$X_{T_{t}}$","$X_{T_{t-1}}$","$X_{T^{2}_{t}}$","$X_{T^{2}_{t-1}}$",
                    "$X_{WAR_{t}}$","$X_{WAR_{t-1}}$", "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$",
@@ -311,124 +164,124 @@ hitter_rep <- 4
 hitter_stat_num <- 6
 
 hitter_stats_long <- list(c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$", 
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{AB_{t}}$","$X_{AB_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$", 
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{AB^{2}_{t}}$","$X_{AB^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{H_{t}}$","$X_{H_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{BA_{t}}$","$X_{BA_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{BA^{2}_{t}}$","$X_{BA^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{D_{t}}$","$X_{D_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{D^{2}_{t}}$","$X_{D^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{HR_{t}}$","$X_{HR_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{HR^{2}_{t}}$","$X_{HR^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{GS_{t}}$","$X_{GS_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{GS^{2}_{t}}$","$X_{GS^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{OPS_{t}}$","$X_{OPS_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{OPS^{2}_{t}}$","$X_{OPS^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{OBP_{t}}$","$X_{OBP_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{OBP^{2}_{t}}$","$X_{OBP^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{SLG_{t}}$","$X_{SLG_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{SLG^{2}_{t}}$","$X_{SLG^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{RBI_{t}}$","$X_{RBI_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{RBI^{2}_{t}}$","$X_{RBI^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{T_{t}}$","$X_{T_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{T^{2}_{t}}$","$X_{T^{2}_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{WAR_{t}}$","$X_{WAR_{t-1}}$",
                             "Agente$_{t}$"),
                           c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                            "Equipo$_{t}^2$",
+                            "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                             "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$",
                             "Agente$_{t}$")
                           )
 
-fielder_stats_1 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$", 
+fielder_stats_1 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                     "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$","$X_{H_{t}}$","$X_{H_{t-1}}$",
                     "$X_{R^{2}_{t}}$","$X_{R^{2}_{t-1}}$","$X_{ER^{2}_{t}}$","$X_{ER^{2}_{t-1}}$",
                     "$X_{ER_{t}}$","$X_{ER_{t-1}}$", "$X_{R_{t}}$","$X_{R_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_2 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$", 
+fielder_stats_2 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                     "$X_{Comando^{2}_{t}}$","$X_{Comando^{2}_{t-1}}$","$X_{Comando_{t}}$","$X_{Comando_{t-1}}$",
                     "$X_{Control^{2}_{t}}$","$X_{Control^{2}_{t-1}}$","$Control_{H_{t}}$","$X_{Control_{t-1}}$",
                     "$X_{Dominio^{2}_{t}}$","$X_{Dominio^{2}_{t-1}}$","$X_{Dominio_{t}}$","$X_{Dominio_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$",
+fielder_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                     "$X_{ERA^{2}_{t}}$","$X_{ERA^{2}_{t-1}}$","$X_{ERA_{t}}$","$X_{ERA_{t-1}}$",
                     "$X_{IP^{2}_{t}}$","$X_{IP^{2}_{t-1}}$","$X_{IP_{t}}$","$X_{IP_{t-1}}$",
                     "$X_{L^{2}_{t}}$","$X_{L^{2}_{t-1}}$", "$X_{L_{t}}$","$X_{L_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_4 = c("$Edad_{t}$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$",
+fielder_stats_4 = c("$Edad_{t}$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                     "$X_{S^{2}_{t}}$","$X_{S^{2}_{t-1}}$","$X_{S_{t}}$","$X_{S_{t-1}}$",
                     "$X_{SO^{2}_{t}}$","$X_{SO^{2}_{t-1}}$","$X_{SO_{t}}$","$X_{SO_{t-1}}$",
                     "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$","$X_{WAR_{t}}$","$X_{WAR_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_5 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$",
+fielder_stats_5 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                     "$X_{WHIP^{2}_{t}}$","$X_{WHIP^{2}_{t-1}}$","$X_{WHIP_{t}}$","$X_{WHIP_{t-1}}$",
                     "$X_{BB^{2}_{t}}$","$X_{BB^{2}_{t-1}}$","$X_{BB_{t}}$","$X_{BB_{t-1}}$",
                     "$X_{W^{2}_{t}}$","$X_{W^{2}_{t-1}}$","$X_{W_{t}}$","$X_{W_{t-1}}$",
@@ -444,123 +297,123 @@ fielder_rep <- 5
 fielder_stat_num <- 6
 
 fielder_stats_long <- list(c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$", 
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$", 
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{H_{t}}$","$X_{H_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{R^{2}_{t}}$","$X_{R^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{ER^{2}_{t}}$","$X_{ER^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{ER_{t}}$","$X_{ER_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{R_{t}}$","$X_{R_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{Comando^{2}_{t}}$","$X_{Comando^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{Comando_{t}}$","$X_{Comando_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{Control^{2}_{t}}$","$X_{Control^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{Control_{t}}$","$X_{Control_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{Dominio^{2}_{t}}$","$X_{Dominio^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{Dominio_{t}}$","$X_{Dominio_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{ERA^{2}_{t}}$","$X_{ERA^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{ERA_{t}}$","$X_{ERA_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{IP^{2}_{t}}$","$X_{IP^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{IP_{t}}$","$X_{IP_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{L^{2}_{t}}$","$X_{L^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{DL_{t}}$","$X_{L_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{S^{2}_{t}}$","$X_{S^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{S_{t}}$","$X_{S_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{SO^{2}_{t}}$","$X_{SO^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{SO_{t}}$","$X_{SO_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{WAR_{t}}$","$X_{WAR_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{WHIP^{2}_{t}}$","$X_{WHIP^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{WHIP_{t}}$","$X_{WHIP_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{BB^{2}_{t}}$","$X_{BB^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{BB_{t}}$","$X_{BB_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{W^{2}_{t}}$","$X_{W^{2}_{t-1}}$",
                               "Agente$_{t}$"),
                             c("Edad$_{t}^2$","Años contrato$_{t}^2$",
-                              "Equipo$_{t}^2$",
+                              "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                               "$X_{W_{t}}$","$X_{W_{t-1}}$",
                               "Agente$_{t}$")
                             )
