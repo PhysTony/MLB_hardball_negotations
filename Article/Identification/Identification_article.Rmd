@@ -30,8 +30,8 @@ library(plm)
 
 ```{r import_panel, include = FALSE, warning = FALSE}
 setwd("C:/Users/metal/Documents/Github/MLB_hardball_negotations/")
-hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
-fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
+hitters_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters_t_1.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders_t_1.csv')
 ```
 
 ```{r etl_panel, include = FALSE, warning = FALSE}
@@ -419,8 +419,9 @@ fielder_stats_long <- list(c("Edad$_{t}^2$","Años contrato$_{t}^2$",
                             )
 
 ```
-
-
+```{r}
+names(hitters_panel)
+```
 ```{r hitter_stimation_simple_pooling, echo=FALSE, eval=TRUE}
 # Create a model to store the results
 hitter_simple_pooling <- list()
