@@ -1,0 +1,50 @@
+1er Refinamiento:
+Bateadores:
+-) Pooling: Edad:-0.0003**, Tearev-1:0.260**.
+> HR-1, HR2
+-) Efectos Fijos: Edad:-0.0003**, Tearev-1:0.260.
+> BA-1, HR, HR2, OBP-1, OBP2-1, SLG-1
+-) Efectos Aleatorios: Edad:-0.0003**, Tearev-1:0.260**.
+> HR-1, HR2
+-) Primeras Diferencias: Tearev-1:0.270**.
+> HR-1, HR2, OPS2-1, WAR, WAR2.
+
+Lanzdores iniciales:
+-) Pooling: Tearev-1:-0.459**.
+> Control, SO2
+-) Efectos Fijos: Equipo: -.001*(algunos)
+> Control, ERA2-1, SO2 y SO2-1, SO y SO-1, WAR-1, W2, W-1
+-) Efectos Aleatorios: Tearev-1:-0.459**.
+> Control, SO2
+-) Primeras Diferencias: Tearev-1:-0.335**.
+> Comando2, Comando, Dominio, ERA2, ERA-1, IP y IP-11, L2,
+SO2, SO-1, WHIP-1, W-1
+
+"X_At_bats", "X_At_bats_2",
+"X_Bateos", "X_Bateos_2",
+"X_Bateos_promedio", "X_Bateos_promedio_2", 
+"X_Dobles", "X_Dobles_2",
+"X_Home_runs", "X_Home_runs_2",
+"X_Juegos_iniciados", "X_Juegos_iniciados_2",
+"X_Porcentaje_On_base_plus_slugging", "X_Porcentaje_On_base_plus_slugging_2",
+"X_Porcentaje_on_base", "X_Porcentaje_on_base_2",
+"X_Porcentaje_slugging", "X_Porcentaje_slugging_2",
+"X_Runs_batted_in", "X_Runs_batted_in_2",
+"X_Triples", "X_Triples_2",
+"X_WAR", "X_WAR_2"
+
+'X_Bateos_2', 'X_Bateos',
+'X_Carreras_2', 'X_Carreras_ganadas_2',
+'X_Carreras_ganadas', 'X_Carreras',
+'X_Comando_2', 'X_Comando',
+'X_Control_2', 'X_Control',
+'X_Dominio_2', 'X_Dominio',
+'X_ERA_2', 'X_ERA',
+'X_Inning_pitched_2', 'X_Inning_pitched',
+'X_Losses_2', 'X_Losses',
+'X_Saves_2', 'X_Saves',
+'X_Strike_outs_2', 'X_Strike_outs',
+'X_WAR_2', 'X_WAR',
+'X_WHIP_2', 'X_WHIP',
+'X_Walks_2', 'X_Walks',
+'X_Wins_2', 'X_Wins'
