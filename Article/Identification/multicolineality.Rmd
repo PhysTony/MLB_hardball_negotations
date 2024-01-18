@@ -1,0 +1,146 @@
+---
+title: "Dynamic Model - Identification"
+author: "Antonio Huerta Montellano"
+date: "\today"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(comment = NA)
+options(warn = FALSE) # ignore warnings
+```
+
+```{r libraries, include=FALSE}
+library(lmtest) # for robust standard errors
+library(dplyr) # for group_by function
+library(ggplot2) # for better plots
+library(dplyr) # for data managment
+library(clubSandwich) # Grouped errors
+library(sandwich) # MOre error options
+library(tidyr) # Datframes manipulation
+library(stargazer) # For output formats
+library(lubridate)
+library(plm)
+```
+
+```{r import_panel, include = FALSE, warning = FALSE}
+# Define la ruta del directorio
+path <- "C:/Users/metal/Documents/Github/MLB_hardball_negotations"
+
+# Cambia el directorio de trabajo actual al directorio especificado
+setwd(path)
+
+# Verifica que el directorio de trabajo actual haya cambiado
+getwd()
+
+# Importa los dataframes
+hitters_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters_t_1.csv')
+fielders_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders_t_1.csv')
+```
+
+```{r X_list_function, include=FALSE, warning=FALSE, echo=FALSE}
+# Definición de la función
+get_prefixed_column_names <- function(df, prefix) {
+  # Obtener los nombres de todas las columnas del dataframe
+  column_names <- names(df)
+
+  # Filtrar los nombres de las columnas que comienzan con el prefijo especificado
+  prefixed_columns <- grep(paste0("^", prefix), column_names, value = TRUE)
+
+  # Devolver los nombres de las columnas filtradas
+  return(prefixed_columns)
+}
+```
+
+```{r X_list, include=FALSE, warning=FALSE, echo=FALSE}
+# X hitter list
+xHitterList <- get_prefixed_column_names(hitters_panel, "X")
+print(xHitterList)
+# X fielder list
+xFielderList <- get_prefixed_column_names(fielders_panel, "X")
+print(xFielderList)
+```
+
+```{r X_list_function, include=FALSE, warning=FALSE, echo=FALSE}
+# Función para realizar regresiones lineales individuales y agrupar los resultados
+run_individual_linear_regressions <- function(df, column_names, target_variable, exclude_variables = NULL) {
+  # Excluir las variables no deseadas de column_names
+  if (!is.null(exclude_variables)) {
+    column_names <- setdiff(column_names, exclude_variables)
+  }
+
+  # Lista para almacenar los modelos y sus R^2
+  models <- list()
+  r_squared <- list()
+
+  # Realizar una regresión lineal para cada variable en column_names
+  for (column in column_names) {
+    # Crear la fórmula del modelo para la variable actual
+    formula <- as.formula(paste(target_variable, "~", column))
+
+    # Ajustar el modelo lineal
+    model <- glm(formula, data = df, family = gaussian())
+
+    # Agregar el modelo y su R^2 a las listas
+    models[[column]] <- model
+    r_squared[[column]] <- summary(model)$r.squared
+  }
+
+  # Imprimir los resultados en grupos de cinco
+  for (i in seq(1, length(models), by = 5)) {
+    # Seleccionar un subconjunto de modelos
+    subset_models <- models[i:min(i+4, length(models))]
+    subset_r_squared <- r_squared[i:min(i+4, length(models))]
+
+    # Imprimir los resultados usando stargazer
+    stargazer::stargazer(subset_models, type = "text", title = paste("Resultados de Modelos para Grupo", ceiling(i / 5)))
+
+    # Imprimir los valores de R^2
+    cat("Valores de R^2 para el Grupo", ceiling(i / 5), ":\n")
+    for (name in names(subset_r_squared)) {
+      cat(name, ": R^2 =", subset_r_squared[[name]], "\n")
+    }
+  }
+}
+```
+
+```{r X_hitter_t}
+# Ejemplo de uso de la función
+# Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
+# Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
+column_names <- xHitterList
+exclude_variables <- c("X_Ingresos_equipo_2_t", "X_Ingresos_equipo_2_t_1")
+models <- run_individual_linear_regressions(hitters_panel, column_names, "X_Ingresos_equipo_t", exclude_variables)
+```
+
+```{r X_hitter_t_1}
+# Ejemplo de uso de la función
+# Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
+# Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
+column_names <- xHitterList
+exclude_variables <- c("X_Ingresos_equipo_t", "X_Ingresos_equipo_2_t_1", "X_Ingresos_equipo_2_t")
+models <- run_individual_linear_regressions(hitters_panel, column_names, "X_Ingresos_equipo_t_1", exclude_variables)
+```
+
+```{r X_fielder_t}
+# Ejemplo de uso de la función
+# Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
+# Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
+column_names <- xHitterList
+exclude_variables <- c("X_Ingresos_equipo_2_t", "X_Ingresos_equipo_2_t_1")
+models <- run_individual_linear_regressions(fielders_panel, column_names, "X_Ingresos_equipo_t", exclude_variables)
+```
+
+```{r X_fielder_t_1}
+# Ejemplo de uso de la función
+# Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
+# Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
+column_names <- xHitterList
+exclude_variables <- c("X_Ingresos_equipo_t", "X_Ingresos_equipo_2_t_1", "X_Ingresos_equipo_2_t")
+models <- run_individual_linear_regressions(fielders_panel, column_names, "X_Ingresos_equipo_t_1", exclude_variables)
+```

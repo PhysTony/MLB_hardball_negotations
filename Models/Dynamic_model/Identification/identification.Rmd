@@ -27,7 +27,7 @@ library(plm)
 ```
 
 ```{r import_panel, include = FALSE, warning = FALSE}
-setwd("~/Documentos/Github/Proyectos/MLB_HN/")
+setwd("~/Documents/Github/MLB_hardball_negotations/")
 hitters_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_hitter_pca.csv')
 fielders_panel <- read.csv('ETL_Data/Panel/General/Dynamic_model/dynamic_model_fielder_pca.csv')
 ```
