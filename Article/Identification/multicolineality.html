@@ -1627,7 +1627,1983 @@ display: none;
 </div>
 
 
+<pre class="r"><code># Ejemplo de uso de la función
+# Supongamos que la variable de interés es &quot;X_Ingresos_equipo_2_t&quot; y las otras columnas son de xHitterList
+# Excluyendo las variables &quot;X_Ingresos_equipo_t&quot; y &quot;X_Ingresos_equipo_t_1&quot;
+column_names &lt;- xHitterList
+exclude_variables &lt;- c(&quot;X_Ingresos_equipo_2_t&quot;, &quot;X_Ingresos_equipo_2_t_1&quot;)
+models &lt;- run_individual_linear_regressions(hitters_panel, column_names, &quot;X_Ingresos_equipo_t&quot;, exclude_variables)</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): the response appeared on
+the right-hand side and was dropped</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): problem with term 1 in
+model.matrix: no columns are assigned</code></pre>
+<pre><code>
+Resultados de Modelos para Grupo 1
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_At_bats_2_t     0.0001***                                        
+                  (0.00004)                                        
+                                                                   
+X_At_bats_2_t_1             0.0001**                               
+                            (0.00003)                              
+                                                                   
+X_At_bats_t                           0.002***                     
+                                       (0.001)                     
+                                                                   
+X_At_bats_t_1                                    -0.001            
+                                                 (0.001)           
+                                                                   
+X_Bateos_2_t                                               -0.0002 
+                                                          (0.0002) 
+                                                                   
+Constant          -0.017*** -0.016*** -0.018*** -0.016*** -0.017***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        3,316     3,316     3,316     3,316     3,316  
+Log Likelihood     318.570   316.258   317.989   314.723   315.060 
+Akaike Inf. Crit. -633.140  -628.516  -631.979  -625.445  -626.121 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
 
+Resultados de Modelos para Grupo 2
+=========================================================================
+                                       Dependent variable:               
+                        -------------------------------------------------
+                                       X_Ingresos_equipo_t               
+                           (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------------
+X_Bateos_2_t_1           0.00000                                         
+                        (0.0001)                                         
+                                                                         
+X_Bateos_promedio_2_t               0.045                                
+                                   (0.043)                               
+                                                                         
+X_Bateos_promedio_2_t_1                     0.107***                     
+                                             (0.030)                     
+                                                                         
+X_Bateos_promedio_t                                   -0.050**           
+                                                       (0.024)           
+                                                                         
+X_Bateos_promedio_t_1                                            -0.005  
+                                                                 (0.022) 
+                                                                         
+Constant                -0.016*** -0.017*** -0.017*** -0.015*** -0.016***
+                         (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                         
+-------------------------------------------------------------------------
+Observations              3,316     3,316     3,316     3,316     3,316  
+Log Likelihood           314.307   314.839   320.699   316.440   314.328 
+Akaike Inf. Crit.       -624.614  -625.678  -637.399  -628.879  -624.656 
+=========================================================================
+Note:                                         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 3
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Bateos_t        0.004***                                         
+                   (0.002)                                         
+                                                                   
+X_Bateos_t_1                0.004***                               
+                             (0.001)                               
+                                                                   
+X_Dobles_2_t                          0.002***                     
+                                       (0.001)                     
+                                                                   
+X_Dobles_2_t_1                                  -0.002***          
+                                                 (0.001)           
+                                                                   
+X_Dobles_t                                                0.015*** 
+                                                           (0.003) 
+                                                                   
+Constant          -0.017*** -0.017*** -0.016*** -0.017*** -0.017***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        3,316     3,316     3,316     3,316     3,316  
+Log Likelihood     317.977   318.073   318.889   318.775   324.841 
+Akaike Inf. Crit. -631.954  -632.146  -633.778  -633.550  -645.681 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 4
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Dobles_t_1       -0.001                                          
+                   (0.003)                                         
+                                                                   
+X_Home_runs_2_t               0.002                                
+                             (0.001)                               
+                                                                   
+X_Home_runs_2_t_1                       0.001                      
+                                       (0.001)                     
+                                                                   
+X_Home_runs_t                                    -0.002            
+                                                 (0.004)           
+                                                                   
+X_Home_runs_t_1                                            -0.0004 
+                                                           (0.004) 
+                                                                   
+Constant          -0.016*** -0.016*** -0.016*** -0.016*** -0.017***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        3,316     3,316     3,316     3,316     3,316  
+Log Likelihood     314.330   315.655   315.247   314.395   314.312 
+Akaike Inf. Crit. -624.661  -627.310  -626.494  -624.790  -624.624 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 5
+==========================================================================
+                                        Dependent variable:               
+                         -------------------------------------------------
+                                        X_Ingresos_equipo_t               
+                            (1)       (2)       (3)       (4)       (5)   
+--------------------------------------------------------------------------
+X_Ingresos_equipo_t_1              0.089***                               
+                                    (0.014)                               
+                                                                          
+X_Juegos_iniciados_2_t                       0.0003**                     
+                                             (0.0001)                     
+                                                                          
+X_Juegos_iniciados_2_t_1                                0.00003           
+                                                       (0.0001)           
+                                                                          
+X_Juegos_iniciados_t                                              0.004** 
+                                                                  (0.001) 
+                                                                          
+Constant                 -0.016*** -0.017*** -0.017*** -0.016*** -0.017***
+                          (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                          
+--------------------------------------------------------------------------
+Observations               3,316     3,316     3,316     3,316     3,316  
+Log Likelihood            314.306   333.597   316.412   314.342   317.498 
+Akaike Inf. Crit.        -626.613  -663.195  -628.824  -624.684  -630.996 
+==========================================================================
+Note:                                          *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 6
+==========================================================================================
+                                                        Dependent variable:               
+                                         -------------------------------------------------
+                                                        X_Ingresos_equipo_t               
+                                            (1)       (2)       (3)       (4)       (5)   
+------------------------------------------------------------------------------------------
+X_Juegos_iniciados_t_1                    0.0003                                          
+                                          (0.001)                                         
+                                                                                          
+X_Porcentaje_On_base_plus_slugging_2_t               0.008                                
+                                                    (0.017)                               
+                                                                                          
+X_Porcentaje_On_base_plus_slugging_2_t_1                      0.035**                     
+                                                              (0.014)                     
+                                                                                          
+X_Porcentaje_On_base_plus_slugging_t                                   -0.051***          
+                                                                        (0.014)           
+                                                                                          
+X_Porcentaje_On_base_plus_slugging_t_1                                           -0.050***
+                                                                                  (0.014) 
+                                                                                          
+Constant                                 -0.017*** -0.017*** -0.017*** -0.014*** -0.013***
+                                          (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                                          
+------------------------------------------------------------------------------------------
+Observations                               3,316     3,316     3,316     3,316     3,316  
+Log Likelihood                            314.326   314.427   317.187   320.625   321.095 
+Akaike Inf. Crit.                        -624.651  -624.853  -630.374  -637.251  -638.189 
+==========================================================================================
+Note:                                                          *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 7
+============================================================================
+                                          Dependent variable:               
+                           -------------------------------------------------
+                                          X_Ingresos_equipo_t               
+                              (1)       (2)       (3)       (4)       (5)   
+----------------------------------------------------------------------------
+X_Porcentaje_on_base_2_t    0.090**                                         
+                            (0.037)                                         
+                                                                            
+X_Porcentaje_on_base_2_t_1           0.084***                               
+                                      (0.030)                               
+                                                                            
+X_Porcentaje_on_base_t                         -0.063***                    
+                                                (0.021)                     
+                                                                            
+X_Porcentaje_on_base_t_1                                 -0.087***          
+                                                          (0.020)           
+                                                                            
+X_Porcentaje_slugging_2_t                                          0.088*** 
+                                                                    (0.031) 
+                                                                            
+Constant                   -0.017*** -0.018*** -0.014*** -0.013*** -0.017***
+                            (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                            
+----------------------------------------------------------------------------
+Observations                 3,316     3,316     3,316     3,316     3,316  
+Log Likelihood              317.258   318.229   318.593   323.713   318.327 
+Akaike Inf. Crit.          -630.516  -632.458  -633.186  -643.426  -632.654 
+============================================================================
+Note:                                            *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 8
+=============================================================================
+                                           Dependent variable:               
+                            -------------------------------------------------
+                                           X_Ingresos_equipo_t               
+                               (1)       (2)       (3)       (4)       (5)   
+-----------------------------------------------------------------------------
+X_Porcentaje_slugging_2_t_1   0.029                                          
+                             (0.027)                                         
+                                                                             
+X_Porcentaje_slugging_t                -0.027                                
+                                       (0.020)                               
+                                                                             
+X_Porcentaje_slugging_t_1                        -0.036*                     
+                                                 (0.018)                     
+                                                                             
+X_Runs_batted_in_2_t                                       -0.0002           
+                                                          (0.0003)           
+                                                                             
+X_Runs_batted_in_2_t_1                                               0.0004  
+                                                                    (0.0002) 
+                                                                             
+Constant                    -0.017*** -0.016*** -0.015*** -0.017*** -0.016***
+                             (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                             
+-----------------------------------------------------------------------------
+Observations                  3,316     3,316     3,316     3,316     3,316  
+Log Likelihood               314.859   315.240   316.181   314.497   315.445 
+Akaike Inf. Crit.           -625.718  -626.480  -628.363  -624.994  -626.890 
+=============================================================================
+Note:                                             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 9
+======================================================================
+                                    Dependent variable:               
+                     -------------------------------------------------
+                                    X_Ingresos_equipo_t               
+                        (1)       (2)       (3)       (4)       (5)   
+----------------------------------------------------------------------
+X_Runs_batted_in_t    0.005**                                         
+                      (0.002)                                         
+                                                                      
+X_Runs_batted_in_t_1            -0.001                                
+                                (0.002)                               
+                                                                      
+X_Triples_2_t                             0.011**                     
+                                          (0.005)                     
+                                                                      
+X_Triples_2_t_1                                     0.004*            
+                                                    (0.002)           
+                                                                      
+X_Triples_t                                                  0.033*** 
+                                                              (0.012) 
+                                                                      
+Constant             -0.017*** -0.017*** -0.016*** -0.016*** -0.016***
+                      (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                      
+----------------------------------------------------------------------
+Observations           3,316     3,316     3,316     3,316     3,316  
+Log Likelihood        316.958   314.412   316.375   315.927   318.109 
+Akaike Inf. Crit.    -629.916  -624.823  -628.750  -627.855  -632.217 
+======================================================================
+Note:                                      *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 10
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Triples_t_1     0.031***                                         
+                   (0.009)                                         
+                                                                   
+X_WAR_2_t                   0.031***                               
+                             (0.005)                               
+                                                                   
+X_WAR_2_t_1                            0.009**                     
+                                       (0.004)                     
+                                                                   
+X_WAR_t                                         0.030***           
+                                                 (0.009)           
+                                                                   
+X_WAR_t_1                                                  0.019** 
+                                                           (0.009) 
+                                                                   
+Constant          -0.016*** -0.014*** -0.016*** -0.015*** -0.016***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        3,316     3,316     3,316     3,316     3,316  
+Log Likelihood     320.559   333.528   316.677   319.563   316.475 
+Akaike Inf. Crit. -637.118  -663.055  -629.353  -635.126  -628.950 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+<pre class="r"><code># Supongamos que tienes un dataframe llamado &#39;data&#39;
+# Lista de variables independientes
+independent_vars &lt;- xHitterList # Reemplaza con los nombres reales de tus variables
+
+# Variable dependiente
+dependent_var &lt;- &quot;X_Ingresos_equipo_t&quot; # Reemplaza con el nombre real de tu variable dependiente
+
+# Aplicar la función a cada variable independiente y imprimir los resultados
+for (var in independent_vars) {
+  stats &lt;- calculate_stats(hitters_panel, var, dependent_var)
+  print(paste(&quot;Variable independiente:&quot;, var))
+  print(paste(&quot;Coeficiente de Correlación de Pearson:&quot;, stats$pearson_correlation))
+  print(paste(&quot;Coeficiente R^2:&quot;, stats$r_squared))
+  print(&quot;------&quot;)
+}</code></pre>
+<pre><code>[1] &quot;Variable independiente: X_At_bats_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0506768103898112&quot;
+[1] &quot;Coeficiente R^2: 0.00256813911128482&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_At_bats_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0342974094572688&quot;
+[1] &quot;Coeficiente R^2: 0.00117631229547956&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_At_bats_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0471043321312242&quot;
+[1] &quot;Coeficiente R^2: 0.00221881810552863&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_At_bats_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0158418992224492&quot;
+[1] &quot;Coeficiente R^2: 0.000250965770974223&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0213218697287826&quot;
+[1] &quot;Coeficiente R^2: 0.00045462212873119&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.000587230008290151&quot;
+[1] &quot;Coeficiente R^2: 3.448390826359e-07&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_promedio_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0179215134949776&quot;
+[1] &quot;Coeficiente R^2: 0.000321180645950664&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_promedio_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0620361304507389&quot;
+[1] &quot;Coeficiente R^2: 0.00384848148130114&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_promedio_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0358585424406155&quot;
+[1] &quot;Coeficiente R^2: 0.00128583506596537&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_promedio_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00359072509272954&quot;
+[1] &quot;Coeficiente R^2: 1.2893306691553e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0470243792425305&quot;
+[1] &quot;Coeficiente R^2: 0.00221129224314527&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0476376532031429&quot;
+[1] &quot;Coeficiente R^2: 0.00226934600270306&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dobles_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0525363584567796&quot;
+[1] &quot;Coeficiente R^2: 0.00276006895989936&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dobles_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0518813080687763&quot;
+[1] &quot;Coeficiente R^2: 0.00269167012692734&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dobles_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0795825373772211&quot;
+[1] &quot;Coeficiente R^2: 0.00633338025539661&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dobles_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00381240222476545&quot;
+[1] &quot;Coeficiente R^2: 1.45344107233971e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Home_runs_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0285121279415402&quot;
+[1] &quot;Coeficiente R^2: 0.000812941439754586&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Home_runs_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0238165184742384&quot;
+[1] &quot;Coeficiente R^2: 0.00056722655223371&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Home_runs_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00731894401103786&quot;
+[1] &quot;Coeficiente R^2: 5.35669414367044e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Home_runs_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00183406484540595&quot;
+[1] &quot;Coeficiente R^2: 3.36379385715197e-06&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Ingresos_equipo_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.628651242781432&quot;
+[1] &quot;Coeficiente R^2: 0.395202385050639&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Ingresos_equipo_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0359930452843077&quot;
+[1] &quot;Coeficiente R^2: 0.00129549930883814&quot;
+[1] &quot;------&quot;</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): the response appeared on
+the right-hand side and was dropped</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): problem with term 1 in
+model.matrix: no columns are assigned</code></pre>
+<pre><code>[1] &quot;Variable independiente: X_Ingresos_equipo_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 1&quot;
+[1] &quot;Coeficiente R^2: 0&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Ingresos_equipo_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.107553163150894&quot;
+[1] &quot;Coeficiente R^2: 0.0115676829037628&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Juegos_iniciados_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0356269885005589&quot;
+[1] &quot;Coeficiente R^2: 0.00126928230961896&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Juegos_iniciados_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00464413386582139&quot;
+[1] &quot;Coeficiente R^2: 2.15679793636752e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Juegos_iniciados_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0438525084608694&quot;
+[1] &quot;Coeficiente R^2: 0.00192304249831069&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Juegos_iniciados_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00341217833522486&quot;
+[1] &quot;Coeficiente R^2: 1.1642960991378e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_On_base_plus_slugging_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00851384762400248&quot;
+[1] &quot;Coeficiente R^2: 7.24856013647197e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_On_base_plus_slugging_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0416628961568356&quot;
+[1] &quot;Coeficiente R^2: 0.00173579691617514&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_On_base_plus_slugging_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0616756996007347&quot;
+[1] &quot;Coeficiente R^2: 0.00380389192123999&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_On_base_plus_slugging_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0639202987500472&quot;
+[1] &quot;Coeficiente R^2: 0.00408580459229535&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_on_base_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0421754904493695&quot;
+[1] &quot;Coeficiente R^2: 0.00177877199464479&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_on_base_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0486126554780938&quot;
+[1] &quot;Coeficiente R^2: 0.00236319027263184&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_on_base_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0508152238346068&quot;
+[1] &quot;Coeficiente R^2: 0.00258218697336114&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_on_base_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0752153759137908&quot;
+[1] &quot;Coeficiente R^2: 0.00565735277385298&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_slugging_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0492151591671321&quot;
+[1] &quot;Coeficiente R^2: 0.00242213189184607&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_slugging_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0182578568412982&quot;
+[1] &quot;Coeficiente R^2: 0.000333349336437331&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_slugging_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0237237681352616&quot;
+[1] &quot;Coeficiente R^2: 0.00056281717453566&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Porcentaje_slugging_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0336198159109597&quot;
+[1] &quot;Coeficiente R^2: 0.00113029202188676&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Runs_batted_in_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0107189089748623&quot;
+[1] &quot;Coeficiente R^2: 0.000114895009611369&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Runs_batted_in_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0262018582611516&quot;
+[1] &quot;Coeficiente R^2: 0.0006865373763375&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Runs_batted_in_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0399742016408303&quot;
+[1] &quot;Coeficiente R^2: 0.00159793679682177&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Runs_batted_in_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00796618860228319&quot;
+[1] &quot;Coeficiente R^2: 6.34601608471371e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Triples_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0353105160953469&quot;
+[1] &quot;Coeficiente R^2: 0.0012468325469197&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Triples_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0312591491287387&quot;
+[1] &quot;Coeficiente R^2: 0.000977134404252745&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Triples_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.047860817524026&quot;
+[1] &quot;Coeficiente R^2: 0.00229065785406811&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Triples_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0613517405097448&quot;
+[1] &quot;Coeficiente R^2: 0.00376403606357511&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.107359778451608&quot;
+[1] &quot;Coeficiente R^2: 0.0115261220291784&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0377964331471885&quot;
+[1] &quot;Coeficiente R^2: 0.00142857035864978&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0562624021805199&quot;
+[1] &quot;Coeficiente R^2: 0.00316545789912275&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0361560093065731&quot;
+[1] &quot;Coeficiente R^2: 0.00130725700897708&quot;
+[1] &quot;------&quot;</code></pre>
+<pre class="r"><code># Ejemplo de uso de la función
+# Supongamos que la variable de interés es &quot;X_Ingresos_equipo_2_t&quot; y las otras columnas son de xHitterList
+# Excluyendo las variables &quot;X_Ingresos_equipo_t&quot; y &quot;X_Ingresos_equipo_t_1&quot;
+column_names &lt;- xHitterList
+exclude_variables &lt;- c(&quot;X_Ingresos_equipo_t&quot;, &quot;X_Ingresos_equipo_2_t_1&quot;, &quot;X_Ingresos_equipo_2_t&quot;)
+models &lt;- run_individual_linear_regressions(hitters_panel, column_names, &quot;X_Ingresos_equipo_t_1&quot;, exclude_variables)</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): the response appeared on
+the right-hand side and was dropped</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): problem with term 1 in
+model.matrix: no columns are assigned</code></pre>
+<pre><code>
+Resultados de Modelos para Grupo 1
+================================================================
+                               Dependent variable:              
+                  ----------------------------------------------
+                              X_Ingresos_equipo_t_1             
+                     (1)       (2)      (3)      (4)      (5)   
+----------------------------------------------------------------
+X_At_bats_2_t     0.0002***                                     
+                  (0.00005)                                     
+                                                                
+X_At_bats_2_t_1              0.0001*                            
+                            (0.00004)                           
+                                                                
+X_At_bats_t                           0.002**                   
+                                      (0.001)                   
+                                                                
+X_At_bats_t_1                                  0.004***         
+                                               (0.001)          
+                                                                
+X_Bateos_2_t                                            0.001***
+                                                        (0.0002)
+                                                                
+Constant            0.006     0.006    0.005    0.004    0.006  
+                   (0.005)   (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                
+----------------------------------------------------------------
+Observations        3,316     3,316    3,316    3,316    3,316  
+Log Likelihood    -294.779  -306.529  -305.832 -293.470 -303.161
+Akaike Inf. Crit.  593.557   617.058  615.665  590.940  610.322 
+================================================================
+Note:                                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 2
+=====================================================================
+                                     Dependent variable:             
+                        ---------------------------------------------
+                                    X_Ingresos_equipo_t_1            
+                           (1)      (2)      (3)      (4)      (5)   
+---------------------------------------------------------------------
+X_Bateos_2_t_1          -0.0004**                                    
+                        (0.0002)                                     
+                                                                     
+X_Bateos_promedio_2_t             0.165***                           
+                                  (0.052)                            
+                                                                     
+X_Bateos_promedio_2_t_1                    0.099***                  
+                                           (0.036)                   
+                                                                     
+X_Bateos_promedio_t                                 0.065**          
+                                                    (0.029)          
+                                                                     
+X_Bateos_promedio_t_1                                        0.055** 
+                                                             (0.027) 
+                                                                     
+Constant                  0.005    0.006    0.005    0.004    0.004  
+                         (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                     
+---------------------------------------------------------------------
+Observations              3,316    3,316    3,316    3,316    3,316  
+Log Likelihood          -305.554  -303.004 -304.263 -305.530 -305.885
+Akaike Inf. Crit.        615.107  610.007  612.525  615.059  615.770 
+=====================================================================
+Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 3
+==============================================================
+                              Dependent variable:             
+                  --------------------------------------------
+                             X_Ingresos_equipo_t_1            
+                    (1)      (2)      (3)      (4)      (5)   
+--------------------------------------------------------------
+X_Bateos_t        0.008***                                    
+                  (0.002)                                     
+                                                              
+X_Bateos_t_1                0.003*                            
+                           (0.002)                            
+                                                              
+X_Dobles_2_t                        0.004***                  
+                                    (0.001)                   
+                                                              
+X_Dobles_2_t_1                                -0.001          
+                                             (0.001)          
+                                                              
+X_Dobles_t                                            0.026***
+                                                      (0.004) 
+                                                              
+Constant           0.005    0.006    0.007    0.006    0.005  
+                  (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                              
+--------------------------------------------------------------
+Observations       3,316    3,316    3,316    3,316    3,316  
+Log Likelihood    -299.304 -306.107 -294.559 -307.445 -287.098
+Akaike Inf. Crit. 602.608  616.215  593.119  618.889  578.196 
+==============================================================
+Note:                              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 4
+==============================================================
+                              Dependent variable:             
+                  --------------------------------------------
+                             X_Ingresos_equipo_t_1            
+                    (1)      (2)      (3)      (4)      (5)   
+--------------------------------------------------------------
+X_Dobles_t_1       -0.002                                     
+                  (0.004)                                     
+                                                              
+X_Home_runs_2_t            0.005***                           
+                           (0.001)                            
+                                                              
+X_Home_runs_2_t_1                   0.002***                  
+                                    (0.001)                   
+                                                              
+X_Home_runs_t                                0.020***         
+                                             (0.005)          
+                                                              
+X_Home_runs_t_1                                       0.009** 
+                                                      (0.004) 
+                                                              
+Constant           0.006    0.007    0.007    0.006    0.006  
+                  (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                              
+--------------------------------------------------------------
+Observations       3,316    3,316    3,316    3,316    3,316  
+Log Likelihood    -307.805 -298.166 -303.797 -300.237 -306.029
+Akaike Inf. Crit. 619.610  600.333  611.594  604.474  616.059 
+==============================================================
+Note:                              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 5
+=====================================================================
+                                     Dependent variable:             
+                         --------------------------------------------
+                                    X_Ingresos_equipo_t_1            
+                           (1)      (2)      (3)      (4)      (5)   
+---------------------------------------------------------------------
+X_Juegos_iniciados_2_t            0.001***                           
+                                  (0.0002)                           
+                                                                     
+X_Juegos_iniciados_2_t_1                    0.0002                   
+                                           (0.0002)                  
+                                                                     
+X_Juegos_iniciados_t                                -0.0003          
+                                                    (0.002)          
+                                                                     
+X_Juegos_iniciados_t_1                                       0.006***
+                                                             (0.002) 
+                                                                     
+Constant                  0.006    0.006    0.006    0.006    0.005  
+                         (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                     
+---------------------------------------------------------------------
+Observations              3,316    3,316    3,316    3,316    3,316  
+Log Likelihood           -308.003 -295.497 -306.849 -307.987 -300.859
+Akaike Inf. Crit.        618.007  594.993  617.699  619.975  605.719 
+=====================================================================
+Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 6
+=====================================================================================
+                                                     Dependent variable:             
+                                         --------------------------------------------
+                                                    X_Ingresos_equipo_t_1            
+                                           (1)      (2)      (3)      (4)      (5)   
+-------------------------------------------------------------------------------------
+X_Porcentaje_On_base_plus_slugging_2_t    0.006                                      
+                                         (0.020)                                     
+                                                                                     
+X_Porcentaje_On_base_plus_slugging_2_t_1          0.045***                           
+                                                  (0.017)                            
+                                                                                     
+X_Porcentaje_On_base_plus_slugging_t                        -0.009                   
+                                                           (0.017)                   
+                                                                                     
+X_Porcentaje_On_base_plus_slugging_t_1                               0.005           
+                                                                    (0.016)          
+                                                                                     
+X_Porcentaje_on_base_2_t                                                      -0.014 
+                                                                             (0.045) 
+                                                                                     
+Constant                                  0.006    0.005    0.006    0.006    0.006  
+                                         (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                                     
+-------------------------------------------------------------------------------------
+Observations                              3,316    3,316    3,316    3,316    3,316  
+Log Likelihood                           -307.962 -304.600 -307.877 -307.949 -307.957
+Akaike Inf. Crit.                        619.924  613.201  619.753  619.899  619.915 
+=====================================================================================
+Note:                                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 7
+========================================================================
+                                        Dependent variable:             
+                            --------------------------------------------
+                                       X_Ingresos_equipo_t_1            
+                              (1)      (2)      (3)      (4)      (5)   
+------------------------------------------------------------------------
+X_Porcentaje_on_base_2_t_1   0.065*                                     
+                            (0.036)                                     
+                                                                        
+X_Porcentaje_on_base_t                0.028                             
+                                     (0.026)                            
+                                                                        
+X_Porcentaje_on_base_t_1                       0.046*                   
+                                              (0.024)                   
+                                                                        
+X_Porcentaje_slugging_2_t                              0.078**          
+                                                       (0.038)          
+                                                                        
+X_Porcentaje_slugging_2_t_1                                      0.056* 
+                                                                (0.033) 
+                                                                        
+Constant                     0.005    0.005    0.004    0.006    0.006  
+                            (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                        
+------------------------------------------------------------------------
+Observations                 3,316    3,316    3,316    3,316    3,316  
+Log Likelihood              -306.366 -307.425 -306.167 -305.860 -306.529
+Akaike Inf. Crit.           616.732  618.849  616.335  615.719  617.058 
+========================================================================
+Note:                                        *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 8
+======================================================================
+                                      Dependent variable:             
+                          --------------------------------------------
+                                     X_Ingresos_equipo_t_1            
+                            (1)      (2)      (3)      (4)      (5)   
+----------------------------------------------------------------------
+X_Porcentaje_slugging_t    0.006                                      
+                          (0.024)                                     
+                                                                      
+X_Porcentaje_slugging_t_1           0.019                             
+                                   (0.022)                            
+                                                                      
+X_Runs_batted_in_2_t                        0.002***                  
+                                            (0.0003)                  
+                                                                      
+X_Runs_batted_in_2_t_1                               -0.00001         
+                                                     (0.0003)         
+                                                                      
+X_Runs_batted_in_t                                             0.002  
+                                                              (0.003) 
+                                                                      
+Constant                   0.006    0.005    0.007    0.006    0.006  
+                          (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                      
+----------------------------------------------------------------------
+Observations               3,316    3,316    3,316    3,316    3,316  
+Log Likelihood            -307.971 -307.642 -296.429 -308.002 -307.825
+Akaike Inf. Crit.         619.942  619.283  596.857  620.005  619.651 
+======================================================================
+Note:                                      *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 9
+=================================================================
+                                 Dependent variable:             
+                     --------------------------------------------
+                                X_Ingresos_equipo_t_1            
+                       (1)      (2)      (3)      (4)      (5)   
+-----------------------------------------------------------------
+X_Runs_batted_in_t_1 0.009***                                    
+                     (0.002)                                     
+                                                                 
+X_Triples_2_t                 -0.014**                           
+                              (0.007)                            
+                                                                 
+X_Triples_2_t_1                        0.007***                  
+                                       (0.002)                   
+                                                                 
+X_Triples_t                                     -0.024*          
+                                                (0.015)          
+                                                                 
+X_Triples_t_1                                             0.006  
+                                                         (0.011) 
+                                                                 
+Constant              0.006    0.005    0.006    0.005    0.006  
+                     (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                 
+-----------------------------------------------------------------
+Observations          3,316    3,316    3,316    3,316    3,316  
+Log Likelihood       -300.250 -305.851 -303.798 -306.618 -307.825
+Akaike Inf. Crit.    604.501  615.702  611.595  617.235  619.650 
+=================================================================
+Note:                                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 10
+======================================================
+                          Dependent variable:         
+                  ------------------------------------
+                         X_Ingresos_equipo_t_1        
+                     (1)      (2)      (3)      (4)   
+------------------------------------------------------
+X_WAR_2_t         -0.019***                           
+                   (0.006)                            
+                                                      
+X_WAR_2_t_1                  0.006                    
+                            (0.005)                   
+                                                      
+X_WAR_t                              0.00001          
+                                     (0.011)          
+                                                      
+X_WAR_t_1                                      -0.015 
+                                              (0.011) 
+                                                      
+Constant            0.005    0.007    0.006    0.005  
+                   (0.005)  (0.005)  (0.005)  (0.005) 
+                                                      
+------------------------------------------------------
+Observations        3,316    3,316    3,316    3,316  
+Log Likelihood    -303.386  -307.258 -308.003 -307.097
+Akaike Inf. Crit.  610.772  618.516  620.007  618.195 
+======================================================
+Note:                      *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+<pre class="r"><code># Ejemplo de uso de la función
+# Supongamos que la variable de interés es &quot;X_Ingresos_equipo_2_t&quot; y las otras columnas son de xHitterList
+# Excluyendo las variables &quot;X_Ingresos_equipo_t&quot; y &quot;X_Ingresos_equipo_t_1&quot;
+column_names &lt;- xFielderList
+exclude_variables &lt;- c(&quot;X_Ingresos_equipo_2_t&quot;, &quot;X_Ingresos_equipo_2_t_1&quot;)
+models &lt;- run_individual_linear_regressions(fielders_panel, column_names, &quot;X_Ingresos_equipo_t&quot;, exclude_variables)</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): the response appeared on
+the right-hand side and was dropped</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): problem with term 1 in
+model.matrix: no columns are assigned</code></pre>
+<pre><code>
+Resultados de Modelos para Grupo 1
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Bateos_2_t       -0.0001                                         
+                  (0.0001)                                         
+                                                                   
+X_Bateos_2_t_1              -0.001***                              
+                            (0.0001)                               
+                                                                   
+X_Bateos_t                              0.002                      
+                                       (0.001)                     
+                                                                   
+X_Bateos_t_1                                    -0.003**           
+                                                 (0.001)           
+                                                                   
+X_Carreras_2_t                                             0.00001 
+                                                          (0.0002) 
+                                                                   
+Constant          -0.012*** -0.012*** -0.012*** -0.012*** -0.012***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        2,994     2,994     2,994     2,994     2,994  
+Log Likelihood     186.668   199.022   187.234   188.751   186.421 
+Akaike Inf. Crit. -369.335  -394.043  -370.468  -373.502  -368.842 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 2
+==========================================================================
+                                        Dependent variable:               
+                         -------------------------------------------------
+                                        X_Ingresos_equipo_t               
+                            (1)       (2)       (3)       (4)       (5)   
+--------------------------------------------------------------------------
+X_Carreras_2_t_1         -0.001***                                        
+                         (0.0002)                                         
+                                                                          
+X_Carreras_ganadas_2_t              0.0001                                
+                                   (0.0003)                               
+                                                                          
+X_Carreras_ganadas_2_t_1                     -0.001***                    
+                                             (0.0002)                     
+                                                                          
+X_Carreras_ganadas_t                                    0.004**           
+                                                        (0.002)           
+                                                                          
+X_Carreras_ganadas_t_1                                           -0.004** 
+                                                                  (0.002) 
+                                                                          
+Constant                 -0.012*** -0.012*** -0.012*** -0.012*** -0.012***
+                          (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                          
+--------------------------------------------------------------------------
+Observations               2,994     2,994     2,994     2,994     2,994  
+Log Likelihood            192.698   186.460   193.523   188.675   188.816 
+Akaike Inf. Crit.        -381.396  -368.919  -383.047  -373.350  -373.632 
+==========================================================================
+Note:                                          *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 3
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Carreras_t       0.004**                                         
+                   (0.002)                                         
+                                                                   
+X_Carreras_t_1              -0.007***                              
+                             (0.002)                               
+                                                                   
+X_Comando_2_t                         -0.00000                     
+                                      (0.00001)                    
+                                                                   
+X_Comando_2_t_1                                 -0.00000           
+                                                (0.00001)          
+                                                                   
+X_Comando_t                                                 0.001  
+                                                           (0.001) 
+                                                                   
+Constant          -0.012*** -0.012*** -0.012*** -0.012*** -0.012***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        2,994     2,994     2,994     2,994     2,994  
+Log Likelihood     188.802   192.904   186.428   186.517   186.644 
+Akaike Inf. Crit. -373.604  -381.808  -368.855  -369.033  -369.289 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 4
+=================================================================
+                                Dependent variable:              
+                  -----------------------------------------------
+                                X_Ingresos_equipo_t              
+                     (1)      (2)      (3)       (4)       (5)   
+-----------------------------------------------------------------
+X_Comando_t_1      0.002**                                       
+                   (0.001)                                       
+                                                                 
+X_Control_2_t               0.106***                             
+                            (0.030)                              
+                                                                 
+X_Control_2_t_1                       0.054*                     
+                                     (0.030)                     
+                                                                 
+X_Control_t                                     0.007            
+                                               (0.020)           
+                                                                 
+X_Control_t_1                                             0.009  
+                                                         (0.021) 
+                                                                 
+Constant          -0.011*** -0.010** -0.011** -0.012*** -0.012***
+                   (0.004)  (0.004)  (0.004)   (0.004)   (0.004) 
+                                                                 
+-----------------------------------------------------------------
+Observations        2,994    2,994    2,994     2,994     2,994  
+Log Likelihood     188.641  192.496  188.074   186.477   186.506 
+Akaike Inf. Crit. -373.283  -380.992 -372.147 -368.955  -369.013 
+=================================================================
+Note:                                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 5
+==================================================================
+                                Dependent variable:               
+                  ------------------------------------------------
+                                X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)      (5)   
+------------------------------------------------------------------
+X_Dominio_2_t       0.022                                         
+                   (0.014)                                        
+                                                                  
+X_Dominio_2_t_1              -0.003                               
+                             (0.011)                              
+                                                                  
+X_Dominio_t                           0.041***                    
+                                       (0.012)                    
+                                                                  
+X_Dominio_t_1                                   0.065***          
+                                                 (0.012)          
+                                                                  
+X_ERA_2_t                                                 0.010***
+                                                          (0.003) 
+                                                                  
+Constant          -0.011*** -0.012*** -0.011*** -0.012*** -0.009**
+                   (0.004)   (0.004)   (0.004)   (0.004)  (0.004) 
+                                                                  
+------------------------------------------------------------------
+Observations        2,994     2,994     2,994     2,994    2,994  
+Log Likelihood     187.694   186.453   191.970   202.142  194.308 
+Akaike Inf. Crit. -371.388  -368.906  -379.940  -400.284  -384.616
+==================================================================
+Note:                                  *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 6
+=====================================================================
+                                    Dependent variable:              
+                      -----------------------------------------------
+                                    X_Ingresos_equipo_t              
+                        (1)      (2)       (3)       (4)       (5)   
+---------------------------------------------------------------------
+X_ERA_2_t_1           0.007**                                        
+                      (0.003)                                        
+                                                                     
+X_ERA_t                        0.017***                              
+                               (0.006)                               
+                                                                     
+X_ERA_t_1                                -0.001                      
+                                         (0.006)                     
+                                                                     
+X_Ingresos_equipo_t_1                                       0.130*** 
+                                                             (0.015) 
+                                                                     
+Constant              -0.010** -0.011** -0.012*** -0.012*** -0.013***
+                      (0.004)  (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                     
+---------------------------------------------------------------------
+Observations           2,994    2,994     2,994     2,994     2,994  
+Log Likelihood        189.247  190.799   186.424   186.420   222.771 
+Akaike Inf. Crit.     -374.494 -377.598 -368.849  -370.839  -441.541 
+=====================================================================
+Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 7
+=========================================================================
+                                      Dependent variable:                
+                       --------------------------------------------------
+                                      X_Ingresos_equipo_t                
+                          (1)       (2)        (3)       (4)       (5)   
+-------------------------------------------------------------------------
+X_Inning_pitched_2_t    -0.0001                                          
+                       (0.0001)                                          
+                                                                         
+X_Inning_pitched_2_t_1           -0.0005***                              
+                                  (0.0001)                               
+                                                                         
+X_Inning_pitched_t                          0.004***                     
+                                             (0.001)                     
+                                                                         
+X_Inning_pitched_t_1                                  -0.005***          
+                                                       (0.001)           
+                                                                         
+X_Losses_2_t                                                    0.006*** 
+                                                                 (0.002) 
+                                                                         
+Constant               -0.012*** -0.012***  -0.011*** -0.012*** -0.011***
+                        (0.004)   (0.004)    (0.004)   (0.004)   (0.004) 
+                                                                         
+-------------------------------------------------------------------------
+Observations             2,994     2,994      2,994     2,994     2,994  
+Log Likelihood          186.553   195.693    189.866   193.494   192.211 
+Akaike Inf. Crit.      -369.107   -387.386  -375.732  -382.988  -380.421 
+=========================================================================
+Note:                                         *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 8
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Losses_2_t_1     -0.002                                          
+                   (0.002)                                         
+                                                                   
+X_Losses_t                  0.022***                               
+                             (0.006)                               
+                                                                   
+X_Losses_t_1                            0.003                      
+                                       (0.006)                     
+                                                                   
+X_Saves_2_t                                       0.001            
+                                                 (0.001)           
+                                                                   
+X_Saves_2_t_1                                              0.001*  
+                                                           (0.001) 
+                                                                   
+Constant          -0.012*** -0.011*** -0.012*** -0.012*** -0.011***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        2,994     2,994     2,994     2,994     2,994  
+Log Likelihood     187.089   194.554   186.549   187.254   188.150 
+Akaike Inf. Crit. -370.179  -385.107  -369.098  -370.507  -372.300 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 9
+=====================================================================
+                                   Dependent variable:               
+                    -------------------------------------------------
+                                   X_Ingresos_equipo_t               
+                       (1)       (2)       (3)       (4)       (5)   
+---------------------------------------------------------------------
+X_Saves_t            0.012*                                          
+                     (0.006)                                         
+                                                                     
+X_Saves_t_1                   0.023***                               
+                               (0.005)                               
+                                                                     
+X_Strike_outs_2_t                        0.0002                      
+                                        (0.0001)                     
+                                                                     
+X_Strike_outs_2_t_1                               -0.0003**          
+                                                  (0.0001)           
+                                                                     
+X_Strike_outs_t                                             0.007*** 
+                                                             (0.001) 
+                                                                     
+Constant            -0.011*** -0.011*** -0.011*** -0.012*** -0.011***
+                     (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                     
+---------------------------------------------------------------------
+Observations          2,994     2,994     2,994     2,994     2,994  
+Log Likelihood       188.101   195.038   187.646   189.263   199.168 
+Akaike Inf. Crit.   -372.203  -386.075  -371.292  -374.527  -394.337 
+=====================================================================
+Note:                                     *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 10
+=================================================================
+                                Dependent variable:              
+                  -----------------------------------------------
+                                X_Ingresos_equipo_t              
+                     (1)      (2)       (3)      (4)       (5)   
+-----------------------------------------------------------------
+X_Strike_outs_t_1  -0.001                                        
+                   (0.001)                                       
+                                                                 
+X_WAR_2_t                   0.021***                             
+                            (0.005)                              
+                                                                 
+X_WAR_2_t_1                          -0.011***                   
+                                      (0.004)                    
+                                                                 
+X_WAR_t                                        0.055***          
+                                               (0.011)           
+                                                                 
+X_WAR_t_1                                               -0.034***
+                                                         (0.010) 
+                                                                 
+Constant          -0.012*** -0.010** -0.012*** -0.009** -0.013***
+                   (0.004)  (0.004)   (0.004)  (0.004)   (0.004) 
+                                                                 
+-----------------------------------------------------------------
+Observations        2,994    2,994     2,994    2,994     2,994  
+Log Likelihood     186.976  194.799   189.789  199.422   191.742 
+Akaike Inf. Crit. -369.953  -385.598 -375.578  -394.845 -379.484 
+=================================================================
+Note:                                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 11
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_WHIP_2_t         0.018**                                         
+                   (0.009)                                         
+                                                                   
+X_WHIP_2_t_1                  0.008                                
+                             (0.009)                               
+                                                                   
+X_WHIP_t                                0.006                      
+                                       (0.010)                     
+                                                                   
+X_WHIP_t_1                                       -0.013            
+                                                 (0.010)           
+                                                                   
+X_Walks_2_t                                                -0.0004 
+                                                          (0.0004) 
+                                                                   
+Constant          -0.011*** -0.011*** -0.012*** -0.012*** -0.012***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        2,994     2,994     2,994     2,994     2,994  
+Log Likelihood     188.426   186.823   186.582   187.215   187.104 
+Akaike Inf. Crit. -372.853  -369.647  -369.164  -370.429  -370.209 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 12
+===================================================================
+                                 Dependent variable:               
+                  -------------------------------------------------
+                                 X_Ingresos_equipo_t               
+                     (1)       (2)       (3)       (4)       (5)   
+-------------------------------------------------------------------
+X_Walks_2_t_1     -0.002***                                        
+                  (0.0004)                                         
+                                                                   
+X_Walks_t                    0.005**                               
+                             (0.002)                               
+                                                                   
+X_Walks_t_1                           -0.008***                    
+                                       (0.002)                     
+                                                                   
+X_Wins_2_t                                      0.005***           
+                                                 (0.002)           
+                                                                   
+X_Wins_2_t_1                                              -0.003** 
+                                                           (0.002) 
+                                                                   
+Constant          -0.013*** -0.011*** -0.012*** -0.011*** -0.012***
+                   (0.004)   (0.004)   (0.004)   (0.004)   (0.004) 
+                                                                   
+-------------------------------------------------------------------
+Observations        2,994     2,994     2,994     2,994     2,994  
+Log Likelihood     197.964   188.973   191.812   189.947   188.511 
+Akaike Inf. Crit. -391.929  -373.947  -379.624  -375.895  -373.023 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 13
+==============================================
+                      Dependent variable:     
+                  ----------------------------
+                      X_Ingresos_equipo_t     
+                       (1)            (2)     
+----------------------------------------------
+X_Wins_t             0.024***                 
+                     (0.006)                  
+                                              
+X_Wins_t_1                         -0.017***  
+                                    (0.005)   
+                                              
+Constant            -0.011***      -0.012***  
+                     (0.004)        (0.004)   
+                                              
+----------------------------------------------
+Observations          2,994          2,994    
+Log Likelihood       195.525        191.775   
+Akaike Inf. Crit.    -387.051      -379.550   
+==============================================
+Note:              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
+<pre class="r"><code># Supongamos que tienes un dataframe llamado &#39;data&#39;
+# Lista de variables independientes
+independent_vars &lt;- xFielderList # Reemplaza con los nombres reales de tus variables
+
+# Variable dependiente
+dependent_var &lt;- &quot;X_Ingresos_equipo_t&quot; # Reemplaza con el nombre real de tu variable dependiente
+
+# Aplicar la función a cada variable independiente y imprimir los resultados
+for (var in independent_vars) {
+  stats &lt;- calculate_stats(fielders_panel, var, dependent_var)
+  print(paste(&quot;Variable independiente:&quot;, var))
+  print(paste(&quot;Coeficiente de Correlación de Pearson:&quot;, stats$pearson_correlation))
+  print(paste(&quot;Coeficiente R^2:&quot;, stats$r_squared))
+  print(&quot;------&quot;)
+}</code></pre>
+<pre><code>[1] &quot;Variable independiente: X_Bateos_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0128717804066406&quot;
+[1] &quot;Coeficiente R^2: 0.000165682730836808&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0915578190641568&quot;
+[1] &quot;Coeficiente R^2: 0.00838283423178491&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0233214175118644&quot;
+[1] &quot;Coeficiente R^2: 0.000543888514762734&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Bateos_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0394504727432202&quot;
+[1] &quot;Coeficiente R^2: 0.00155633979966362&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00101901123393258&quot;
+[1] &quot;Coeficiente R^2: 1.03838389488301e-06&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0646938643116743&quot;
+[1] &quot;Coeficiente R^2: 0.00418529607957749&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_ganadas_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00517400613734042&quot;
+[1] &quot;Coeficiente R^2: 2.67703395092421e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_ganadas_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0688047560862992&quot;
+[1] &quot;Coeficiente R^2: 0.00473409446009514&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_ganadas_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0388005227599405&quot;
+[1] &quot;Coeficiente R^2: 0.00150548056644478&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_ganadas_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0399928631456544&quot;
+[1] &quot;Coeficiente R^2: 0.00159942910258704&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0398780869523713&quot;
+[1] &quot;Coeficiente R^2: 0.00159026181898084&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Carreras_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0657427222931906&quot;
+[1] &quot;Coeficiente R^2: 0.00432210553451969&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Comando_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00233835171404628&quot;
+[1] &quot;Coeficiente R^2: 5.46788873858468e-06&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Comando_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00804887736717725&quot;
+[1] &quot;Coeficiente R^2: 6.47844268718712e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Comando_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0122552553153703&quot;
+[1] &quot;Coeficiente R^2: 0.000150191282844889&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Comando_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0385103715790077&quot;
+[1] &quot;Coeficiente R^2: 0.00148304871915334&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Control_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0636454345972827&quot;
+[1] &quot;Coeficiente R^2: 0.00405074134507697&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Control_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0332301537155672&quot;
+[1] &quot;Coeficiente R^2: 0.00110424311596058&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Control_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00620774685633249&quot;
+[1] &quot;Coeficiente R^2: 3.85361210323004e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Control_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00761941422815291&quot;
+[1] &quot;Coeficiente R^2: 5.80554731801863e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dominio_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0291727007367261&quot;
+[1] &quot;Coeficiente R^2: 0.000851046468274402&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dominio_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00473596033294309&quot;
+[1] &quot;Coeficiente R^2: 2.24293202752296e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dominio_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0608350431676396&quot;
+[1] &quot;Coeficiente R^2: 0.00370090247720852&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Dominio_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.102214085636642&quot;
+[1] &quot;Coeficiente R^2: 0.0104477193025352&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_ERA_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0724953059526498&quot;
+[1] &quot;Coeficiente R^2: 0.00525556938516838&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_ERA_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0434378592921808&quot;
+[1] &quot;Coeficiente R^2: 0.00188684761988738&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_ERA_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0540491833511001&quot;
+[1] &quot;Coeficiente R^2: 0.00292131422092106&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_ERA_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00179898714622127&quot;
+[1] &quot;Coeficiente R^2: 3.23635475226628e-06&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Ingresos_equipo_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.593655108813494&quot;
+[1] &quot;Coeficiente R^2: 0.35242638822036&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Ingresos_equipo_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.140825828921975&quot;
+[1] &quot;Coeficiente R^2: 0.0198319140915616&quot;
+[1] &quot;------&quot;</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): the response appeared on
+the right-hand side and was dropped</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): problem with term 1 in
+model.matrix: no columns are assigned</code></pre>
+<pre><code>[1] &quot;Variable independiente: X_Ingresos_equipo_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 1&quot;
+[1] &quot;Coeficiente R^2: 0&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Ingresos_equipo_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.15488753987146&quot;
+[1] &quot;Coeficiente R^2: 0.0239901500074338&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Inning_pitched_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.00945516368915235&quot;
+[1] &quot;Coeficiente R^2: 8.94001203886363e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Inning_pitched_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0785837308115025&quot;
+[1] &quot;Coeficiente R^2: 0.00617540274825481&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Inning_pitched_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0479543685539664&quot;
+[1] &quot;Coeficiente R^2: 0.00229962146340961&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Inning_pitched_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0686627998414402&quot;
+[1] &quot;Coeficiente R^2: 0.0047145800820656&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Losses_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0621362738392634&quot;
+[1] &quot;Coeficiente R^2: 0.00386091652662775&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Losses_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0211494210095247&quot;
+[1] &quot;Coeficiente R^2: 0.000447298009038101&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Losses_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0736127177558756&quot;
+[1] &quot;Coeficiente R^2: 0.00541883221540616&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Losses_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.00929072299442901&quot;
+[1] &quot;Coeficiente R^2: 8.63175337591875e-05&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Saves_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0235993553816344&quot;
+[1] &quot;Coeficiente R^2: 0.000556929574428745&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Saves_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0339875555190283&quot;
+[1] &quot;Coeficiente R^2: 0.00115515393015908&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Saves_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0335081763164102&quot;
+[1] &quot;Coeficiente R^2: 0.00112279788005163&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Saves_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.075764643343521&quot;
+[1] &quot;Coeficiente R^2: 0.00574028118097124&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Strike_outs_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0286144130317643&quot;
+[1] &quot;Coeficiente R^2: 0.000818784633152411&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Strike_outs_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0435654642311604&quot;
+[1] &quot;Coeficiente R^2: 0.00189794967367661&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Strike_outs_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.092087455367304&quot;
+[1] &quot;Coeficiente R^2: 0.00848009943602539&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Strike_outs_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0192856840038571&quot;
+[1] &quot;Coeficiente R^2: 0.00037193760749659&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.074712651072404&quot;
+[1] &quot;Coeficiente R^2: 0.00558198023026682&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0474164048356764&quot;
+[1] &quot;Coeficiente R^2: 0.00224831544754083&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.092995808991546&quot;
+[1] &quot;Coeficiente R^2: 0.00864822048999185&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WAR_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0595729450950576&quot;
+[1] &quot;Coeficiente R^2: 0.00354893578729903&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WHIP_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0366003267682596&quot;
+[1] &quot;Coeficiente R^2: 0.0013395839195434&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WHIP_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0164254719796967&quot;
+[1] &quot;Coeficiente R^2: 0.000269796129755907&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WHIP_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0104146110036398&quot;
+[1] &quot;Coeficiente R^2: 0.00010846412235712&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_WHIP_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.023044015414853&quot;
+[1] &quot;Coeficiente R^2: 0.000531026646440083&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Walks_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0213869547572294&quot;
+[1] &quot;Coeficiente R^2: 0.000457401833787736&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Walks_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0876491949410798&quot;
+[1] &quot;Coeficiente R^2: 0.0076823813738193&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Walks_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0412863995987691&quot;
+[1] &quot;Coeficiente R^2: 0.00170456679182928&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Walks_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0599653697361179&quot;
+[1] &quot;Coeficiente R^2: 0.00359584556758926&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Wins_2_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0485155715201441&quot;
+[1] &quot;Coeficiente R^2: 0.00235376067992627&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Wins_2_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.0373680672161909&quot;
+[1] &quot;Coeficiente R^2: 0.00139637244747375&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Wins_t&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: 0.0778731284173289&quot;
+[1] &quot;Coeficiente R^2: 0.00606422412950197&quot;
+[1] &quot;------&quot;
+[1] &quot;Variable independiente: X_Wins_t_1&quot;
+[1] &quot;Coeficiente de Correlación de Pearson: -0.059757891210884&quot;
+[1] &quot;Coeficiente R^2: 0.00357100556197184&quot;
+[1] &quot;------&quot;</code></pre>
+<pre class="r"><code># Ejemplo de uso de la función
+# Supongamos que la variable de interés es &quot;X_Ingresos_equipo_2_t&quot; y las otras columnas son de xHitterList
+# Excluyendo las variables &quot;X_Ingresos_equipo_t&quot; y &quot;X_Ingresos_equipo_t_1&quot;
+column_names &lt;- xFielderList
+exclude_variables &lt;- c(&quot;X_Ingresos_equipo_t&quot;, &quot;X_Ingresos_equipo_2_t_1&quot;, &quot;X_Ingresos_equipo_2_t&quot;)
+models &lt;- run_individual_linear_regressions(fielders_panel, column_names, &quot;X_Ingresos_equipo_t_1&quot;, exclude_variables)</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): the response appeared on
+the right-hand side and was dropped</code></pre>
+<pre><code>Warning in model.matrix.default(mt, mf, contrasts): problem with term 1 in
+model.matrix: no columns are assigned</code></pre>
+<pre><code>
+Resultados de Modelos para Grupo 1
+=================================================================
+                                Dependent variable:              
+                  -----------------------------------------------
+                               X_Ingresos_equipo_t_1             
+                     (1)      (2)       (3)      (4)       (5)   
+-----------------------------------------------------------------
+X_Bateos_2_t      -0.001***                                      
+                  (0.0001)                                       
+                                                                 
+X_Bateos_2_t_1              -0.0002*                             
+                            (0.0001)                             
+                                                                 
+X_Bateos_t                           -0.007***                   
+                                      (0.002)                    
+                                                                 
+X_Bateos_t_1                                    -0.003           
+                                               (0.002)           
+                                                                 
+X_Carreras_2_t                                          -0.002***
+                                                        (0.0003) 
+                                                                 
+Constant           0.009*    0.009*   0.009*    0.009*   0.009*  
+                   (0.005)  (0.005)   (0.005)  (0.005)   (0.005) 
+                                                                 
+-----------------------------------------------------------------
+Observations        2,994    2,994     2,994    2,994     2,994  
+Log Likelihood    -326.523  -333.681 -326.286  -333.853 -320.975 
+Akaike Inf. Crit.  657.046  671.362   656.573  671.707   645.950 
+=================================================================
+Note:                                 *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 2
+=======================================================================
+                                      Dependent variable:              
+                         ----------------------------------------------
+                                     X_Ingresos_equipo_t_1             
+                           (1)       (2)      (3)       (4)      (5)   
+-----------------------------------------------------------------------
+X_Carreras_2_t_1         -0.001**                                      
+                         (0.0003)                                      
+                                                                       
+X_Carreras_ganadas_2_t            -0.002***                            
+                                  (0.0003)                             
+                                                                       
+X_Carreras_ganadas_2_t_1                    -0.0004                    
+                                            (0.0003)                   
+                                                                       
+X_Carreras_ganadas_t                                 -0.010***         
+                                                      (0.002)          
+                                                                       
+X_Carreras_ganadas_t_1                                         -0.0002 
+                                                               (0.002) 
+                                                                       
+Constant                  0.009*   0.008*    0.009*   0.009*    0.009* 
+                         (0.005)   (0.005)  (0.005)   (0.005)  (0.005) 
+                                                                       
+-----------------------------------------------------------------------
+Observations              2,994     2,994    2,994     2,994    2,994  
+Log Likelihood           -332.872 -313.285  -334.180 -326.717  -335.135
+Akaike Inf. Crit.        669.744   630.569  672.360   657.434  674.269 
+=======================================================================
+Note:                                       *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 3
+==================================================================
+                                Dependent variable:               
+                  ------------------------------------------------
+                               X_Ingresos_equipo_t_1              
+                     (1)      (2)       (3)       (4)       (5)   
+------------------------------------------------------------------
+X_Carreras_t      -0.009***                                       
+                   (0.002)                                        
+                                                                  
+X_Carreras_t_1               -0.004                               
+                            (0.002)                               
+                                                                  
+X_Comando_2_t                         0.00000                     
+                                     (0.00001)                    
+                                                                  
+X_Comando_2_t_1                                0.00003***         
+                                               (0.00001)          
+                                                                  
+X_Comando_t                                               -0.0001 
+                                                          (0.001) 
+                                                                  
+Constant           0.009*    0.009*   0.009*     0.010*    0.009* 
+                   (0.005)  (0.005)   (0.005)   (0.005)   (0.005) 
+                                                                  
+------------------------------------------------------------------
+Observations        2,994    2,994     2,994     2,994     2,994  
+Log Likelihood    -326.868  -333.923 -335.137   -328.472  -335.135
+Akaike Inf. Crit.  657.736  671.847   674.274   660.943   674.270 
+==================================================================
+Note:                                  *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 4
+==============================================================
+                              Dependent variable:             
+                  --------------------------------------------
+                             X_Ingresos_equipo_t_1            
+                    (1)      (2)      (3)      (4)      (5)   
+--------------------------------------------------------------
+X_Comando_t_1      0.001                                      
+                  (0.001)                                     
+                                                              
+X_Control_2_t              -0.072**                           
+                           (0.036)                            
+                                                              
+X_Control_2_t_1                      -0.042                   
+                                    (0.036)                   
+                                                              
+X_Control_t                                   0.014           
+                                             (0.024)          
+                                                              
+X_Control_t_1                                          0.019  
+                                                      (0.025) 
+                                                              
+Constant           0.009*   0.008    0.008    0.009*   0.009* 
+                  (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                              
+--------------------------------------------------------------
+Observations       2,994    2,994    2,994    2,994    2,994  
+Log Likelihood    -334.375 -333.170 -334.425 -334.965 -334.843
+Akaike Inf. Crit. 672.751  670.341  672.850  673.931  673.685 
+==============================================================
+Note:                              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 5
+===============================================================
+                               Dependent variable:             
+                  ---------------------------------------------
+                              X_Ingresos_equipo_t_1            
+                     (1)      (2)      (3)      (4)      (5)   
+---------------------------------------------------------------
+X_Dominio_2_t     -0.045***                                    
+                   (0.017)                                     
+                                                               
+X_Dominio_2_t_1             0.073***                           
+                            (0.013)                            
+                                                               
+X_Dominio_t                          0.047***                  
+                                     (0.015)                   
+                                                               
+X_Dominio_t_1                                 0.072***         
+                                              (0.014)          
+                                                               
+X_ERA_2_t                                               -0.004 
+                                                       (0.003) 
+                                                               
+Constant            0.008    0.009*   0.009*   0.008*   0.008  
+                   (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                               
+---------------------------------------------------------------
+Observations        2,994    2,994    2,994    2,994    2,994  
+Log Likelihood    -331.345  -320.287 -330.066 -321.564 -334.450
+Akaike Inf. Crit.  666.689  644.574  664.132  647.129  672.900 
+===============================================================
+Note:                               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 6
+====================================================================
+                                   Dependent variable:              
+                     -----------------------------------------------
+                                  X_Ingresos_equipo_t_1             
+                        (1)      (2)       (3)      (4)       (5)   
+--------------------------------------------------------------------
+X_ERA_2_t_1          -0.014***                                      
+                      (0.003)                                       
+                                                                    
+X_ERA_t                        -0.014**                             
+                               (0.007)                              
+                                                                    
+X_ERA_t_1                               -0.026***                   
+                                         (0.008)                    
+                                                                    
+X_Inning_pitched_2_t                                       -0.001***
+                                                           (0.0001) 
+                                                                    
+Constant               0.005    0.008     0.007    0.009*   0.009*  
+                      (0.005)  (0.005)   (0.005)  (0.005)   (0.005) 
+                                                                    
+--------------------------------------------------------------------
+Observations           2,994    2,994     2,994    2,994     2,994  
+Log Likelihood       -326.093  -333.198 -329.269  -335.137 -326.038 
+Akaike Inf. Crit.     656.185  670.397   662.538  672.275   656.075 
+====================================================================
+Note:                                    *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 7
+====================================================================
+                                    Dependent variable:             
+                       ---------------------------------------------
+                                   X_Ingresos_equipo_t_1            
+                         (1)       (2)      (3)      (4)      (5)   
+--------------------------------------------------------------------
+X_Inning_pitched_2_t_1  0.0001                                      
+                       (0.0001)                                     
+                                                                    
+X_Inning_pitched_t              -0.008***                           
+                                 (0.002)                            
+                                                                    
+X_Inning_pitched_t_1                       -0.002                   
+                                          (0.002)                   
+                                                                    
+X_Losses_2_t                                       -0.004*          
+                                                   (0.002)          
+                                                                    
+X_Losses_2_t_1                                               -0.001 
+                                                            (0.002) 
+                                                                    
+Constant                0.009*   0.008*    0.009*   0.008*   0.009* 
+                       (0.005)   (0.005)  (0.005)  (0.005)  (0.005) 
+                                                                    
+--------------------------------------------------------------------
+Observations            2,994     2,994    2,994    2,994    2,994  
+Log Likelihood         -334.947 -323.017  -334.385 -333.306 -334.928
+Akaike Inf. Crit.      673.894   650.035  672.770  670.611  673.857 
+====================================================================
+Note:                                    *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 8
+==============================================================
+                              Dependent variable:             
+                  --------------------------------------------
+                             X_Ingresos_equipo_t_1            
+                    (1)      (2)      (3)      (4)      (5)   
+--------------------------------------------------------------
+X_Losses_t        -0.014**                                    
+                  (0.007)                                     
+                                                              
+X_Losses_t_1                0.0001                            
+                           (0.007)                            
+                                                              
+X_Saves_2_t                          0.001                    
+                                    (0.001)                   
+                                                              
+X_Saves_2_t_1                                 -0.001          
+                                             (0.001)          
+                                                              
+X_Saves_t                                              0.0002 
+                                                      (0.007) 
+                                                              
+Constant           0.008*   0.009*   0.009*   0.008*   0.009* 
+                  (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                              
+--------------------------------------------------------------
+Observations       2,994    2,994    2,994    2,994    2,994  
+Log Likelihood    -333.036 -335.137 -334.881 -334.324 -335.137
+Akaike Inf. Crit. 670.071  674.275  673.763  672.649  674.274 
+==============================================================
+Note:                              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 9
+===================================================================
+                                  Dependent variable:              
+                    -----------------------------------------------
+                                 X_Ingresos_equipo_t_1             
+                      (1)       (2)       (3)       (4)      (5)   
+-------------------------------------------------------------------
+X_Saves_t_1          -0.006                                        
+                    (0.006)                                        
+                                                                   
+X_Strike_outs_2_t            -0.0004***                            
+                              (0.0002)                             
+                                                                   
+X_Strike_outs_2_t_1                     0.001***                   
+                                        (0.0001)                   
+                                                                   
+X_Strike_outs_t                                  -0.007***         
+                                                  (0.002)          
+                                                                   
+X_Strike_outs_t_1                                           0.002  
+                                                           (0.002) 
+                                                                   
+Constant             0.009*    0.008    0.010**    0.008    0.009* 
+                    (0.005)   (0.005)   (0.005)   (0.005)  (0.005) 
+                                                                   
+-------------------------------------------------------------------
+Observations         2,994     2,994     2,994     2,994    2,994  
+Log Likelihood      -334.642  -331.450  -325.054 -327.608  -334.619
+Akaike Inf. Crit.   673.283   666.900   654.108   659.216  673.239 
+===================================================================
+Note:                                   *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 10
+==============================================================
+                              Dependent variable:             
+                  --------------------------------------------
+                             X_Ingresos_equipo_t_1            
+                    (1)      (2)      (3)      (4)      (5)   
+--------------------------------------------------------------
+X_WAR_2_t         -0.014**                                    
+                  (0.006)                                     
+                                                              
+X_WAR_2_t_1                 -0.001                            
+                           (0.005)                            
+                                                              
+X_WAR_t                             -0.027**                  
+                                    (0.013)                   
+                                                              
+X_WAR_t_1                                     0.013           
+                                             (0.012)          
+                                                              
+X_WHIP_2_t                                             0.015  
+                                                      (0.011) 
+                                                              
+Constant           0.008    0.009*   0.007    0.009*   0.009* 
+                  (0.005)  (0.005)  (0.005)  (0.005)  (0.005) 
+                                                              
+--------------------------------------------------------------
+Observations       2,994    2,994    2,994    2,994    2,994  
+Log Likelihood    -332.513 -335.128 -333.004 -334.628 -334.240
+Akaike Inf. Crit. 669.026  674.257  670.007  673.256  672.479 
+==============================================================
+Note:                              *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 11
+===============================================================
+                               Dependent variable:             
+                  ---------------------------------------------
+                              X_Ingresos_equipo_t_1            
+                    (1)      (2)      (3)       (4)      (5)   
+---------------------------------------------------------------
+X_WHIP_2_t_1      -0.019*                                      
+                  (0.011)                                      
+                                                               
+X_WHIP_t                    0.012                              
+                           (0.012)                             
+                                                               
+X_WHIP_t_1                           -0.017                    
+                                    (0.012)                    
+                                                               
+X_Walks_2_t                                  -0.003***         
+                                             (0.0004)          
+                                                               
+X_Walks_2_t_1                                           0.0003 
+                                                       (0.0004)
+                                                               
+Constant           0.008    0.009*   0.009*    0.008    0.009* 
+                  (0.005)  (0.005)  (0.005)   (0.005)  (0.005) 
+                                                               
+---------------------------------------------------------------
+Observations       2,994    2,994    2,994     2,994    2,994  
+Log Likelihood    -333.689 -334.606 -334.139 -306.804  -334.817
+Akaike Inf. Crit. 671.378  673.211  672.278   617.608  673.635 
+===============================================================
+Note:                               *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 12
+================================================================
+                               Dependent variable:              
+                  ----------------------------------------------
+                              X_Ingresos_equipo_t_1             
+                     (1)      (2)      (3)      (4)       (5)   
+----------------------------------------------------------------
+X_Walks_t         -0.017***                                     
+                   (0.003)                                      
+                                                                
+X_Walks_t_1                  0.002                              
+                            (0.003)                             
+                                                                
+X_Wins_2_t                            -0.002                    
+                                     (0.002)                    
+                                                                
+X_Wins_2_t_1                                   -0.001           
+                                              (0.002)           
+                                                                
+X_Wins_t                                               -0.028***
+                                                        (0.007) 
+                                                                
+Constant           0.008*    0.009*   0.008*   0.009*    0.008  
+                   (0.005)  (0.005)  (0.005)  (0.005)   (0.005) 
+                                                                
+----------------------------------------------------------------
+Observations        2,994    2,994    2,994    2,994     2,994  
+Log Likelihood    -317.452  -334.985 -334.462 -334.997 -325.899 
+Akaike Inf. Crit.  638.904  673.970  672.924  673.994   655.797 
+================================================================
+Note:                                *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01
+
+Resultados de Modelos para Grupo 13
+=============================================
+                      Dependent variable:    
+                  ---------------------------
+                     X_Ingresos_equipo_t_1   
+---------------------------------------------
+X_Wins_t_1                  -0.012*          
+                            (0.006)          
+                                             
+Constant                    0.008*           
+                            (0.005)          
+                                             
+---------------------------------------------
+Observations                 2,994           
+Log Likelihood             -333.417          
+Akaike Inf. Crit.           670.835          
+=============================================
+Note:             *p&lt;0.1; **p&lt;0.05; ***p&lt;0.01</code></pre>
 
 
 

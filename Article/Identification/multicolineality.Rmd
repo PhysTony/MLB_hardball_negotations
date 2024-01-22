@@ -66,7 +66,7 @@ xFielderList <- get_prefixed_column_names(fielders_panel, "X")
 print(xFielderList)
 ```
 
-```{r X_list_function, include=FALSE, warning=FALSE, echo=FALSE}
+```{r X_list_significance_function, include=FALSE, warning=FALSE, echo=FALSE}
 # Función para realizar regresiones lineales individuales y agrupar los resultados
 run_individual_linear_regressions <- function(df, column_names, target_variable, exclude_variables = NULL) {
   # Excluir las variables no deseadas de column_names
@@ -74,9 +74,8 @@ run_individual_linear_regressions <- function(df, column_names, target_variable,
     column_names <- setdiff(column_names, exclude_variables)
   }
 
-  # Lista para almacenar los modelos y sus R^2
+  # Lista para almacenar los modelos
   models <- list()
-  r_squared <- list()
 
   # Realizar una regresión lineal para cada variable en column_names
   for (column in column_names) {
@@ -86,30 +85,40 @@ run_individual_linear_regressions <- function(df, column_names, target_variable,
     # Ajustar el modelo lineal
     model <- glm(formula, data = df, family = gaussian())
 
-    # Agregar el modelo y su R^2 a las listas
+    # Agregar el modelo a la lista
     models[[column]] <- model
-    r_squared[[column]] <- summary(model)$r.squared
   }
 
   # Imprimir los resultados en grupos de cinco
   for (i in seq(1, length(models), by = 5)) {
     # Seleccionar un subconjunto de modelos
     subset_models <- models[i:min(i+4, length(models))]
-    subset_r_squared <- r_squared[i:min(i+4, length(models))]
 
     # Imprimir los resultados usando stargazer
     stargazer::stargazer(subset_models, type = "text", title = paste("Resultados de Modelos para Grupo", ceiling(i / 5)))
-
-    # Imprimir los valores de R^2
-    cat("Valores de R^2 para el Grupo", ceiling(i / 5), ":\n")
-    for (name in names(subset_r_squared)) {
-      cat(name, ": R^2 =", subset_r_squared[[name]], "\n")
-    }
   }
 }
 ```
 
-```{r X_hitter_t}
+```{r X_list_correlation_function, include=FALSE, warning=FALSE, echo=FALSE}
+# Función para calcular R^2 y el coeficiente de Pearson
+calculate_stats <- function(data, independent_var, dependent_var) {
+  # Calcula el coeficiente de correlación de Pearson
+  pearson_correlation <- cor(data[[independent_var]], data[[dependent_var]], use = "complete.obs")
+  
+  # Ajusta un modelo lineal
+  model <- lm(formula(paste(dependent_var, "~", independent_var)), data = data)
+  
+  # Calcula R^2
+  r_squared <- summary(model)$r.squared
+  
+  # Retorna los resultados
+  list(pearson_correlation = pearson_correlation, r_squared = r_squared)
+}
+```
+
+
+```{r significance_X_hitter_t}
 # Ejemplo de uso de la función
 # Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
 # Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
@@ -118,7 +127,26 @@ exclude_variables <- c("X_Ingresos_equipo_2_t", "X_Ingresos_equipo_2_t_1")
 models <- run_individual_linear_regressions(hitters_panel, column_names, "X_Ingresos_equipo_t", exclude_variables)
 ```
 
-```{r X_hitter_t_1}
+```{r correlation_X_hitter_t}
+# Supongamos que tienes un dataframe llamado 'data'
+# Lista de variables independientes
+independent_vars <- xHitterList # Reemplaza con los nombres reales de tus variables
+
+# Variable dependiente
+dependent_var <- "X_Ingresos_equipo_t" # Reemplaza con el nombre real de tu variable dependiente
+
+# Aplicar la función a cada variable independiente y imprimir los resultados
+for (var in independent_vars) {
+  stats <- calculate_stats(hitters_panel, var, dependent_var)
+  print(paste("Variable independiente:", var))
+  print(paste("Coeficiente de Correlación de Pearson:", stats$pearson_correlation))
+  print(paste("Coeficiente R^2:", stats$r_squared))
+  print("------")
+}
+```
+
+
+```{r significance_X_hitter_t_1}
 # Ejemplo de uso de la función
 # Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
 # Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
@@ -131,16 +159,34 @@ models <- run_individual_linear_regressions(hitters_panel, column_names, "X_Ingr
 # Ejemplo de uso de la función
 # Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
 # Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
-column_names <- xHitterList
+column_names <- xFielderList
 exclude_variables <- c("X_Ingresos_equipo_2_t", "X_Ingresos_equipo_2_t_1")
 models <- run_individual_linear_regressions(fielders_panel, column_names, "X_Ingresos_equipo_t", exclude_variables)
+```
+
+```{r correlation_X_fielder_t}
+# Supongamos que tienes un dataframe llamado 'data'
+# Lista de variables independientes
+independent_vars <- xFielderList # Reemplaza con los nombres reales de tus variables
+
+# Variable dependiente
+dependent_var <- "X_Ingresos_equipo_t" # Reemplaza con el nombre real de tu variable dependiente
+
+# Aplicar la función a cada variable independiente y imprimir los resultados
+for (var in independent_vars) {
+  stats <- calculate_stats(fielders_panel, var, dependent_var)
+  print(paste("Variable independiente:", var))
+  print(paste("Coeficiente de Correlación de Pearson:", stats$pearson_correlation))
+  print(paste("Coeficiente R^2:", stats$r_squared))
+  print("------")
+}
 ```
 
 ```{r X_fielder_t_1}
 # Ejemplo de uso de la función
 # Supongamos que la variable de interés es "X_Ingresos_equipo_2_t" y las otras columnas son de xHitterList
 # Excluyendo las variables "X_Ingresos_equipo_t" y "X_Ingresos_equipo_t_1"
-column_names <- xHitterList
+column_names <- xFielderList
 exclude_variables <- c("X_Ingresos_equipo_t", "X_Ingresos_equipo_2_t_1", "X_Ingresos_equipo_2_t")
 models <- run_individual_linear_regressions(fielders_panel, column_names, "X_Ingresos_equipo_t_1", exclude_variables)
 ```

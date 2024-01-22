@@ -65,11 +65,11 @@ def XEpsilon(df, stats_list, string_columns, fill_value="No"):
     df['Posicion'] = df['Posicion'].fillna(method='ffill')
 
     # Rellenar valores NaN en columnas de tipo string
-    #for column in string_columns:
-    #    if column in df.columns:
-    #        df[column] = df[column].fillna(fill_value)
-    #    else:
-    #        print(f"La columna '{column}' no existe en el DataFrame.")
+    for column in string_columns:
+        if column in df.columns:
+            df[column] = df[column].fillna(fill_value)
+        else:
+            print(f"La columna '{column}' no existe en el DataFrame.")
             
     # Ordenar los nombres de las columnas alfabéticamente
     sorted_columns = sorted(df.columns)
