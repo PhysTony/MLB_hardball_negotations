@@ -1,0 +1,111 @@
+---
+title: "Dynamic Model - Identification"
+author: "Antonio Huerta Montellano"
+date: "\today"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+opts_chunk$set(comment = NA)
+options(warn = FALSE) # ignore warnings
+```
+
+```{r libraries, include=FALSE}
+library(lmtest) # for robust standard errors
+library(dplyr) # for group_by function
+library(ggplot2) # for better plots
+library(dplyr) # for data managment
+library(clubSandwich) # Grouped errors
+library(sandwich) # MOre error options
+library(tidyr) # Datframes manipulation
+library(stargazer) # For output formats
+library(lubridate)
+library(plm)
+```
+
+Importemos las bases de datos hechas en el proceso ETL
+
+```{r import_panel, include = FALSE, warning = FALSE}
+# Definir la ruta base y la ruta de importación
+base_path <- "C:/Users/metal/Documents/Github/MLB_hardball_negotations/"
+import_path <- paste0(base_path, "ETL_Data/Panel/Cumulative/Dynamic_model/")
+
+# Leer los archivos CSV
+hitters_panel <- read.csv(paste0(import_path, "panel_hitters_t_1.csv"))
+fielders_panel <- read.csv(paste0(import_path, "panel_fielders_t_1.csv"))
+```
+
+Ahora, haremos un filtratado y trabajo ETL especializado para el modelo, es decir, las transformaciones necesarias, así como las dummificación con filtrado de ciertos jugadores
+
+```{r etl_panel, include = FALSE, warning = FALSE}
+# Convert categorical column to numerical
+# Position;
+hitters_panel$position_num_t <- as.numeric(factor(hitters_panel$Posicion_t))
+fielders_panel$position_num_t <- as.numeric(factor(fielders_panel$Posicion_t))
+# Team:
+hitters_panel$team_num_t <- as.numeric(factor(hitters_panel$Acronimo_t))
+fielders_panel$team_num_t <- as.numeric(factor(fielders_panel$Acronimo_t))
+
+# add a column of 1s to the panel data
+#hitters_panel <- cbind(hitters_panel, fa = rep(1, nrow(hitters_panel)))
+#fielders_panel <- cbind(fielders_panel, fa = rep(1, nrow(fielders_panel)))
+
+hitters_panel %>% count(Posicion_t, sort = TRUE)
+fielders_panel %>% count(Posicion_t, sort = TRUE)
+
+# split the data frame by category
+split_hitter <- split(hitters_panel, f = hitters_panel$Posicion_t)
+split_fielder <- split(fielders_panel, f = fielders_panel$Posicion_t)
+
+# Whole panel:
+# Offensive:
+h_category_1 <- split_hitter[["SP"]]
+h_category_2 <- split_hitter[["RP"]]
+h_category_3 <- split_hitter[["RP/CL"]]
+h_category_4 <- split_hitter[["C"]]
+h_category_5 <- split_hitter[["1B"]]
+h_category_6 <- split_hitter[["2B"]]
+h_category_7 <- split_hitter[["3B"]]
+h_category_8 <- split_hitter[["SS"]]
+h_category_9 <- split_hitter[["RF"]]
+h_category_10 <- split_hitter[["CF"]]
+h_category_11 <- split_hitter[["LF"]]
+d_hitter_data <- split_hitter[["DH"]]
+
+# Defensive:
+starting_data <- split_fielder[["SP"]]
+b_category_2 <- split_fielder[["RP"]]
+b_category_3 <- split_fielder[["RP/CL"]]
+shorts_data <- split_fielder[["SS"]]
+
+# All panels:
+# Hitters:
+# Concatenate the two categories
+hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
+                     h_category_5, h_category_6, h_category_7, h_category_8,
+                     h_category_9, h_category_10, h_category_11)
+hitter_data <- unique(hitter_data)
+
+# Fielders:
+# Concatenate the two categories
+relief_pitcher_data <- rbind(b_category_2, b_category_3)
+relief_pitcher_data <- unique(relief_pitcher_data)
+```
+
+Exportaremos solo los páneles necesarios. Esto lo hacemos directamente porque ya se han hecho las estimaciones correspondientes y sabemos qué paneles cubren los requisitos para las estimaicones del modelo.
+
+```{r export_panel}
+# Definir la ruta base y la ruta de importación
+base_path <- "C:/Users/metal/Documents/Github/MLB_hardball_negotations/"
+export_path <- paste0(base_path, "Article/DataModel/")
+
+# Exportar los dataframes con nuevos nombres
+write.csv(hitter_data, paste0(export_path, "hitter_model.csv"), row.names = FALSE)
+write.csv(starting_data, paste0(export_path, "fielder_model.csv"), row.names = FALSE)
+```
+
