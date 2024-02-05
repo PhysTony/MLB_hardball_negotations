@@ -30,73 +30,18 @@ library(car)
 ```
 
 ```{r import_panel, include = FALSE, warning = FALSE}
-setwd("C:/Users/metal/Documents/Github/MLB_hardball_negotations/")
-hitters_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_hitters_t_1.csv')
-fielders_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/panel_fielders_t_1.csv')
-hitters_fd_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/result_hitter.csv')
-fielders_fd_panel <- read.csv('ETL_Data/Panel/Cumulative/Dynamic_model/result_fielder.csv')
+# Definir la ruta base y la ruta de importación
+base_path <- "C:/Users/metal/Documents/Github/MLB_hardball_negotations/"
+import_path <- paste0(base_path, "Article/DataModel/")
+
+# Leer los archivos CSV
+hitters_panel <- read.csv(paste0(import_path, "hitter_model.csv"))
+fielders_panel <- read.csv(paste0(import_path, "fielder_model.csv"))
+hitters_fd_panel <- read.csv(paste0(import_path, "hitter_model_fd.csv"))
+fielders_fd_panel <- read.csv(paste0(import_path, "fielder_model_fd.csv"))
 ```
 
-```{r etl_panel, include = FALSE, warning = FALSE}
-# Convert categorical column to numerical
-# Position;
-hitters_panel$position_num_t <- as.numeric(factor(hitters_panel$Posicion_t))
-fielders_panel$position_num_t <- as.numeric(factor(fielders_panel$Posicion_t))
-# Team:
-hitters_panel$team_num_t <- as.numeric(factor(hitters_panel$Acronimo_t))
-fielders_panel$team_num_t <- as.numeric(factor(fielders_panel$Acronimo_t))
-
-# Calcular el cuadrado de Edad_t y Anios_de_contrato_t
-hitters_panel$Edad_t_2 <- hitters_panel$Edad_t^2
-hitters_panel$Anios_de_contrato_t_2 <- hitters_panel$Anios_de_contrato_t^2
-fielders_panel$Edad_t_2 <- fielders_panel$Edad_t^2
-fielders_panel$Anios_de_contrato_t_2 <- fielders_panel$Anios_de_contrato_t^2
-
-# add a column of 1s to the panel data
-#hitters_panel <- cbind(hitters_panel, fa = rep(1, nrow(hitters_panel)))
-#fielders_panel <- cbind(fielders_panel, fa = rep(1, nrow(fielders_panel)))
-
-hitters_panel %>% count(Posicion_t, sort = TRUE)
-fielders_panel %>% count(Posicion_t, sort = TRUE)
-
-# split the data frame by category
-split_hitter <- split(hitters_panel, f = hitters_panel$Posicion_t)
-split_fielder <- split(fielders_panel, f = fielders_panel$Posicion_t)
-
-# Whole panel:
-# Offensive:
-h_category_1 <- split_hitter[["SP"]]
-h_category_2 <- split_hitter[["RP"]]
-h_category_3 <- split_hitter[["RP/CL"]]
-h_category_4 <- split_hitter[["C"]]
-h_category_5 <- split_hitter[["1B"]]
-h_category_6 <- split_hitter[["2B"]]
-h_category_7 <- split_hitter[["3B"]]
-h_category_8 <- split_hitter[["SS"]]
-h_category_9 <- split_hitter[["RF"]]
-h_category_10 <- split_hitter[["CF"]]
-h_category_11 <- split_hitter[["LF"]]
-d_hitter_data <- split_hitter[["DH"]]
-
-# Defensive:
-starting_data <- split_fielder[["SP"]]
-b_category_2 <- split_fielder[["RP"]]
-b_category_3 <- split_fielder[["RP/CL"]]
-shorts_data <- split_fielder[["SS"]]
-
-# All panels:
-# Hitters:
-# Concatenate the two categories
-hitter_data <- rbind(h_category_1, h_category_2, h_category_3, h_category_4,
-                     h_category_5, h_category_6, h_category_7, h_category_8,
-                     h_category_9, h_category_10, h_category_11)
-hitter_data <- unique(hitter_data)
-
-# Fielders:
-# Concatenate the two categories
-relief_pitcher_data <- rbind(b_category_2, b_category_3)
-relief_pitcher_data <- unique(relief_pitcher_data)
-
+```{r stat_stimations, include = FALSE, warning = FALSE}
 # LIsta de variables acumuladas y anualmente promediadas_
 stat_hitter <- list("X_At_bats", "X_At_bats_2",
                     "X_Bateos", "X_Bateos_2",
@@ -135,27 +80,33 @@ stat_fielder <- list('X_Bateos_2', 'X_Bateos',
 # Add suffix "_t" to each name
 stat_fielder_t <- paste0(stat_fielder, "_t")
 stat_fielder_t_1 <- paste0(stat_fielder, "_t_1")
+```
 
+```{r stat_latex, echo=FALSE, include=FALSE}
 # Control variables:
-vars_ms  <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1'
-vars_fe  <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
+control_vars  <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
+control_vars_1  <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
 
-hitter_stats_1 = c("Edad$_{t}^2$", "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+hitter_stats_1 = c("Edad$_{t}^2$", "Años contrato$_{t}^2$",
+                   "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{AB_{t}}$","$X_{AB_{t-1}}$","$X_{AB^{2}_{t}}$","$X_{AB^{2}_{t-1}}$",
                    "$X_{H_{t}}$","$X_{H_{t-1}}$","$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$",
                    "$X_{BA_{t}}$","$X_{BA_{t-1}}$", "$X_{BA^{2}_{t}}$","$X_{BA^{2}_{t-1}}$",
                    "Agente$_{t}$")
-hitter_stats_2 = c("Edad$_{t}^2$", "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+hitter_stats_2 = c("Edad$_{t}^2$", "Años contrato$_{t}^2$",
+                   "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{D_{t}}$","$X_{D_{t-1}}$","$X_{D^{2}_{t}}$","$X_{D^{2}_{t-1}}$",
                    "$X_{HR_{t}}$","$X_{HR_{t-1}}$","$X_{HR^{2}_{t}}$","$X_{HR^{2}_{t-1}}$",
                    "$X_{GS_{t}}$","$X_{GS_{t-1}}$", "$X_{GS^{2}_{t}}$","$X_{GS^{2}_{t-1}}$",
                    "Agente$_{t}$")
-hitter_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+hitter_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$",
+                   "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{OPS_{t}}$","$X_{OPS_{t-1}}$","$X_{OPS^{2}_{t}}$","$X_{OPS^{2}_{t-1}}$",
                    "$X_{OBP_{t}}$","$X_{OBP_{t-1}}$","$X_{OBP^{2}_{t}}$","$X_{OBP^{2}_{t-1}}$",
                    "$X_{SLG_{t}}$","$X_{SLG_{t-1}}$", "$X_{SLG^{2}_{t}}$","$X_{SLG^{2}_{t-1}}$",
                    "Agente$_{t}$")
-hitter_stats_4 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+hitter_stats_4 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$",
+                   "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                    "$X_{RBI_{t}}$","$X_{RBI_{t-1}}$","$X_{RBI^{2}_{t}}$","$X_{RBI^{2}_{t-1}}$",
                    "$X_{T_{t}}$","$X_{T_{t-1}}$","$X_{T^{2}_{t}}$","$X_{T^{2}_{t-1}}$",
                    "$X_{WAR_{t}}$","$X_{WAR_{t-1}}$", "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$",
@@ -268,30 +219,47 @@ hitter_stats_long <- list(c("Edad$_{t}^2$","Años contrato$_{t}^2$",
                             "Agente$_{t}$")
                           )
 
-fielder_stats_1 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+fielder_stats_1 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$",
+                    "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
                     "$X_{H^{2}_{t}}$","$X_{H^{2}_{t-1}}$","$X_{H_{t}}$","$X_{H_{t-1}}$",
                     "$X_{R^{2}_{t}}$","$X_{R^{2}_{t-1}}$","$X_{ER^{2}_{t}}$","$X_{ER^{2}_{t-1}}$",
                     "$X_{ER_{t}}$","$X_{ER_{t-1}}$", "$X_{R_{t}}$","$X_{R_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_2 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
-                    "$X_{Comando^{2}_{t}}$","$X_{Comando^{2}_{t-1}}$","$X_{Comando_{t}}$","$X_{Comando_{t-1}}$",
-                    "$X_{Control^{2}_{t}}$","$X_{Control^{2}_{t-1}}$","$Control_{H_{t}}$","$X_{Control_{t-1}}$",
-                    "$X_{Dominio^{2}_{t}}$","$X_{Dominio^{2}_{t-1}}$","$X_{Dominio_{t}}$","$X_{Dominio_{t-1}}$",
+fielder_stats_2 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$",
+                    "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+                    "$X_{Comando^{2}_{t}}$","$X_{Comando^{2}_{t-1}}$",
+                    "$X_{Comando_{t}}$","$X_{Comando_{t-1}}$",
+                    "$X_{Control^{2}_{t}}$","$X_{Control^{2}_{t-1}}$",
+                    "$Control_{H_{t}}$","$X_{Control_{t-1}}$",
+                    "$X_{Dominio^{2}_{t}}$","$X_{Dominio^{2}_{t-1}}$",
+                    "$X_{Dominio_{t}}$","$X_{Dominio_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
-                    "$X_{ERA^{2}_{t}}$","$X_{ERA^{2}_{t-1}}$","$X_{ERA_{t}}$","$X_{ERA_{t-1}}$",
-                    "$X_{IP^{2}_{t}}$","$X_{IP^{2}_{t-1}}$","$X_{IP_{t}}$","$X_{IP_{t-1}}$",
-                    "$X_{L^{2}_{t}}$","$X_{L^{2}_{t-1}}$", "$X_{L_{t}}$","$X_{L_{t-1}}$",
+fielder_stats_3 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$",
+                    "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+                    "$X_{ERA^{2}_{t}}$","$X_{ERA^{2}_{t-1}}$",
+                    "$X_{ERA_{t}}$","$X_{ERA_{t-1}}$",
+                    "$X_{IP^{2}_{t}}$","$X_{IP^{2}_{t-1}}$",
+                    "$X_{IP_{t}}$","$X_{IP_{t-1}}$",
+                    "$X_{L^{2}_{t}}$","$X_{L^{2}_{t-1}}$",
+                    "$X_{L_{t}}$","$X_{L_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_4 = c("$Edad_{t}$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
-                    "$X_{S^{2}_{t}}$","$X_{S^{2}_{t-1}}$","$X_{S_{t}}$","$X_{S_{t-1}}$",
-                    "$X_{SO^{2}_{t}}$","$X_{SO^{2}_{t-1}}$","$X_{SO_{t}}$","$X_{SO_{t-1}}$",
-                    "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$","$X_{WAR_{t}}$","$X_{WAR_{t-1}}$",
+fielder_stats_4 = c("$Edad_{t}$" , "Años contrato$_{t}^2$",
+                    "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+                    "$X_{S^{2}_{t}}$","$X_{S^{2}_{t-1}}$",
+                    "$X_{S_{t}}$","$X_{S_{t-1}}$",
+                    "$X_{SO^{2}_{t}}$","$X_{SO^{2}_{t-1}}$",
+                    "$X_{SO_{t}}$","$X_{SO_{t-1}}$",
+                    "$X_{WAR^{2}_{t}}$","$X_{WAR^{2}_{t-1}}$",
+                    "$X_{WAR_{t}}$","$X_{WAR_{t-1}}$",
                     "Agente$_{t}$")
-fielder_stats_5 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$", "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
-                    "$X_{WHIP^{2}_{t}}$","$X_{WHIP^{2}_{t-1}}$","$X_{WHIP_{t}}$","$X_{WHIP_{t-1}}$",
-                    "$X_{BB^{2}_{t}}$","$X_{BB^{2}_{t-1}}$","$X_{BB_{t}}$","$X_{BB_{t-1}}$",
-                    "$X_{W^{2}_{t}}$","$X_{W^{2}_{t-1}}$","$X_{W_{t}}$","$X_{W_{t-1}}$",
+fielder_stats_5 = c("Edad$_{t}^2$" , "Años contrato$_{t}^2$",
+                    "Equipo$_{t}^2$","X_Ingresos_equipo$_{t}$","X_Ingresos_equipo$_{t-1}$",
+                    "$X_{WHIP^{2}_{t}}$","$X_{WHIP^{2}_{t-1}}$",
+                    "$X_{WHIP_{t}}$","$X_{WHIP_{t-1}}$",
+                    "$X_{BB^{2}_{t}}$","$X_{BB^{2}_{t-1}}$",
+                    "$X_{BB_{t}}$","$X_{BB_{t-1}}$",
+                    "$X_{W^{2}_{t}}$","$X_{W^{2}_{t-1}}$",
+                    "$X_{W_{t}}$","$X_{W_{t-1}}$",
                     "Agente$_{t}$")
 fielder_stats <- list(fielder_stats_1,
                       fielder_stats_2,
@@ -424,8 +392,8 @@ fielder_stats_long <- list(c("Edad$_{t}^2$","Años contrato$_{t}^2$",
                               "$X_{W_{t}}$","$X_{W_{t-1}}$",
                               "Agente$_{t}$")
                             )
-
 ```
+
 
 ```{r hitter_stimation_simple_pooling, echo=FALSE, eval=TRUE}
 # Create a model to store the results
@@ -446,7 +414,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars_ms, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -494,7 +462,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars_ms, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -544,7 +512,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars_fe, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -592,7 +560,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars_fe, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -642,7 +610,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars_ms, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -690,7 +658,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with grouped errors by country and robust errors
-    base_vars_h  <- paste(vars_ms, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -738,7 +706,7 @@ for (j in 1:hitter_rep){
   
   for (i in 1:hitter_stat_num){
     # Run linear regression with first-differences
-    base_vars_h  <- paste(vars_ms, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_hitter_t[[i + hitter_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_hitter_t_1[[i + hitter_stat_num*(j - 1)]],
@@ -784,7 +752,7 @@ for (j in 1:fielder_rep){
   
   for (i in 1:fielder_stat_num){
     # Run linear regression with first-differences
-    base_vars_h  <- paste(vars_ms, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
+    base_vars_h  <- paste(control_vars, stat_fielder_t[[i + fielder_stat_num*(j - 1)]],
                         sep = '+')
     formula <- paste(base_vars_h,
                      stat_fielder_t_1[[i + fielder_stat_num*(j - 1)]],
@@ -862,7 +830,7 @@ hitter_vars_4 <- c(paste(stat_hitter_t, collapse = " + "),
 
 
 # Pooling:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  hitter_vars_1[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -878,7 +846,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_2[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -894,7 +862,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  hitter_vars_3[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -910,7 +878,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_4[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -984,7 +952,7 @@ hitter_vars_4 <- c(paste(stat_hitter_t, collapse = " + "),
 
 
 # Pooling:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  hitter_vars_1[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1000,7 +968,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_2[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1016,7 +984,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  hitter_vars_3[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1032,7 +1000,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_4[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1081,7 +1049,7 @@ hitter_vars_4 <- c("X_Home_runs_2_t",
 
 
 # Pooling:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1094,7 +1062,7 @@ hitter_results_stimation_1 <- coeftest(hitter_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1107,7 +1075,7 @@ hitter_results_stimation_2 <- coeftest(hitter_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_3[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1123,7 +1091,7 @@ hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  hitter_vars_4[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1233,7 +1201,7 @@ fielder_vars_4 <- c(paste(stat_fielder_t, collapse = " + "),
 
 
 # Pooling:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  fielder_vars_1[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1249,7 +1217,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  fielder_vars_2[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1265,7 +1233,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  fielder_vars_3[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1281,7 +1249,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  fielder_vars_4[[1]],
                  sep = " + ")
 formula <- paste(formula,
@@ -1339,7 +1307,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1352,7 +1320,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1365,7 +1333,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1378,7 +1346,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1436,7 +1404,7 @@ fielder_vars_4 <- paste(fielder_vars_4, collapse = " + ")
 
 
 # Pooling:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  fielder_vars_1,
                  sep = " + ")
 # Create a model to store the results
@@ -1449,7 +1417,7 @@ fielder_results_stimation_1 <- coeftest(fielder_stimation_1,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Within:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  fielder_vars_2,
                  sep = " + ")
 # Create a model to store the results
@@ -1462,7 +1430,7 @@ fielder_results_stimation_2 <- coeftest(fielder_stimation_2,
                                                      type = "HC1",
                                                      cluster = "group"))
 # Random:
-formula <- paste(vars_ms,
+formula <- paste(control_vars,
                  fielder_vars_3,
                  sep = " + ")
 # Create a model to store the results
@@ -1475,7 +1443,7 @@ fielder_results_stimation_3 <- coeftest(fielder_stimation_3,
                                                      type = "HC1",
                                                      cluster = "group"))
 # First Differences:
-formula <- paste(vars_fe,
+formula <- paste(control_vars,
                  fielder_vars_4,
                  sep = " + ")
 # Create a model to store the results
@@ -1615,46 +1583,7 @@ for (i in 1:4) {
 ```
 
 
-```{r simple_identification_hitters, echo=FALSE}
-# Lista de bases de datos
-data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
 
-# Lista de modelos a aplicar
-model_list <- list("pooling", "within", "random", "random")
-
-# Lista de nombres para imprimri
-name_list <- list("Pooling", "Within", "RE", "FD")
-
-# Fórmula para el modelo
-formula <- 'Y ~ X_Ingresos_equipo_t_1 - 1'
-
-# Inicializar una lista para almacenar los resultados
-results_list <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Almacenar el modelo en la lista
-  hitter_simple_models[[name_list[[i]]]] <- estimated_model
-  
-  # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
-
-  # Almacenar los resultados
-  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
-}
-
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(results_list[[i]],
-                  no.space = TRUE,
-                  type = "text",
-                  title = paste("Bateadores:", name_list[[i]]),
-                  covariate.labels = c("X$_{tearev}_{t-1}$"))
-}
-```
 
 ```{r hausman_simple_hitter, echo=FALSE, eval=TRUE}
 # Inicializar una lista para almacenar los modelos
@@ -1719,6 +1648,99 @@ for (var in independent_vars) {
 }
 ```
 
+## Identificación Simple
+
+En este caso, solo haremos la identificación sin controles. Se irá refinando conforme la significancia de las variables.
+
+```{r simple_identification_hitters_1, echo=FALSE}
+# Inicializar una lista para almacenar los modelos
+hitter_simple_models <- list()
+
+# Lista de bases de datos
+data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
+
+# Lista de modelos a aplicar
+model_list <- list("pooling", "within", "random", "random")
+
+# Lista de nombres para imprimri
+name_list <- list("Pooling", "Within", "RE", "FD")
+
+# Fórmula para el modelo
+formula <- 'Y ~ X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
+
+# Inicializar una lista para almacenar los resultados
+results_list <- list()
+
+# Iterar sobre cada base de datos y cada modelo
+for (i in 1:4) {
+  # Estimar el modelo usando plm
+  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
+  
+  # Almacenar el modelo en la lista
+  hitter_simple_models[[name_list[[i]]]] <- estimated_model
+  
+  # Calcular errores estándar robustos
+  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
+
+  # Almacenar los resultados
+  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
+}
+
+# Imprimir los resultados
+for (i in 1:4) {
+  stargazer(results_list[[i]],
+                  no.space = TRUE,
+                  type = "text",
+                  title = paste("Bateadores:", name_list[[i]]),
+                  covariate.labels = c("X$_{tearev}_{t}$","X$_{tearev}_{t-1}$"))
+}
+```
+
+Quitaremos la variable del periodo $t$
+
+```{r simple_identification_hitters_2, echo=FALSE}
+# Inicializar una lista para almacenar los modelos
+hitter_simple_models <- list()
+
+# Lista de bases de datos
+data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
+
+# Lista de modelos a aplicar
+model_list <- list("pooling", "within", "random", "random")
+
+# Lista de nombres para imprimri
+name_list <- list("Pooling", "Within", "RE", "FD")
+
+# Fórmula para el modelo
+formula <- 'Y ~ X_Ingresos_equipo_t_1 - 1'
+
+# Inicializar una lista para almacenar los resultados
+results_list <- list()
+
+# Iterar sobre cada base de datos y cada modelo
+for (i in 1:4) {
+  # Estimar el modelo usando plm
+  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
+  
+  # Almacenar el modelo en la lista
+  hitter_simple_models[[name_list[[i]]]] <- estimated_model
+  
+  # Calcular errores estándar robustos
+  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
+
+  # Almacenar los resultados
+  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
+}
+
+# Imprimir los resultados
+for (i in 1:4) {
+  stargazer(results_list[[i]],
+                  no.space = TRUE,
+                  type = "text",
+                  title = paste("Bateadores:", name_list[[i]]),
+                  covariate.labels = c("X$_{tearev}_{t-1}$"))
+}
+```
 
 ```{r simple_identification_fielders, echo=FALSE}
 # Lista de bases de datos

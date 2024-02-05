@@ -38,9 +38,11 @@ import_path <- paste0(base_path, "ETL_Data/Panel/Cumulative/Dynamic_model/")
 # Leer los archivos CSV
 hitters_panel <- read.csv(paste0(import_path, "panel_hitters_t_1.csv"))
 fielders_panel <- read.csv(paste0(import_path, "panel_fielders_t_1.csv"))
+print(dim(hitters_panel))
+print(dim(fielders_panel))
 ```
 
-Ahora, haremos un filtratado y trabajo ETL especializado para el modelo, es decir, las transformaciones necesarias, así como las dummificación con filtrado de ciertos jugadores
+Se arecia que los dataframes tienen las mismas dimensiones que el ETL en Python. Ahora, haremos un filtratado y trabajo ETL especializado para el modelo, es decir, las transformaciones necesarias, así como las dummificación con filtrado de ciertos jugadores
 
 ```{r etl_panel, include = FALSE, warning = FALSE}
 # Convert categorical column to numerical
@@ -108,4 +110,3 @@ export_path <- paste0(base_path, "Article/DataModel/")
 write.csv(hitter_data, paste0(export_path, "hitter_model.csv"), row.names = FALSE)
 write.csv(starting_data, paste0(export_path, "fielder_model.csv"), row.names = FALSE)
 ```
-
