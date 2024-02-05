@@ -99,7 +99,22 @@ relief_pitcher_data <- rbind(b_category_2, b_category_3)
 relief_pitcher_data <- unique(relief_pitcher_data)
 ```
 
-Exportaremos solo los páneles necesarios. Esto lo hacemos directamente porque ya se han hecho las estimaciones correspondientes y sabemos qué paneles cubren los requisitos para las estimaicones del modelo.
+Verifiquemos que no haya duplicados con respecto a las columnas "id" y "Anio_ref":
+
+```{r duplicates, echo=FALSE}
+# Encontrar índices de filas duplicadas basadas en las columnas 'id' y 'Anio_ref'
+# La función duplicated() se aplica a las columnas seleccionadas y devuelve TRUE para filas que son duplicadas
+duplicated_index_hitter <- which(duplicated(hitter_data[c("id", "Anio_ref")]) | duplicated(hitter_data[c("id", "Anio_ref")], fromLast = TRUE))
+duplicated_index_fielder <- which(duplicated(starting_data[c("id", "Anio_ref")]) | duplicated(starting_data[c("id", "Anio_ref")], fromLast = TRUE))
+
+# Mostrar los índices de las filas duplicadas
+print("Duplicados para los bateadores:")
+print(duplicated_index_hitter)
+print("Duplicados para los lanzadores iniciales:")
+print(duplicated_index_fielder)
+```
+
+Se aprecia que no hay duplicados ocn respecto a las columnas eempleadas para el panel. Exportaremos solo los páneles necesarios. Esto lo hacemos directamente porque ya se han hecho las estimaciones correspondientes y sabemos qué paneles cubren los requisitos para las estimaicones del modelo.
 
 ```{r export_panel}
 # Definir la ruta base y la ruta de importación

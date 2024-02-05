@@ -415,39 +415,42 @@ Solo conservaremos las variables que posean significancia estadística, el resto
 
 ```{r simple_identification_hitters_1, echo=FALSE}
 # Inicializar una lista para almacenar los modelos
-hitter_simple_models <- list()
-
-# Fórmula para el modelo
-formula <- 'Y ~ X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
+hitter_simple_stimation_1 <- list()
 
 # Inicializar una lista para almacenar los resultados
-hitter_simple_results_list <- list()
+hitter_simple_stimation_results_1 <- list()
+
+# Fórmula para el modelo
+formula_simple_1 <- 'Y ~ X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
 
 # Iterar sobre cada base de datos y cada modelo
 for (i in 1:4) {
   # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Almacenar el modelo en la lista
-  hitter_simple_models[[name_list[[i]]]] <- estimated_model
-  
+  hitter_simple_stimation_1[[length(hitter_simple_stimation_1) + 1]] <- plm(formula,
+                                                                            data = data_list[[i]],
+                                                                            model = model_list[[i]],
+                                                                            index = c("id", "Anio_ref"))
+  # To store the results
+ # hitter_results_stimation_3 <- coeftest(hitter_stimation_3,
+  #                                       vcov = vcovHC(hitter_stimation_3,
+   #                                                    type = "HC1",
+  #                                                     cluster = "group"))
   # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
+  #robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
 
   # Almacenar los resultados
-  hitter_simple_results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
+  #hitter_simple_results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
 }
 
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(hitter_simple_results_list[[i]],
-                  no.space = TRUE,
-                  type = "text",
-                  title = paste("Bateadores:", name_list[[i]]),
-                  covariate.labels = c("X$_{tearev}_{t}$","X$_{tearev}_{t-1}$"))
-}
+# Print the third block of results
+stargazer(hitter_simple_results_list,
+         no.space = TRUE,
+         align = TRUE,
+         type = "text",
+         title = "Bateadores: Comparación de los modelos",
+         column.labels = c("Pooling", "Within", 
+                           "Random effects","First-Differences"))
 ```
-
 
 Quitaremos la variable del periodo $t$
 
