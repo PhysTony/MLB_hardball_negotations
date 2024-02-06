@@ -561,8 +561,48 @@ stargazer(fielder_simple_stimation_2,
 
 ```
 
+# Identificación con Controles Generales
 
+Ahora, realizaremos las estimaciones del modelo empleando controles concernientes a aspectos generales de los beisbolistas, sin particularizar en la posición que ocupan en el partido.
 
+## Bateadores
+
+```{r general_identification_hitters_1, echo=FALSE, warning=FALSE}
+# Inicializar una lista para almacenar los modelos
+hitter_general_stimation_1 <- list()
+
+# Inicializar una lista para almacenar los resultados
+hitter_general_stimation_results_1 <- list()
+
+# Fórmula para el modelo
+formula <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t_1 - 1'
+
+# Iterar sobre cada base de datos y cada modelo
+for (i in 1:4) {
+  # Estimar el modelo usando plm
+  hitter_general_stimation_1[[length(hitter_general_stimation_1) + 1]] <- plm(formula_simple_1,
+                                                                            data = hitter_data_list[[i]],
+                                                                            model = model_list[[i]],
+                                                                            index = c("id", "Anio_ref"))
+  # To store the results
+  hitter_general_stimation_results_1[[length(hitter_general_stimation_results_1) + 1]] <- coeftest(hitter_general_stimation_1[[length(hitter_general_stimation_1)]],
+      vcov = vcovHC(hitter_general_stimation_1[[length(hitter_general_stimation_1)]],
+                                                type = "HC1",
+                                                cluster = "group"))
+}
+
+# Print the third block of results
+stargazer(hitter_general_stimation_1,
+         no.space = TRUE,
+         align = TRUE,
+         type = "text",
+         title = "Bateadores: Comparación de los modelos",
+         column.labels = c("Pooling", "Within", 
+                           "Random effects","First-Differences"),
+         covariate.labels = c("Edad$^{2}_{t}$","Años Contrato$^{2}_{t}$", "Equipo$^{2}_{t}$",
+                              "X$_{tearev}_{t}$", "X$_{tearev}_{t-1}$"))
+
+```
 
 
 

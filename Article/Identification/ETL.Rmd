@@ -99,6 +99,16 @@ relief_pitcher_data <- rbind(b_category_2, b_category_3)
 relief_pitcher_data <- unique(relief_pitcher_data)
 ```
 
+Obtengamos el cuadrado de algunas variables de control
+
+```{r squared_variables, echo=FALSE, warning=FALSE}
+# Calcular el cuadrado de la columna "Edad_t" y crear la nueva columna "Edad_t_2"
+hitter_data$Edad_t_2 <- hitter_data$Edad_t^2
+starting_data$Edad_t_2 <- starting_data$Edad_t^2
+hitter_data$Anios_de_contrato_t_2 <- hitter_data$Anios_de_contrato_t^2
+starting_data$Anios_de_contrato_t_2 <- starting_data$Anios_de_contrato_t^2
+```
+
 Verifiquemos que no haya duplicados con respecto a las columnas "id" y "Anio_ref":
 
 ```{r duplicates, echo=FALSE}
