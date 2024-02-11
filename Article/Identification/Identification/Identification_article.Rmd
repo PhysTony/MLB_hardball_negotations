@@ -398,12 +398,16 @@ fielder_stats_long <- list(c("Edad$_{t}^2$","Años contrato$_{t}^2$",
 # Lista de bases de datos
 hitter_data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
 fielder_data_list <- list(fielders_panel, fielders_panel, fielders_panel, fielders_fd_panel)
+hitter_data_list_2 <- list(hitters_panel, hitters_panel, hitters_fd_panel)
+fielder_data_list_2 <- list(fielders_panel, fielders_panel, fielders_fd_panel)
 
 # Lista de modelos a aplicar
 model_list <- list("pooling", "within", "random", "random")
+model_list_2 <- list("pooling", "random", "random")
 
 # Lista de nombres para imprimri
 name_list <- list("Pooling", "Within", "RE", "FD")
+name_list_2 <- list("Pooling", "RE", "FD")
 
 ```
 
@@ -451,7 +455,7 @@ stargazer(hitter_simple_stimation_1,
          covariate.labels = c("X$_{tearev}_{t}$", "X$_{tearev}_{t-1}$"))
 ```
 
-Quitaremos la variable del periodo $t$
+Quitaremos la variable del periodo $t$ y el estimador *within*:
 
 ```{r simple_identification_hitters_2, echo=FALSE, warning=FALSE}
 # Inicializar una lista para almacenar los modelos
@@ -464,11 +468,11 @@ hitter_simple_stimation_results_2 <- list()
 formula_simple_2 <- 'Y ~ X_Ingresos_equipo_t_1 - 1'
 
 # Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
+for (i in 1:3) {
   # Estimar el modelo usando plm
   hitter_simple_stimation_2[[length(hitter_simple_stimation_2) + 1]] <- plm(formula_simple_2,
-                                                                            data = hitter_data_list[[i]],
-                                                                            model = model_list[[i]],
+                                                                            data = hitter_data_list_2[[i]],
+                                                                            model = model_list_2[[i]],
                                                                             index = c("id", "Anio_ref"))
   # To store the results
   hitter_simple_stimation_results_2[[length(hitter_simple_stimation_results_2) + 1]] <- coeftest(hitter_simple_stimation_2[[length(hitter_simple_stimation_2)]],
@@ -483,8 +487,7 @@ stargazer(hitter_simple_stimation_2,
          align = TRUE,
          type = "text",
          title = "Bateadores: Comparación de los modelos",
-         column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"),
+         column.labels = c("Pooling", "Random effects","First-Differences"),
          covariate.labels = c("X$_{tearev}_{t-1}$"))
 ```
 
@@ -523,7 +526,7 @@ stargazer(fielder_simple_stimation_1,
 
 ```
 
-En este caso, la variable innecesaria corresponde a la variable rezagada.
+En este caso, la variable innecesaria corresponde a la variable rezagada, así como la *within*.
 
 ```{r simple_identification_fielders_2, echo=FALSE, warning=FALSE}
 # Inicializar una lista para almacenar los modelos
@@ -536,11 +539,11 @@ fielder_simple_stimation_results_2 <- list()
 formula_simple_3 <- 'Y ~ X_Ingresos_equipo_t - 1'
 
 # Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
+for (i in 1:3) {
   # Estimar el modelo usando plm
   fielder_simple_stimation_2[[length(fielder_simple_stimation_2) + 1]] <- plm(formula_simple_3,
-                                                                            data = fielder_data_list[[i]],
-                                                                            model = model_list[[i]],
+                                                                            data = fielder_data_list_2[[i]],
+                                                                            model = model_list_2[[i]],
                                                                             index = c("id", "Anio_ref"))
   # Para almacenar los resultados
   fielder_simple_stimation_results_2[[length(fielder_simple_stimation_results_2) + 1]] <- coeftest(fielder_simple_stimation_2[[length(fielder_simple_stimation_2)]],
@@ -555,8 +558,7 @@ stargazer(fielder_simple_stimation_2,
          align = TRUE,
          type = "text",
          title = "Lanzadores: Comparación de los modelos",
-         column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"),
+         column.labels = c("Pooling", "Random effects","First-Differences"),
          covariate.labels = c("X$_{tearev}_{t}$"))
 
 ```
@@ -575,15 +577,16 @@ hitter_general_stimation_1 <- list()
 hitter_general_stimation_results_1 <- list()
 
 # Fórmula para el modelo
-formula <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t_1 - 1'
+formula_general_1 <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t_1 - 1'
 
 # Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
+for (i in 1:3) {
   # Estimar el modelo usando plm
-  hitter_general_stimation_1[[length(hitter_general_stimation_1) + 1]] <- plm(formula_simple_1,
-                                                                            data = hitter_data_list[[i]],
-                                                                            model = model_list[[i]],
+  hitter_general_stimation_1[[length(hitter_general_stimation_1) + 1]] <- plm(formula_general_1,
+                                                                            data = hitter_data_list_2[[i]],
+                                                                            model = model_list_2[[i]],
                                                                             index = c("id", "Anio_ref"))
+  
   # To store the results
   hitter_general_stimation_results_1[[length(hitter_general_stimation_results_1) + 1]] <- coeftest(hitter_general_stimation_1[[length(hitter_general_stimation_1)]],
       vcov = vcovHC(hitter_general_stimation_1[[length(hitter_general_stimation_1)]],
@@ -597,19 +600,101 @@ stargazer(hitter_general_stimation_1,
          align = TRUE,
          type = "text",
          title = "Bateadores: Comparación de los modelos",
-         column.labels = c("Pooling", "Within", 
-                           "Random effects","First-Differences"),
+         column.labels = c("Pooling", "Random effects","First-Differences"),
          covariate.labels = c("Edad$^{2}_{t}$","Años Contrato$^{2}_{t}$", "Equipo$^{2}_{t}$",
-                              "X$_{tearev}_{t}$", "X$_{tearev}_{t-1}$"))
+                              "X$_{tearev}_{t-1}$"))
 
 ```
 
+Quitaremos todos los controles a excepción de la edad cuadrada en el caso del estimador *pooling*
+
+```{r general_identification_hitters_2, echo=FALSE, warning=FALSE}
+# Inicializar una lista para almacenar los modelos
+hitter_general_stimation_2 <- list()
+
+# Inicializar una lista para almacenar los resultados
+hitter_general_stimation_results_2 <- list()
+
+# Iterar sobre cada base de datos y cada modelo
+for (i in 1:3) {
+  # Fórmula para el modelo
+  if(i==1 | i==3){
+    formula_general_2 <- 'Y ~ Edad_t_2 + X_Ingresos_equipo_t_1 - 1'
+  }
+  else{
+    formula_general_2 <- formula_simple_2
+  }
+  # Estimar el modelo usando plm
+  hitter_general_stimation_2[[length(hitter_general_stimation_2) + 1]] <- plm(formula_general_2,
+                                                                            data = hitter_data_list_2[[i]],
+                                                                            model = model_list_2[[i]],
+                                                                            index = c("id", "Anio_ref"))
+  
+  # To store the results
+  hitter_general_stimation_results_2[[length(hitter_general_stimation_results_2) + 1]] <- coeftest(hitter_general_stimation_2[[length(hitter_general_stimation_2)]],
+      vcov = vcovHC(hitter_general_stimation_2[[length(hitter_general_stimation_2)]],
+                                                type = "HC1",
+                                                cluster = "group"))
+}
+
+# Print the third block of results
+stargazer(hitter_general_stimation_2,
+         no.space = TRUE,
+         align = TRUE,
+         type = "text",
+         title = "Bateadores: Comparación de los modelos",
+         column.labels = c("Pooling", "Random effects","First-Differences"),
+         covariate.labels = c("Edad$^{2}_{t}$",
+                              "X$_{tearev}_{t-1}$"))
+
+```
+
+## Lanzadores Iniciales
+
+```{r general_identification_fielders_2, echo=FALSE, warning=FALSE}
+# Inicializar una lista para almacenar los modelos
+fielder_general_stimation_1 <- list()
+
+# Inicializar una lista para almacenar los resultados
+fielder_general_stimation_results_1 <- list()
+
+# Fórmula para el modelo
+formula_general_1 <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t - 1'
+
+# Iterar sobre cada base de datos y cada modelo
+for (i in 1:3) {
+  # Estimar el modelo usando plm
+  fielder_general_stimation_1[[length(fielder_general_stimation_1) + 1]] <- plm(formula_general_1,
+                                                                            data = fielder_data_list_2[[i]],
+                                                                            model = model_list_2[[i]],
+                                                                            index = c("id", "Anio_ref"))
+  
+  # To store the results
+  fielder_general_stimation_results_1[[length(fielder_general_stimation_results_1) + 1]] <- coeftest(fielder_general_stimation_1[[length(fielder_general_stimation_1)]],
+      vcov = vcovHC(fielder_general_stimation_1[[length(fielder_general_stimation_1)]],
+                                                type = "HC1",
+                                                cluster = "group"))
+}
+
+# Print the third block of results
+stargazer(fielder_general_stimation_1,
+         no.space = TRUE,
+         align = TRUE,
+         type = "text",
+         title = "Lanzadores: Comparación de los modelos",
+         column.labels = c("Pooling", "Random effects","First-Differences"),
+         covariate.labels = c("Edad$^{2}_{t}$","Años Contrato$^{2}_{t}$", "Equipo$^{2}_{t}$",
+                              "X$_{tearev}_{t-1}$"))
+```
+
+Ningún control es estadísticamente significativo por lo queda el último modelo obtenido para los lanzadores iniciales en la identificación simple.
 
 
+# Identificación con Medidas de Desempeño
 
+Emplearemos las medidas de desempeño, según la posición ocupada, de los jugadores como controles
 
-
-
+## Bateadores
 
 ```{r hitter_stimation_simple_pooling, echo=FALSE, eval=TRUE}
 # Create a model to store the results
@@ -994,7 +1079,7 @@ for (j in 1:fielder_rep){
 ```
 
 
-# Estimaciones conjuntas
+## Estimaciones conjuntas
 
 Hasta el momento, solo hemos hecho el problema de identificación con distintos controles para el estimador del poder de negociación. Por lo tanto, ahora se hará la estimación con todos los controles significativos hasta que solo queden controles significativos en la estimación conjunta.
 
@@ -1339,31 +1424,10 @@ hitter_end_models <- list(pooling = hitter_stimation_1,
 stargazer(hitter_models,
          no.space = TRUE,
          align = TRUE,
-         type = "latex",
+         type = "text",
          title = "Bateadores: Comparación de los modelos",
          column.labels = c("Pooling", "Within", 
                            "RE","FD"))
-```
-
-
-Aplicaremos un teest de Hausmann a cada pareja de modelos
-
-```{r hausman_cojoint_hitter, echo=FALSE, eval=TRUE}
-# create an empty list to store the test results
-test_results_cojoint_hitter <- list()
-
-# loop through every possible pair of models
-for (i in 1:(length(hitter_end_models)-1)) {
-  for (j in (i+1):length(hitter_end_models)) {
-    # apply phtest to the pair of models
-    test_result_cojoint_hitter <- phtest(hitter_end_models[[i]], hitter_end_models[[j]])
-    # add the test result to the list
-    test_results_cojoint_hitter[[paste0(names(hitter_end_models[i]), "_vs_", names(hitter_end_models[j]))]] <- test_result_cojoint_hitter
-  }
-}
-
-# view the test results
-test_results_cojoint_hitter
 ```
 
 ### Lanzadores Iniciales
@@ -1687,312 +1751,8 @@ fielder_end_models <- list(pooling = fielder_stimation_1,
 stargazer(fielder_models,
          no.space = TRUE,
          align = TRUE,
-         type = "latex",
+         type = "text",
          title = "Lanzadores Iniciales: Comparación de los modelos - Segundo refinamiento",
          column.labels = c("Pooling", "Within", 
                            "Random effects","First-Differences"))
 ```      
-Aplicaremos un teest de Hausmann a cada pareja de modelos para los fildeadores
-
-```{r hausman_cojoint_fielder, echo=FALSE, eval=TRUE}
-# create an empty list to store the test results
-test_results <- list()
-
-# loop through every possible pair of models
-for (i in 1:(length(fielder_end_models)-1)) {
-  for (j in (i+1):length(fielder_end_models)) {
-    # apply phtest to the pair of models
-    test_result <- phtest(fielder_end_models[[i]], fielder_end_models[[j]])
-    # add the test result to the list
-    test_results[[paste0(names(fielder_end_models[i]), "_vs_", names(fielder_end_models[j]))]] <- test_result
-  }
-}
-
-# view the test results
-test_results
-```
-
-## Identificación simple
-
-Debido al impacto de los ingresos del equipo en el poder de negociación es que haremos las estimaciones sin las medidas de desempeño o/ni controles.
-
-### Sin controles
-
-```{r control_hitter_result, echo=FALSE}
-# Lista de bases de datos
-data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
-
-# Lista de modelos a aplicar
-model_list <- list("pooling", "within", "random", "random")
-
-# Lista de nombres para imprimri
-name_list <- list("Pooling", "Within", "RE", "FD")
-
-# Fórmula para el modelo
-formula <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
-
-# Inicializar una lista para almacenar los resultados
-results_list <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
-
-  # Almacenar los resultados
-  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
-}
-
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(results_list[[i]],
-                  no.space = TRUE,
-                  type = "text",
-                  title = paste("Bateadores:", name_list[[i]]),
-                  covariate.labels = c("Edad$^{2}_{t}$", "Años de contrato$^{2}_{t}$",
-                                       "Equipo$^{2}_{t}$",
-                                       "X$_{tearev}_{t}$", "X$_{tearev}_{t-1}$"))
-}
-```
-
-```{r control_filder_result, echo=FALSE}
-# Lista de bases de datos
-data_list <- list(fielders_panel, fielders_panel, fielders_panel, fielders_fd_panel)
-
-# Lista de modelos a aplicar
-model_list <- list("pooling", "within", "random", "random")
-
-# Lista de nombres para imprimri
-name_list <- list("Pooling", "Within", "RE", "FD")
-
-# Fórmula para el modelo
-formula <- 'Y ~ Edad_t_2 + Anios_de_contrato_t_2 + I(team_num_t^2) + X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
-
-# Inicializar una lista para almacenar los resultados
-results_list <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
-
-  # Almacenar los resultados
-  results_list[[paste(name_list[[i]], model)]] <- robust_se
-}
-
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(results_list[[i]],
-                  no.space = TRUE,
-                  type = "latex",
-                  title = paste("Fildeadores:", name_list[[i]]),
-                  covariate.labels = c("Edad$^{2}_{t}$", "Años de contrato$^{2}_{t}$",
-                                       "Equipo$^{2}_{t}$",
-                                       "X$_{tearev}_{t}$", "X$_{tearev}_{t-1}$"))
-}
-```
-
-
-
-
-```{r hausman_simple_hitter, echo=FALSE, eval=TRUE}
-# Inicializar una lista para almacenar los modelos
-hitter_simple_models <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Almacenar el modelo en la lista
-  hitter_simple_models[[name_list[[i]]]] <- estimated_model
-}
-
-# Realizar el test de Hausman para cada par de modelos
-hausman_results <- list()
-for (i in 1:(length(hitter_simple_models) - 1)) {
-  for (j in (i + 1):length(hitter_simple_models)) {
-    # Realizar el test de Hausman entre el par de modelos
-    test_result <- phtest(hitter_simple_models[[name_list[[i]]]], hitter_simple_models[[name_list[[j]]]])
-    
-    # Guardar el resultado en la lista
-    pair_name <- paste(name_list[i], "vs", name_list[j])
-    hausman_results[[pair_name]] <- test_result
-  }
-}
-
-# Imprimir los resultados del test de Hausman
-hausman_results
-```
-
-```{r hitter_correlation, echo=FALSE}
-# Supongamos que tienes un dataframe llamado 'data'
-# Lista de variables independientes
-independent_vars <- c("var1", "var2", "var3") # Reemplaza con los nombres reales de tus variables
-
-# Variable dependiente
-dependent_var <- "Y" # Reemplaza con el nombre real de tu variable dependiente
-
-# Función para calcular R^2 y el coeficiente de Pearson
-calculate_stats <- function(data, independent_var, dependent_var) {
-  # Calcula el coeficiente de correlación de Pearson
-  pearson_correlation <- cor(data[[independent_var]], data[[dependent_var]], use = "complete.obs")
-  
-  # Ajusta un modelo lineal
-  model <- lm(formula(paste(dependent_var, "~", independent_var)), data = data)
-  
-  # Calcula R^2
-  r_squared <- summary(model)$r.squared
-  
-  # Retorna los resultados
-  list(pearson_correlation = pearson_correlation, r_squared = r_squared)
-}
-
-# Aplicar la función a cada variable independiente y imprimir los resultados
-for (var in independent_vars) {
-  stats <- calculate_stats(data, var, dependent_var)
-  print(paste("Variable independiente:", var))
-  print(paste("Coeficiente de Correlación de Pearson:", stats$pearson_correlation))
-  print(paste("Coeficiente R^2:", stats$r_squared))
-  print("------")
-}
-```
-
-## Identificación Simple
-
-En este caso, solo haremos la identificación sin controles. Se irá refinando conforme la significancia de las variables.
-
-```{r simple_identification_hitters_1, echo=FALSE}
-# Inicializar una lista para almacenar los modelos
-hitter_simple_models <- list()
-
-# Lista de bases de datos
-data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
-
-# Lista de modelos a aplicar
-model_list <- list("pooling", "within", "random", "random")
-
-# Lista de nombres para imprimri
-name_list <- list("Pooling", "Within", "RE", "FD")
-
-# Fórmula para el modelo
-formula <- 'Y ~ X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
-
-# Inicializar una lista para almacenar los resultados
-results_list <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Almacenar el modelo en la lista
-  hitter_simple_models[[name_list[[i]]]] <- estimated_model
-  
-  # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
-
-  # Almacenar los resultados
-  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
-}
-
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(results_list[[i]],
-                  no.space = TRUE,
-                  type = "text",
-                  title = paste("Bateadores:", name_list[[i]]),
-                  covariate.labels = c("X$_{tearev}_{t}$","X$_{tearev}_{t-1}$"))
-}
-```
-
-
-Quitaremos la variable del periodo $t$
-
-```{r simple_identification_hitters_2, echo=FALSE}
-# Inicializar una lista para almacenar los modelos
-hitter_simple_models <- list()
-
-# Lista de bases de datos
-data_list <- list(hitters_panel, hitters_panel, hitters_panel, hitters_fd_panel)
-
-# Lista de modelos a aplicar
-model_list <- list("pooling", "within", "random", "random")
-
-# Lista de nombres para imprimri
-name_list <- list("Pooling", "Within", "RE", "FD")
-
-# Fórmula para el modelo
-formula <- 'Y ~ X_Ingresos_equipo_t_1 - 1'
-
-# Inicializar una lista para almacenar los resultados
-results_list <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Almacenar el modelo en la lista
-  hitter_simple_models[[name_list[[i]]]] <- estimated_model
-  
-  # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
-
-  # Almacenar los resultados
-  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
-}
-
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(results_list[[i]],
-                  no.space = TRUE,
-                  type = "text",
-                  title = paste("Bateadores:", name_list[[i]]),
-                  covariate.labels = c("X$_{tearev}_{t-1}$"))
-}
-```
-
-```{r simple_identification_fielders, echo=FALSE}
-# Lista de bases de datos
-data_list <- list(fielders_panel, fielders_panel, fielders_panel, fielders_fd_panel)
-
-# Lista de modelos a aplicar
-model_list <- list("pooling", "within", "random", "random")
-
-# Lista de nombres para imprimri
-name_list <- list("Pooling", "Within", "RE", "FD")
-
-# Fórmula para el modelo
-formula <- 'Y ~ X_Ingresos_equipo_t + X_Ingresos_equipo_t_1 - 1'
-
-# Inicializar una lista para almacenar los resultados
-results_list <- list()
-
-# Iterar sobre cada base de datos y cada modelo
-for (i in 1:4) {
-  # Estimar el modelo usando plm
-  estimated_model <- plm(formula, data = data_list[[i]], model = model_list[[i]], index = c("id", "Anio_ref"))
-  
-  # Calcular errores estándar robustos
-  robust_se <- coeftest(estimated_model, vcov = vcovHC(estimated_model, type = "HC1", cluster = "group"))
-
-  # Almacenar los resultados
-  results_list[[paste(name_list[[i]], model_list[[i]])]] <- robust_se
-}
-
-# Imprimir los resultados
-for (i in 1:4) {
-  stargazer(results_list[[i]],
-                  no.space = TRUE,
-                  type = "text",
-                  title = paste("Lanzadores Iniciales:", name_list[[i]]),
-                  covariate.labels = c("X$_{tearev}_{t}$", "X$_{tearev}_{t-1}$"))
-}
-```
