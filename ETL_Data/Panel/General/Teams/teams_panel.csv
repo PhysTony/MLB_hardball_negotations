@@ -1,0 +1,350 @@
+Acronimo,Equipo,Victorias,Juegos totales,Playoffs,Pennants won,WS ganadas,Anio,Rango,Valor_Corriente,1An_Cambio_Valor%,Valor%,Ingresos_equipo,Ingresos_Operando,Estado,Cantidad de equipos
+ARI,Arizona Diamondbacks,94,162,5,1,1,2011,20,396.0,4.0,25.0,180,6.2,Arizona,1
+ATL,Atlanta Braves,89,162,21,18,3,2011,13,482.0,7.0,0.0,201,22.2,Georgia,1
+BAL,Baltimore Orioles,69,162,11,7,3,2011,18,411.0,9.0,37.0,175,25.5,Maryland,1
+BOS,Boston Red Sox,90,162,20,12,7,2011,2,912.0,5.0,26.0,272,-1.1,Massachusetts,1
+CHC,Chicago Cubs,71,162,16,17,2,2011,4,773.0,6.0,75.0,258,23.4,Illinois,2
+CHW,Chicago White Sox,79,162,9,6,3,2011,10,526.0,13.0,8.0,210,27.6,Illinois,2
+CIN,Cincinnati Reds,79,162,13,10,5,2011,23,375.0,13.0,11.0,179,20.1,Ohio,2
+COL,Colorado Rockies,73,162,3,1,0,2011,17,414.0,8.0,19.0,188,16.3,Colorado,1
+DET,Detroit Tigers,95,162,13,11,3,2011,21,385.0,3.0,55.0,192,-29.1,Michigan,1
+HOU,Houston Astros,56,162,9,1,0,2011,14,474.0,5.0,12.0,197,14.4,Texas,2
+KC,Kansas City Royals,71,162,7,2,1,2011,26,351.0,3.0,14.0,160,10.3,Missouri,2
+LAA,Los Angeles Angels,86,162,10,1,1,2011,9,554.0,6.0,10.0,222,11.8,California,5
+LAD,Los Angeles Dodgers,82,161,26,25,6,2011,3,800.0,10.0,54.0,246,32.8,California,5
+MIA,Miami Marlins,72,162,2,2,2,2011,24,360.0,13.0,40.0,143,20.2,Florida,2
+MIL,Milwaukee Brewers,96,162,4,1,0,2011,22,376.0,7.0,32.0,179,12.4,Wisconsin,1
+MIN,Minnesota Twins,63,162,14,6,3,2011,12,490.0,21.0,20.0,213,26.5,Minnesota,1
+NYM,New York Mets,77,162,8,5,2,2011,5,747.0,-13.0,60.0,233,-6.2,New York,2
+NYY,New York Yankees,97,162,49,40,27,2011,1,1700.0,6.0,4.0,427,25.7,New York,2
+OAK,Oakland Athletics,74,162,23,15,9,2011,29,307.0,4.0,29.0,161,23.2,California,5
+PHI,Philadelphia Phillies,102,162,14,7,2,2011,6,609.0,13.0,29.0,239,8.9,Pennsylvania,2
+PIT,Pittsburgh Pirates,72,162,14,9,5,2011,30,304.0,5.0,42.0,160,26.4,Pennsylvania,2
+SD,San Diego Padres,71,162,5,2,0,2011,19,406.0,0.0,49.0,159,37.2,California,5
+SEA,Seattle Mariners,67,162,4,0,0,2011,15,449.0,2.0,15.0,204,9.9,Washington,1
+SF,San Francisco Giants,86,162,22,23,6,2011,7,563.0,16.0,21.0,230,29.9,California,5
+STL,St. Louis Cardinals,90,162,25,23,11,2011,11,518.0,6.0,53.0,207,19.8,Missouri,2
+TB,Tampa Bay Rays,91,162,3,1,0,2011,28,331.0,5.0,35.0,166,6.8,Florida,2
+TEX,Texas Rangers,96,162,5,2,0,2011,8,561.0,25.0,66.0,206,22.6,Texas,2
+TOR,Toronto Blue Jays,81,162,5,2,2,2011,27,337.0,3.0,0.0,168,3.6,Toronto,1
+WSH,Washington Nationals,80,161,1,1,0,2011,16,417.0,8.0,60.0,194,36.6,Washington DC,1
+ARI,Arizona Diamondbacks,81,162,5,1,1,2012,23,447.0,13.0,39.0,186,27.2,Arizona,1
+ATL,Atlanta Braves,94,162,22,18,3,2012,15,508.0,5.0,0.0,203,20.7,Georgia,1
+BAL,Baltimore Orioles,93,162,12,7,3,2012,19,460.0,12.0,33.0,179,12.9,Maryland,1
+BOS,Boston Red Sox,69,162,20,12,7,2012,3,1000.0,10.0,24.0,310,25.4,Massachusetts,1
+CHC,Chicago Cubs,61,162,16,17,2,2012,4,879.0,14.0,66.0,266,28.1,Illinois,2
+CHW,Chicago White Sox,85,162,9,6,3,2012,10,600.0,14.0,7.0,214,10.7,Illinois,2
+CIN,Cincinnati Reds,97,162,14,10,5,2012,24,424.0,13.0,10.0,185,17.1,Ohio,2
+COL,Colorado Rockies,64,162,3,1,0,2012,18,464.0,12.0,15.0,193,14.4,Colorado,1
+DET,Detroit Tigers,88,162,14,11,4,2012,17,478.0,24.0,39.0,217,8.2,Michigan,1
+HOU,Houston Astros,55,162,9,1,0,2012,13,549.0,16.0,41.0,196,24.3,Texas,2
+KC,Kansas City Royals,72,162,7,2,1,2012,27,354.0,1.0,14.0,161,28.5,Missouri,2
+LAA,Los Angeles Angels,89,162,10,1,1,2012,8,656.0,18.0,3.0,226,-1.2,California,5
+LAD,Los Angeles Dodgers,86,162,26,25,6,2012,2,1400.0,75.0,41.0,230,1.2,California,5
+MIA,Miami Marlins,69,162,2,2,2,2012,21,450.0,25.0,32.0,148,8.9,Florida,2
+MIL,Milwaukee Brewers,83,162,4,1,0,2012,22,448.0,19.0,27.0,195,19.2,Wisconsin,1
+MIN,Minnesota Twins,66,162,14,6,3,2012,14,510.0,4.0,20.0,213,16.6,Minnesota,1
+NYM,New York Mets,74,162,8,5,2,2012,6,719.0,-4.0,69.0,225,-40.8,New York,2
+NYY,New York Yankees,95,162,50,40,27,2012,1,1850.0,9.0,2.0,439,10.0,New York,2
+OAK,Oakland Athletics,94,162,24,15,9,2012,30,321.0,5.0,28.0,160,14.6,California,5
+PHI,Philadelphia Phillies,81,162,14,7,2,2012,5,723.0,19.0,24.0,249,-11.6,Pennsylvania,2
+PIT,Pittsburgh Pirates,79,162,14,9,5,2012,28,336.0,11.0,38.0,168,15.9,Pennsylvania,2
+SD,San Diego Padres,76,162,5,2,0,2012,20,458.0,13.0,44.0,163,23.2,California,5
+SEA,Seattle Mariners,75,162,4,0,0,2012,12,585.0,30.0,0.0,210,2.2,Washington,1
+SF,San Francisco Giants,94,162,23,23,7,2012,9,643.0,14.0,16.0,230,8.8,California,5
+STL,St. Louis Cardinals,88,162,26,23,11,2012,11,591.0,14.0,47.0,233,25.0,Missouri,2
+TB,Tampa Bay Rays,90,162,3,1,0,2012,29,323.0,-2.0,36.0,161,26.2,Florida,2
+TEX,Texas Rangers,93,162,6,2,0,2012,7,674.0,20.0,55.0,233,15.3,Texas,2
+TOR,Toronto Blue Jays,73,162,5,2,2,2012,25,413.0,23.0,0.0,188,24.9,Toronto,1
+WSH,Washington Nationals,98,162,2,1,0,2012,16,480.0,15.0,52.0,200,25.9,Washington DC,1
+ARI,Arizona Diamondbacks,81,162,5,1,1,2013,19,584.0,31.0,24.0,195,7.6,Arizona,1
+ATL,Atlanta Braves,96,162,23,18,3,2013,15,629.0,24.0,0.0,225,12.4,Georgia,1
+BAL,Baltimore Orioles,85,162,12,7,3,2013,17,618.0,34.0,24.0,206,30.1,Maryland,1
+BOS,Boston Red Sox,97,162,21,13,8,2013,3,1312.0,31.0,18.0,336,23.9,Massachusetts,1
+CHC,Chicago Cubs,66,162,16,17,2,2013,4,1000.0,14.0,58.0,274,32.1,Illinois,2
+CHW,Chicago White Sox,63,162,9,6,3,2013,11,692.0,15.0,6.0,216,22.9,Illinois,2
+CIN,Cincinnati Reds,90,162,15,10,5,2013,24,546.0,29.0,9.0,202,20.9,Ohio,2
+COL,Colorado Rockies,74,162,3,1,0,2013,25,537.0,16.0,13.0,199,18.7,Colorado,1
+DET,Detroit Tigers,93,162,15,11,4,2013,13,643.0,35.0,28.0,238,-0.4,Michigan,1
+HOU,Houston Astros,51,162,9,1,0,2013,16,626.0,14.0,36.0,196,24.7,Texas,2
+KC,Kansas City Royals,86,162,7,2,1,2013,29,457.0,29.0,11.0,169,16.3,Missouri,2
+LAA,Los Angeles Angels,78,162,10,1,1,2013,9,718.0,9.0,3.0,239,-12.9,California,5
+LAD,Los Angeles Dodgers,92,162,27,25,6,2013,2,1615.0,15.0,26.0,245,3.2,California,5
+MIA,Miami Marlins,62,162,2,2,2,2013,26,520.0,16.0,29.0,195,-7.1,Florida,2
+MIL,Milwaukee Brewers,74,162,4,1,0,2013,22,562.0,25.0,21.0,201,9.0,Wisconsin,1
+MIN,Minnesota Twins,66,162,14,6,3,2013,20,578.0,13.0,17.0,214,10.8,Minnesota,1
+NYM,New York Mets,74,162,8,5,2,2013,6,811.0,13.0,53.0,232,-2.4,New York,2
+NYY,New York Yankees,85,162,50,40,27,2013,1,2300.0,24.0,2.0,471,1.4,New York,2
+OAK,Oakland Athletics,96,162,25,15,9,2013,28,468.0,46.0,19.0,173,27.5,California,5
+PHI,Philadelphia Phillies,73,162,14,7,2,2013,5,893.0,24.0,20.0,279,0.6,Pennsylvania,2
+PIT,Pittsburgh Pirates,94,162,15,9,5,2013,27,479.0,43.0,27.0,178,26.8,Pennsylvania,2
+SD,San Diego Padres,76,162,5,2,0,2013,18,600.0,31.0,50.0,189,29.9,California,5
+SEA,Seattle Mariners,71,162,4,0,0,2013,12,644.0,10.0,0.0,215,12.9,Washington,1
+SF,San Francisco Giants,76,162,23,23,7,2013,7,786.0,22.0,12.0,262,17.6,California,5
+STL,St. Louis Cardinals,97,162,27,23,11,2013,10,716.0,21.0,38.0,239,19.9,Missouri,2
+TB,Tampa Bay Rays,91,162,4,1,0,2013,30,451.0,40.0,26.0,167,10.0,Florida,2
+TEX,Texas Rangers,91,162,6,2,0,2013,8,764.0,13.0,48.0,239,-8.7,Texas,2
+TOR,Toronto Blue Jays,74,162,5,2,2,2013,21,568.0,38.0,0.0,203,-4.8,Toronto,1
+WSH,Washington Nationals,86,162,2,1,0,2013,14,631.0,31.0,40.0,225,28.4,Washington DC,1
+ARI,Arizona Diamondbacks,64,161,5,1,1,2014,21,585.0,0.0,25.0,192,-5.8,Arizona,1
+ATL,Atlanta Braves,79,162,23,18,3,2014,11,730.0,16.0,0.0,253,38.4,Georgia,1
+BAL,Baltimore Orioles,96,162,13,7,3,2014,16,620.0,0.0,24.0,198,1.6,Maryland,1
+BOS,Boston Red Sox,71,162,21,13,8,2014,3,1500.0,14.0,0.0,357,25.3,Massachusetts,1
+CHC,Chicago Cubs,73,162,16,17,2,2014,4,1200.0,20.0,35.0,266,27.3,Illinois,2
+CHW,Chicago White Sox,73,162,9,6,3,2014,14,695.0,0.0,1.0,210,-2.7,Illinois,2
+CIN,Cincinnati Reds,76,162,15,10,5,2014,20,600.0,10.0,7.0,209,-11.6,Ohio,2
+COL,Colorado Rockies,66,161,3,1,0,2014,22,575.0,7.0,11.0,197,13.7,Colorado,1
+DET,Detroit Tigers,90,162,16,11,4,2014,15,680.0,6.0,26.0,262,7.5,Michigan,1
+HOU,Houston Astros,70,162,9,1,0,2014,26,530.0,-15.0,49.0,186,55.9,Texas,2
+KC,Kansas City Royals,89,162,8,3,1,2014,29,490.0,7.0,11.0,178,-6.5,Missouri,2
+LAA,Los Angeles Angels,98,161,10,1,1,2014,10,775.0,8.0,4.0,253,5.8,California,5
+LAD,Los Angeles Dodgers,93,161,28,25,6,2014,2,2000.0,24.0,20.0,293,-80.9,California,5
+MIA,Miami Marlins,77,162,2,2,2,2014,27,500.0,-4.0,44.0,159,-8.0,Florida,2
+MIL,Milwaukee Brewers,82,162,4,1,0,2014,25,565.0,1.0,9.0,197,6.8,Wisconsin,1
+MIN,Minnesota Twins,70,162,14,6,3,2014,19,605.0,5.0,37.0,221,30.2,Minnesota,1
+NYM,New York Mets,79,162,8,5,2,2014,9,800.0,-1.0,44.0,238,1.6,New York,2
+NYY,New York Yankees,84,162,50,40,27,2014,1,2500.0,9.0,1.0,461,-9.1,New York,2
+OAK,Oakland Athletics,88,162,26,15,9,2014,28,495.0,6.0,13.0,187,27.4,California,5
+PHI,Philadelphia Phillies,73,162,14,7,2,2014,6,975.0,9.0,10.0,265,-20.9,Pennsylvania,2
+PIT,Pittsburgh Pirates,88,162,16,9,5,2014,23,572.0,19.0,16.0,204,21.8,Pennsylvania,2
+SD,San Diego Padres,77,161,5,2,0,2014,17,615.0,2.0,31.0,207,33.0,California,5
+SEA,Seattle Mariners,86,161,4,0,0,2014,12,710.0,10.0,2.0,210,5.3,Washington,1
+SF,San Francisco Giants,87,161,25,23,8,2014,5,1000.0,27.0,9.0,316,53.3,California,5
+STL,St. Louis Cardinals,89,161,27,23,11,2014,8,820.0,15.0,35.0,283,65.2,Missouri,2
+TB,Tampa Bay Rays,77,162,4,1,0,2014,30,485.0,8.0,28.0,181,15.3,Florida,2
+TEX,Texas Rangers,67,162,6,2,0,2014,7,825.0,8.0,20.0,257,-4.9,Texas,2
+TOR,Toronto Blue Jays,83,162,5,2,2,2014,18,610.0,7.0,0.0,218,-14.9,Toronto,1
+WSH,Washington Nationals,96,162,3,1,0,2014,13,700.0,11.0,49.0,244,22.4,Washington DC,1
+ARI,Arizona Diamondbacks,78,161,5,1,1,2015,24,840.0,44.0,17.0,211,-2.2,Arizona,1
+ATL,Atlanta Braves,65,160,23,18,3,2015,12,1150.0,58.0,0.0,267,33.2,Georgia,1
+BAL,Baltimore Orioles,80,161,13,7,3,2015,15,1000.0,61.0,15.0,245,31.4,Maryland,1
+BOS,Boston Red Sox,78,161,21,13,8,2015,3,2100.0,40.0,0.0,370,49.2,Massachusetts,1
+CHC,Chicago Cubs,96,161,17,17,2,2015,5,1800.0,50.0,24.0,302,73.3,Illinois,2
+CHW,Chicago White Sox,76,161,9,6,3,2015,16,975.0,40.0,5.0,227,31.9,Illinois,2
+CIN,Cincinnati Reds,64,161,15,10,5,2015,20,885.0,48.0,6.0,227,2.2,Ohio,2
+COL,Colorado Rockies,67,161,3,1,0,2015,23,855.0,49.0,7.0,214,12.6,Colorado,1
+DET,Detroit Tigers,73,160,16,11,4,2015,13,1125.0,65.0,15.0,254,-20.7,Michigan,1
+HOU,Houston Astros,86,161,10,1,0,2015,26,800.0,51.0,34.0,175,21.6,Texas,2
+KC,Kansas City Royals,94,161,9,4,2,2015,28,700.0,43.0,8.0,231,26.6,Missouri,2
+LAA,Los Angeles Angels,85,161,10,1,1,2015,8,1300.0,68.0,0.0,304,16.7,California,5
+LAD,Los Angeles Dodgers,91,161,29,25,6,2015,2,2400.0,20.0,17.0,403,-12.2,California,5
+MIA,Miami Marlins,71,161,2,2,2,2015,29,650.0,30.0,34.0,188,15.4,Florida,2
+MIL,Milwaukee Brewers,68,161,4,1,0,2015,21,875.0,55.0,6.0,226,11.3,Wisconsin,1
+MIN,Minnesota Twins,83,161,14,6,3,2015,18,895.0,48.0,25.0,223,21.3,Minnesota,1
+NYM,New York Mets,89,161,9,5,2,2015,7,1350.0,69.0,26.0,263,25.0,New York,2
+NYY,New York Yankees,87,161,51,40,27,2015,1,3200.0,28.0,0.0,508,8.1,New York,2
+OAK,Oakland Athletics,68,161,26,15,9,2015,27,725.0,46.0,8.0,202,20.8,California,5
+PHI,Philadelphia Phillies,62,161,14,7,2,2015,10,1250.0,28.0,8.0,265,-39.0,Pennsylvania,2
+PIT,Pittsburgh Pirates,97,161,17,9,5,2015,17,900.0,57.0,10.0,229,43.6,Pennsylvania,2
+SD,San Diego Padres,74,161,5,2,0,2015,19,890.0,45.0,22.0,224,35.0,California,5
+SEA,Seattle Mariners,75,161,4,0,0,2015,14,1100.0,55.0,0.0,250,26.4,Washington,1
+SF,San Francisco Giants,84,161,25,23,8,2015,4,2000.0,100.0,4.0,387,68.4,California,5
+STL,St. Louis Cardinals,100,160,28,23,11,2015,6,1400.0,71.0,21.0,294,73.6,Missouri,2
+TB,Tampa Bay Rays,79,161,4,1,0,2015,30,625.0,29.0,22.0,188,7.9,Florida,2
+TEX,Texas Rangers,87,161,7,2,0,2015,11,1220.0,48.0,13.0,266,3.5,Texas,2
+TOR,Toronto Blue Jays,93,161,6,2,2,2015,22,870.0,43.0,0.0,227,-17.9,Toronto,1
+WSH,Washington Nationals,83,161,3,1,0,2015,9,1280.0,83.0,27.0,287,41.4,Washington DC,1
+ARI,Arizona Diamondbacks,68,161,5,1,1,2016,19,0.925,0.1,0.15,223,17.4,Arizona,1
+ATL,Atlanta Braves,67,160,23,18,3,2016,13,1.175,0.02,0.0,266,27.8,Georgia,1
+BAL,Baltimore Orioles,88,161,14,7,3,2016,17,1.0,0.0,0.18,239,8.8,Maryland,1
+BOS,Boston Red Sox,93,161,22,13,8,2016,3,2.3,0.1,0.0,398,43.2,Massachusetts,1
+CHC,Chicago Cubs,102,160,18,17,3,2016,5,2.2,0.22,0.19,340,50.8,Illinois,2
+CHW,Chicago White Sox,78,161,9,6,3,2016,16,1.05,0.08,0.07,240,20.2,Illinois,2
+CIN,Cincinnati Reds,68,161,15,10,5,2016,21,0.905,0.02,0.08,237,9.0,Ohio,2
+COL,Colorado Rockies,75,161,3,1,0,2016,26,0.86,0.01,0.07,227,5.5,Colorado,1
+DET,Detroit Tigers,86,160,16,11,4,2016,14,1.15,0.02,0.15,268,11.0,Michigan,1
+HOU,Houston Astros,84,161,10,1,0,2016,15,1.1,0.38,0.25,270,66.6,Texas,2
+KC,Kansas City Royals,81,161,9,4,2,2016,25,0.865,0.24,0.07,273,39.0,Missouri,2
+LAA,Los Angeles Angels,73,161,10,1,1,2016,8,1.34,0.03,0.0,312,41.7,California,5
+LAD,Los Angeles Dodgers,91,161,30,25,6,2016,2,2.5,0.04,0.16,438,-73.2,California,5
+MIA,Miami Marlins,79,160,2,2,2,2016,29,0.675,0.04,0.31,199,15.8,Florida,2
+MIL,Milwaukee Brewers,72,161,4,1,0,2016,24,0.875,0.0,0.06,234,27.0,Wisconsin,1
+MIN,Minnesota Twins,58,161,14,6,3,2016,20,0.91,0.02,0.22,240,18.5,Minnesota,1
+NYM,New York Mets,87,161,9,5,2,2016,6,1.65,0.22,0.18,313,46.8,New York,2
+NYY,New York Yankees,84,161,52,40,27,2016,1,3.4,0.06,0.0,516,13.0,New York,2
+OAK,Oakland Athletics,68,161,26,15,9,2016,28,0.725,0.0,0.08,208,32.7,California,5
+PHI,Philadelphia Phillies,70,161,14,7,2,2016,10,1.235,-0.01,0.07,263,-8.9,Pennsylvania,2
+PIT,Pittsburgh Pirates,78,160,17,9,5,2016,18,0.975,0.08,0.1,244,35.3,Pennsylvania,2
+SD,San Diego Padres,68,161,5,2,0,2016,23,0.89,0.0,0.2,244,32.9,California,5
+SEA,Seattle Mariners,86,161,4,0,0,2016,12,1.2,0.09,0.0,271,16.8,Washington,1
+SF,San Francisco Giants,86,161,26,23,8,2016,4,2.25,0.12,0.02,409,72.6,California,5
+STL,St. Louis Cardinals,85,161,28,23,11,2016,7,1.6,0.14,0.16,300,59.8,Missouri,2
+TB,Tampa Bay Rays,67,161,4,1,0,2016,30,0.65,0.04,0.21,193,8.2,Florida,2
+TEX,Texas Rangers,95,161,8,2,0,2016,11,1.225,0.0,0.13,275,-4.7,Texas,2
+TOR,Toronto Blue Jays,88,161,7,2,2,2016,22,0.9,0.03,0.0,241,1.2,Toronto,1
+WSH,Washington Nationals,94,161,4,1,0,2016,9,1.3,0.02,0.26,293,22.5,Washington DC,1
+ARI,Arizona Diamondbacks,93,162,6,1,1,2017,20,1.15,0.24,0.12,253,47.2,Arizona,1
+ATL,Atlanta Braves,72,162,23,18,3,2017,12,1.5,0.28,0.14,275,15.2,Georgia,1
+BAL,Baltimore Orioles,75,162,14,7,3,2017,19,1.175,0.18,0.15,253,-2.1,Maryland,1
+BOS,Boston Red Sox,93,162,23,13,8,2017,3,2.7,0.17,0.0,434,78.6,Massachusetts,1
+CHC,Chicago Cubs,92,162,19,17,3,2017,4,2.675,0.22,0.16,434,83.8,Illinois,2
+CHW,Chicago White Sox,67,162,9,6,3,2017,15,1.35,0.29,0.07,269,41.9,Illinois,2
+CIN,Cincinnati Reds,68,162,15,10,5,2017,28,0.915,0.01,0.11,229,15.9,Ohio,2
+COL,Colorado Rockies,87,162,4,1,0,2017,23,1.0,0.16,0.08,248,26.6,Colorado,1
+DET,Detroit Tigers,64,162,16,11,4,2017,18,1.2,0.04,0.14,275,-36.4,Michigan,1
+HOU,Houston Astros,101,162,11,2,1,2017,13,1.45,0.32,0.19,299,75.9,Texas,2
+KC,Kansas City Royals,80,162,9,4,2,2017,24,0.95,0.1,0.08,246,-0.9,Missouri,2
+LAA,Los Angeles Angels,80,162,10,1,1,2017,8,1.75,0.31,0.0,350,68.1,California,5
+LAD,Los Angeles Dodgers,104,162,31,25,6,2017,2,2.75,0.1,0.15,462,-20.5,California,5
+MIA,Miami Marlins,77,162,2,2,2,2017,25,0.94,0.39,0.22,206,-2.2,Florida,2
+MIL,Milwaukee Brewers,86,162,4,1,0,2017,26,0.925,0.06,0.08,239,58.2,Wisconsin,1
+MIN,Minnesota Twins,85,162,15,6,3,2017,22,1.025,0.13,0.2,249,29.9,Minnesota,1
+NYM,New York Mets,70,162,9,5,2,2017,6,2.0,0.21,0.15,332,31.7,New York,2
+NYY,New York Yankees,91,162,53,40,27,2017,1,3.7,0.09,0.0,526,39.0,New York,2
+OAK,Oakland Athletics,75,162,26,15,9,2017,29,0.88,0.21,0.09,216,25.5,California,5
+PHI,Philadelphia Phillies,66,162,14,7,2,2017,9,1.65,0.34,0.05,325,87.7,Pennsylvania,2
+PIT,Pittsburgh Pirates,75,162,17,9,5,2017,17,1.25,0.28,0.08,265,51.0,Pennsylvania,2
+SD,San Diego Padres,71,162,5,2,0,2017,21,1.125,0.26,0.16,259,22.8,California,5
+SEA,Seattle Mariners,78,162,4,0,0,2017,14,1.4,0.17,0.0,289,11.6,Washington,1
+SF,San Francisco Giants,64,162,26,23,8,2017,5,2.65,0.18,0.0,428,78.1,California,5
+STL,St. Louis Cardinals,83,162,28,23,11,2017,7,1.8,0.12,0.13,310,40.5,Missouri,2
+TB,Tampa Bay Rays,80,162,4,1,0,2017,30,0.825,0.27,0.17,205,32.1,Florida,2
+TEX,Texas Rangers,78,162,8,2,0,2017,11,1.55,0.27,0.1,298,18.6,Texas,2
+TOR,Toronto Blue Jays,76,162,7,2,2,2017,16,1.3,0.44,0.0,278,22.9,Toronto,1
+WSH,Washington Nationals,97,163,5,1,0,2017,10,1.6,0.23,0.21,304,37.6,Washington DC,1
+ARI,Arizona Diamondbacks,82,162,6,1,1,2018,20,1.21,0.05,0.12,258,34.0,Arizona,1
+ATL,Atlanta Braves,90,162,24,18,3,2018,12,1.625,0.08,0.21,336,46.0,Georgia,1
+BAL,Baltimore Orioles,47,162,14,7,3,2018,21,1.2,0.02,0.15,252,-26.0,Maryland,1
+BOS,Boston Red Sox,108,162,24,14,9,2018,5,2.8,0.04,0.0,453,86.0,Massachusetts,1
+CHC,Chicago Cubs,95,163,20,17,3,2018,3,2.9,0.08,0.15,457,102.0,Illinois,2
+CHW,Chicago White Sox,62,162,9,6,3,2018,14,1.5,0.11,0.07,266,30.0,Illinois,2
+CIN,Cincinnati Reds,67,162,15,10,5,2018,28,1.01,0.1,0.1,243,14.0,Ohio,2
+COL,Colorado Rockies,91,163,5,1,0,2018,23,1.1,0.1,0.08,266,15.0,Colorado,1
+DET,Detroit Tigers,64,162,16,11,4,2018,19,1.225,0.02,0.13,277,-46.0,Michigan,1
+HOU,Houston Astros,103,162,12,2,1,2018,11,1.65,0.14,0.17,347,77.0,Texas,2
+KC,Kansas City Royals,80,162,9,4,2,2018,27,1.015,0.07,0.07,245,-17.0,Missouri,2
+LAA,Los Angeles Angels,80,162,10,1,1,2018,8,1.8,0.03,0.0,334,25.0,California,5
+LAD,Los Angeles Dodgers,92,163,32,25,6,2018,2,3.0,0.09,0.14,522,68.0,California,5
+MIA,Miami Marlins,63,161,2,2,2,2018,29,1.0,0.06,0.4,219,-53.0,Florida,2
+MIL,Milwaukee Brewers,96,163,5,1,0,2018,25,1.03,0.11,0.07,255,67.0,Wisconsin,1
+MIN,Minnesota Twins,78,162,15,6,3,2018,22,1.15,0.12,0.17,261,23.0,Minnesota,1
+NYM,New York Mets,77,162,9,5,2,2018,6,2.1,0.05,0.14,336,17.0,New York,2
+NYY,New York Yankees,100,162,54,40,27,2018,1,4.0,0.08,0.0,619,14.0,New York,2
+OAK,Oakland Athletics,97,162,27,15,9,2018,26,1.02,0.16,0.07,210,15.0,California,5
+PHI,Philadelphia Phillies,80,162,14,7,2,2018,9,1.7,0.03,0.05,329,91.0,Pennsylvania,2
+PIT,Pittsburgh Pirates,82,161,17,9,5,2018,18,1.26,0.01,0.08,258,35.0,Pennsylvania,2
+SD,San Diego Padres,66,162,5,2,0,2018,17,1.27,0.13,0.14,266,26.0,California,5
+SEA,Seattle Mariners,89,162,4,0,0,2018,15,1.45,0.04,0.0,288,-2.4,Washington,1
+SF,San Francisco Giants,73,162,26,23,8,2018,4,2.85,0.08,0.0,445,84.0,California,5
+STL,St. Louis Cardinals,88,162,28,23,11,2018,7,1.9,0.06,0.12,319,40.0,Missouri,2
+TB,Tampa Bay Rays,90,162,4,1,0,2018,30,0.9,0.09,0.16,219,23.0,Florida,2
+TEX,Texas Rangers,67,162,8,2,0,2018,13,1.6,0.03,0.1,311,30.0,Texas,2
+TOR,Toronto Blue Jays,73,162,7,2,2,2018,16,1.35,0.04,0.0,274,-1.3,Toronto,1
+WSH,Washington Nationals,82,162,5,1,0,2018,10,1.675,0.05,0.2,311,11.0,Washington DC,1
+ARI,Arizona Diamondbacks,85,162,6,1,1,2019,18,1.29,0.07,0.14,275,10.0,Arizona,1
+ATL,Atlanta Braves,97,161,25,18,3,2019,12,1.7,0.05,0.19,344,71.0,Georgia,1
+BAL,Baltimore Orioles,54,161,14,7,3,2019,19,1.28,0.07,0.14,251,-6.5,Maryland,1
+BOS,Boston Red Sox,83,161,24,14,9,2019,3,3.2,0.14,0.0,516,84.0,Massachusetts,1
+CHC,Chicago Cubs,84,162,20,17,3,2019,4,3.1,0.07,0.14,452,87.0,Illinois,2
+CHW,Chicago White Sox,72,161,9,6,3,2019,14,1.6,0.07,0.06,272,76.0,Illinois,2
+CIN,Cincinnati Reds,75,162,15,10,5,2019,27,1.05,0.04,0.1,257,37.0,Ohio,2
+COL,Colorado Rockies,70,161,5,1,0,2019,22,1.225,0.11,0.07,291,23.0,Colorado,1
+DET,Detroit Tigers,47,161,16,11,4,2019,21,1.25,0.02,0.12,276,19.0,Michigan,1
+HOU,Houston Astros,106,161,13,3,1,2019,10,1.775,0.08,0.15,368,66.0,Texas,2
+KC,Kansas City Royals,58,162,9,4,2,2019,28,1.025,0.01,0.07,244,5.3,Missouri,2
+LAA,Los Angeles Angels,72,161,10,1,1,2019,8,1.9,0.06,0.0,348,19.0,California,5
+LAD,Los Angeles Dodgers,105,161,33,25,6,2019,2,3.3,0.1,0.12,549,95.0,California,5
+MIA,Miami Marlins,57,162,2,2,2,2019,30,1.0,0.0,0.4,224,-22.0,Florida,2
+MIL,Milwaukee Brewers,89,161,6,1,0,2019,24,1.175,0.14,0.06,288,66.0,Wisconsin,1
+MIN,Minnesota Twins,101,162,16,6,3,2019,23,1.2,0.04,0.21,269,14.0,Minnesota,1
+NYM,New York Mets,85,161,9,5,2,2019,6,2.3,0.1,0.13,340,30.0,New York,2
+NYY,New York Yankees,103,162,55,40,27,2019,1,4.6,0.15,0.0,668,29.0,New York,2
+OAK,Oakland Athletics,97,162,28,15,9,2019,26,1.1,0.08,0.07,218,33.0,California,5
+PHI,Philadelphia Phillies,81,162,14,7,2,2019,9,1.85,0.09,0.04,341,94.0,Pennsylvania,2
+PIT,Pittsburgh Pirates,69,162,17,9,5,2019,20,1.275,0.01,0.08,254,39.0,Pennsylvania,2
+SD,San Diego Padres,70,162,5,2,0,2019,17,1.35,0.06,0.1,277,49.0,California,5
+SEA,Seattle Mariners,68,162,4,0,0,2019,15,1.575,0.09,0.13,320,31.0,Washington,1
+SF,San Francisco Giants,77,161,26,23,8,2019,5,3.0,0.05,0.0,462,84.0,California,5
+STL,St. Louis Cardinals,91,162,29,23,11,2019,7,2.1,0.11,0.11,356,65.0,Missouri,2
+TB,Tampa Bay Rays,96,161,5,1,0,2019,29,1.01,0.12,0.2,228,27.0,Florida,2
+TEX,Texas Rangers,78,162,8,2,0,2019,13,1.65,0.03,0.46,324,39.0,Texas,2
+TOR,Toronto Blue Jays,66,161,7,2,2,2019,16,1.5,0.11,0.0,265,-16.0,Toronto,1
+WSH,Washington Nationals,93,162,6,1,1,2019,11,1.75,0.04,0.2,336,24.0,Washington DC,1
+ARI,Arizona Diamondbacks,25,60,6,1,1,2020,20,1.29,0.0,0.14,278,27.0,Arizona,1
+ATL,Atlanta Braves,35,60,26,18,3,2020,12,1.8,0.06,0.21,382,92.0,Georgia,1
+BAL,Baltimore Orioles,27,62,14,7,3,2020,18,1.4,0.09,0.12,256,57.0,Maryland,1
+BOS,Boston Red Sox,24,60,24,14,9,2020,3,3.3,0.03,0.0,519,89.0,Massachusetts,1
+CHC,Chicago Cubs,32,58,21,17,3,2020,4,3.2,0.03,0.13,471,68.0,Illinois,2
+CHW,Chicago White Sox,35,60,10,6,3,2020,14,1.65,0.03,0.06,285,66.0,Illinois,2
+CIN,Cincinnati Reds,31,59,16,10,5,2020,27,1.075,0.02,0.09,276,23.0,Ohio,2
+COL,Colorado Rockies,26,60,5,1,0,2020,21,1.275,0.04,0.07,305,29.0,Colorado,1
+DET,Detroit Tigers,23,57,16,11,4,2020,23,1.25,0.0,0.12,276,30.0,Michigan,1
+HOU,Houston Astros,29,60,14,3,1,2020,11,1.85,0.04,0.15,420,99.0,Texas,2
+KC,Kansas City Royals,25,59,9,4,2,2020,29,1.025,0.0,0.24,251,27.0,Missouri,2
+LAA,Los Angeles Angels,26,60,10,1,1,2020,9,1.975,0.04,0.0,377,61.0,California,5
+LAD,Los Angeles Dodgers,42,59,34,25,7,2020,2,3.4,0.03,0.12,556,96.0,California,5
+MIA,Miami Marlins,31,60,3,2,2,2020,30,0.98,-0.02,0.41,222,-5.9,Florida,2
+MIL,Milwaukee Brewers,29,60,7,1,0,2020,24,1.2,0.02,0.06,295,43.0,Wisconsin,1
+MIN,Minnesota Twins,36,60,17,6,3,2020,19,1.3,0.08,0.19,297,43.0,Minnesota,1
+NYM,New York Mets,26,60,9,5,2,2020,6,2.4,0.04,0.15,362,7.0,New York,2
+NYY,New York Yankees,33,60,56,40,27,2020,1,5.0,0.09,0.0,683,35.0,New York,2
+OAK,Oakland Athletics,36,60,29,15,9,2020,26,1.1,0.0,0.09,225,10.0,California,5
+PHI,Philadelphia Phillies,28,60,14,7,2,2020,8,2.0,0.08,0.04,392,73.0,Pennsylvania,2
+PIT,Pittsburgh Pirates,19,59,17,9,5,2020,22,1.26,-0.01,0.08,273,66.0,Pennsylvania,2
+SD,San Diego Padres,38,61,6,2,0,2020,17,1.45,0.07,0.08,299,52.0,California,5
+SEA,Seattle Mariners,27,61,4,0,0,2020,16,1.6,0.02,0.12,315,31.0,Washington,1
+SF,San Francisco Giants,29,60,26,23,8,2020,5,3.1,0.03,0.0,452,96.0,California,5
+STL,St. Louis Cardinals,30,58,30,23,11,2020,7,2.2,0.05,0.1,383,72.0,Missouri,2
+TB,Tampa Bay Rays,41,61,6,2,0,2020,28,1.05,0.04,0.19,264,68.0,Florida,2
+TEX,Texas Rangers,22,59,8,2,0,2020,13,1.75,0.06,0.43,335,61.0,Texas,2
+TOR,Toronto Blue Jays,32,61,8,2,2,2020,15,1.625,0.08,0.0,265,16.0,Toronto,1
+WSH,Washington Nationals,26,62,6,1,1,2020,10,1.9,0.09,0.18,370,27.0,Washington DC,1
+ARI,Arizona Diamondbacks,53,163,6,1,1,2021,20,1.32,0.02,0.08,118,-47.0,Arizona,1
+ATL,Atlanta Braves,88,161,27,18,4,2021,11,1.875,0.04,0.26,132,-67.0,Georgia,1
+BAL,Baltimore Orioles,52,162,14,7,3,2021,18,1.43,0.02,0.14,115,-23.0,Maryland,1
+BOS,Boston Red Sox,92,162,25,14,9,2021,3,3.465,0.05,0.0,152,-70.0,Massachusetts,1
+CHC,Chicago Cubs,71,162,21,17,3,2021,4,3.36,0.05,0.13,163,-73.0,Illinois,2
+CHW,Chicago White Sox,93,162,11,6,3,2021,14,1.685,0.02,0.07,124,-40.0,Illinois,2
+CIN,Cincinnati Reds,83,163,16,10,5,2021,27,1.085,0.01,0.12,114,-47.0,Ohio,2
+COL,Colorado Rockies,74,161,5,1,0,2021,21,1.3,0.02,0.09,109,-65.0,Colorado,1
+DET,Detroit Tigers,77,162,16,11,4,2021,23,1.26,0.01,0.13,111,-42.0,Michigan,1
+HOU,Houston Astros,95,162,15,4,1,2021,12,1.87,0.01,0.16,126,-76.0,Texas,2
+KC,Kansas City Royals,75,163,9,4,2,2021,28,1.06,0.03,0.24,109,-37.0,Missouri,2
+LAA,Los Angeles Angels,77,162,10,1,1,2021,9,2.025,0.03,0.02,141,-33.0,California,5
+LAD,Los Angeles Dodgers,106,162,35,25,7,2021,2,3.57,0.05,0.12,185,-116.0,California,5
+MIA,Miami Marlins,67,162,3,2,2,2021,30,0.99,0.01,0.4,96,-55.0,Florida,2
+MIL,Milwaukee Brewers,95,162,8,1,0,2021,24,1.22,0.02,0.1,104,-46.0,Wisconsin,1
+MIN,Minnesota Twins,73,163,17,6,3,2021,19,1.325,0.02,0.19,111,-49.0,Minnesota,1
+NYM,New York Mets,77,162,9,5,2,2021,6,2.45,0.02,0.18,107,-125.0,New York,2
+NYY,New York Yankees,92,162,57,40,27,2021,1,5.25,0.05,0.0,108,-190.0,New York,2
+OAK,Oakland Athletics,86,162,29,15,9,2021,26,1.125,0.02,0.13,104,-40.0,California,5
+PHI,Philadelphia Phillies,82,162,14,7,2,2021,8,2.05,0.02,0.06,140,-67.0,Pennsylvania,2
+PIT,Pittsburgh Pirates,60,161,17,9,5,2021,22,1.285,0.02,0.1,116,-21.0,Pennsylvania,2
+SD,San Diego Padres,79,162,6,2,0,2021,17,1.5,0.03,0.14,114,-69.0,California,5
+SEA,Seattle Mariners,90,162,4,0,0,2021,16,1.63,0.02,0.15,129,-35.0,Washington,1
+SF,San Francisco Giants,108,163,27,23,8,2021,5,3.175,0.02,0.02,151,-64.0,California,5
+STL,St. Louis Cardinals,89,161,31,23,11,2021,7,2.245,0.02,0.11,109,-79.0,Missouri,2
+TB,Tampa Bay Rays,100,162,7,2,0,2021,29,1.055,0.0,0.09,112,-23.0,Florida,2
+TEX,Texas Rangers,60,162,8,2,0,2021,13,1.785,0.02,0.43,111,-60.0,Texas,2
+TOR,Toronto Blue Jays,92,163,8,2,2,2021,15,1.675,0.03,0.0,116,-56.0,Toronto,1
+WSH,Washington Nationals,65,162,6,1,1,2021,10,1.925,0.01,0.26,119,-67.0,Washington DC,1
+ARI,Arizona Diamondbacks,74,162,6,1,1,2022,21,1.38,0.05,0.09,267,40.0,Arizona,1
+ATL,Atlanta Braves,101,162,28,18,4,2022,10,2.1,0.12,0.23,443,83.0,Georgia,1
+BAL,Baltimore Orioles,83,162,14,7,3,2022,22,1.375,-0.04,0.16,251,83.0,Maryland,1
+BOS,Boston Red Sox,78,162,25,14,9,2022,3,3.9,0.13,0.0,479,69.0,Massachusetts,1
+CHC,Chicago Cubs,74,162,21,17,3,2022,4,3.8,0.13,0.11,425,68.0,Illinois,2
+CHW,Chicago White Sox,81,162,11,6,3,2022,15,1.76,0.04,0.09,258,-9.5,Illinois,2
+CIN,Cincinnati Reds,62,162,16,10,5,2022,26,1.19,0.1,0.13,266,0.4,Ohio,2
+CLE,Cleveland Guardians,92,162,16,6,2,2022,24,1.3,0.12,0.1,267,71.0,Ohio,2
+COL,Colorado Rockies,68,162,5,1,0,2022,20,1.385,0.07,0.09,270,14.0,Colorado,1
+DET,Detroit Tigers,66,162,16,11,4,2022,18,1.4,0.11,0.13,268,31.0,Michigan,1
+HOU,Houston Astros,106,162,16,5,2,2022,13,1.98,0.06,0.15,388,29.0,Texas,2
+KC,Kansas City Royals,65,162,9,4,2,2022,28,1.11,0.05,0.25,263,47.0,Missouri,2
+LAA,Los Angeles Angels,73,162,10,1,1,2022,9,2.2,0.09,0.05,331,-2.4,California,5
+LAD,Los Angeles Dodgers,111,162,36,25,7,2022,2,4.075,0.14,0.11,565,-7.9,California,5
+MIA,Miami Marlins,69,162,3,2,2,2022,30,0.99,0.0,0.4,240,25.0,Florida,2
+MIL,Milwaukee Brewers,86,162,8,1,0,2022,25,1.28,0.05,0.12,269,29.0,Wisconsin,1
+MIN,Minnesota Twins,78,162,17,6,3,2022,19,1.39,0.05,0.2,268,10.0,Minnesota,1
+NYM,New York Mets,101,162,10,5,2,2022,6,2.65,0.08,0.17,302,-96.0,New York,2
+NYY,New York Yankees,99,162,58,40,27,2022,1,6.0,0.14,0.0,482,-40.0,New York,2
+OAK,Oakland Athletics,60,162,29,15,9,2022,27,1.18,0.05,0.13,208,-8.7,California,5
+PHI,Philadelphia Phillies,87,162,15,8,2,2022,8,2.3,0.12,0.06,323,-17.0,Pennsylvania,2
+PIT,Pittsburgh Pirates,62,162,17,9,5,2022,23,1.32,0.03,0.11,258,64.0,Pennsylvania,2
+SD,San Diego Padres,89,162,7,2,0,2022,17,1.575,0.05,0.19,282,-32.0,California,5
+SEA,Seattle Mariners,90,162,5,0,0,2022,16,1.7,0.04,0.14,313,71.0,Washington,1
+SF,San Francisco Giants,81,162,27,23,8,2022,5,3.5,0.1,0.04,384,32.0,California,5
+STL,St. Louis Cardinals,93,162,32,23,11,2022,7,2.45,0.09,0.09,287,-34.0,Missouri,2
+TB,Tampa Bay Rays,86,162,8,2,0,2022,29,1.1,0.04,0.11,252,45.0,Florida,2
+TEX,Texas Rangers,68,162,8,2,0,2022,11,2.05,0.15,0.37,387,97.0,Texas,2
+TOR,Toronto Blue Jays,92,162,9,2,2,2022,14,1.78,0.06,0.0,238,-52.0,Toronto,1
+WSH,Washington Nationals,55,162,6,1,1,2022,12,2.0,0.04,0.25,322,36.0,Washington DC,1
