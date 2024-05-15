@@ -1,0 +1,101 @@
+---
+title: "Team Revenue"
+author: "Antonio Huerta Montellano"
+output: 
+  html_document:
+    code_folding: show
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    highlight: tango
+    theme: cosmo
+    toc_depth: 2
+  pdf_document:
+    toc: true
+    number_sections: true
+    toc_depth: 2
+---
+
+```{r libraries, include=FALSE, echo=FALSE}
+# Importar módulos
+library(stats)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stats)
+library(stringr)
+```
+
+```{r setup, include=FALSE}
+# Configuraciones
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning=FALSE)
+```
+
+```{r data-import, include=FALSE}
+# Veamos el directorio actual de trabajo
+print(getwd())
+
+# El directorio anterior es el correcto, pero si no lo fuese, hacemos lo sigueinte:
+path <- "C:/Users/metal/Documents/Github/MLB_hardball_negotations"
+setwd(path)
+# Definir las rutas de importación y exportación
+import_path <- 'ETL_Data/Panel/General/Teams/teams_panel.csv'
+export_path <- 'ETL_Data/Panel/General/Teams/'
+# Leer el archivo CSV
+general_panel <- read.csv(import_path)
+print(paste("Las dimensiones del panel son:", paste(dim(general_panel), collapse=" x ")))
+
+# Aplicar trim a los nombres de las columnas
+names(general_panel) <- str_trim(names(general_panel))
+# Reemplazar espacios vacíos por "_"
+names(general_panel) <- str_replace_all(names(general_panel), ".", "_")
+```
+
+```{r data-exploration}
+# Mostrar las primeras filas del dataframe
+head(general_panel)
+print(names(general_panel))
+```
+
+
+Veamos todas las posibilidades para los gráficos
+
+```{r team-scatter}
+# Definir los nombres de las columnas y los nombres del eje y
+column_names <- c('Victorias', 'Playoffs', 'Pennants won', 'WS ganadas', 
+                  'Rango', 'Valor_Corriente', '1An_Cambio_Valor%', 'Valor%',
+                  'Ingresos_Operando')
+ylabel_names <- c('Victorias', 'Playoffs', 'Pennants ganados', 'Mundiales ganados', 
+                  'Rango', 'Valor Corriente [BDD]', 'Cambio de Valor Anual%', 'Valor%',
+                  'Ingresos Operando [MDD]')
+```
+
+```{r}
+for (index in seq_along(column_names)) {
+  name <- column_names[index]
+  
+  # Crear una nueva ventana gráfica
+  #png(paste0(export_path, 'team_scatter_', name, '.png'), width=1200, height=800)
+  
+  # Crear el gráfico de dispersión
+  plot(general_panel[[name]], general_panel$Ingresos_equipo,
+       col="#005A9C", pch=19, cex=1.5, main=paste("Ingresos del equipo vs", ylabel_names[index]),
+       xlab='Ingresos del equipo [MDD]', ylab=ylabel_names[index],
+       xlim=c(min(general_panel[[name]]), max(general_panel[[name]])),
+       ylim=c(min(general_panel$Ingresos_equipo), max(general_panel$Ingresos_equipo)),
+       axes=FALSE, frame.plot=TRUE)
+  
+  # Agregar ejes y marcas
+  axis(side=1, at=pretty(general_panel[[name]]), labels=pretty(general_panel[[name]]), cex.axis=0.8, col.axis='black')
+  axis(side=2, at=pretty(general_panel$Ingresos_equipo), labels=pretty(general_panel$Ingresos_equipo), cex.axis=0.8, col.axis='black')
+  box()
+  
+  # Mostrar el gráfico
+  dev.off()
+}
+
+```
+
